@@ -299,7 +299,7 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@dataplug/tasenor-common@git+ssh://git@bitbucket.org:dataplug2/tasenor-common.git":
-  version "1.5.79"
+  version "1.5.90"
   resolved "git+ssh://git@bitbucket.org:dataplug2/tasenor-common.git#934f24637194de0c1ae2cc0a051ec91a64da905f"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
@@ -3212,10 +3212,10 @@ inherits@2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==
 
-interactive-elements@1.0.78:
-  version "1.0.78"
-  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.78.tgz#7c6264824317d6d62d96ed2407e73c9ebb7dcc48"
-  integrity sha512-OLo9Tw9XHL2iKGhhplhQvosUvMLtl9vpisMzN3/2gE1qNb8UeZXjoAKas+HozgF9AJBiZcQNS3F1cm0cVtt4WA==
+interactive-elements@1.0.80:
+  version "1.0.80"
+  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.80.tgz#f5d71f641b2d63676abe9db4bdf63bef438e9e0f"
+  integrity sha512-qQYZM7xxa9uuMqTm4QfqtBVxgMuJH7hElwF1Es5Fb48QI772qp+GEvYI4K9epGi/ScQD79n2WBuLYKnANbNZ4g==
 
 interactive-elements@^1.0.79:
   version "1.0.79"
@@ -4894,15 +4894,15 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@^1.0.129:
-  version "1.0.129"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.129.tgz#d5bc4837beb8b889e454adba8f62e70c23b256dd"
-  integrity sha512-o8Et9ZGzoZ3l0OiqDNazDnsmdzVsEpTqYQiRJXJZUs5F/hIYWq8n1a1SWNB8rstwLnyrFryY+5WKw6R+8J4zeA==
+react-interactive-stateful-process@1.0.130:
+  version "1.0.130"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.130.tgz#807fbda61516be38ba90d1caf1536c113c6b07f9"
+  integrity sha512-0gIFo1+zi7+rTxRFa1AITsFkkKMicKrD9jv25wl/BXFL23tarfhKL5Ob1BuLc8zY4jD6GtlqvxbxJAenfA1LSw==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
     get-value "^3.0.1"
-    interactive-elements "1.0.78"
+    interactive-elements "1.0.80"
     jsoneditor "^9.5.11"
     set-value "^4.1.0"
 
