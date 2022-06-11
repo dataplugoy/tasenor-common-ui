@@ -18,7 +18,7 @@
   "dependencies": {
     "@dataplug/tasenor-common": "git+ssh://git@bitbucket.org:dataplug2/tasenor-common.git",
     "history": "^5.2.0",
-    "react-interactive-stateful-process": "1.0.130"
+    "react-interactive-stateful-process": "1.0.131"
   },
   "devDependencies": {
     "@types/jest": "27.4.1",
