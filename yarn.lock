@@ -3212,7 +3212,12 @@ inherits@2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==
 
-interactive-elements@1.0.80, interactive-elements@^1.0.79:
+interactive-elements@1.0.81:
+  version "1.0.81"
+  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.81.tgz#0a7d6cecec7a33f6a1e530d446d0c8c831fbd723"
+  integrity sha512-eGat9CK5XM15J2zp/nmEZYNLd1lEq9rN+dDZh3d5YkD/cpoJTYhzGmrA+vAsE8KYejXeTk8QWJoNRK50b0sZfQ==
+
+interactive-elements@^1.0.79:
   version "1.0.80"
   resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.80.tgz#f5d71f641b2d63676abe9db4bdf63bef438e9e0f"
   integrity sha512-qQYZM7xxa9uuMqTm4QfqtBVxgMuJH7hElwF1Es5Fb48QI772qp+GEvYI4K9epGi/ScQD79n2WBuLYKnANbNZ4g==
@@ -4889,15 +4894,15 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.131:
-  version "1.0.131"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.131.tgz#21d6745554de4fcb017897b55a7650130cede7d8"
-  integrity sha512-AVapsK/HbJ2XvyWQAg6pBb4ONiJsdIRxtjRGhPJ11gvIAQdFgqTvD0U3ObF05WG61oTvN7ER1OOoD0qxsp2MPQ==
+react-interactive-stateful-process@1.0.132:
+  version "1.0.132"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.132.tgz#fdc3b769a1dc6a93bdc24125f550db80fe257d1e"
+  integrity sha512-fR1ERu6bsHkKeghZbYjCGv4c2ysR4fminqxR0iRWn9Ih32bkzDz3WNbLZEQ+OyjiI+clZsI2YXLN3mS4QbVSBQ==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
     get-value "^3.0.1"
-    interactive-elements "1.0.80"
+    interactive-elements "1.0.81"
     jsoneditor "^9.5.11"
     set-value "^4.1.0"
 
