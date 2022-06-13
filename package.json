@@ -2,7 +2,7 @@
   "name": "@dataplug/tasenor-common-ui",
   "version": "1.5.91",
   "main": "dist/index.js",
-  "repository": "git@bitbucket.org:dataplug2/tasenor-common-ui.git",
+  "repository": "git@github.com:dataplugoy/tasenor-common-ui.git",
   "author": "Tommi Ronkainen <tommi.ronkainen@gmail.com>",
   "license": "UNLICENCED",
   "scripts": {
@@ -16,7 +16,7 @@
     "lint:fix": "eslint --fix src/**/*.{ts,tsx} example/**/*.{ts,tsx} tests/**/*.{ts,tsx}"
   },
   "dependencies": {
-    "@dataplug/tasenor-common": "git+ssh://git@bitbucket.org:dataplug2/tasenor-common.git",
+    "@dataplug/tasenor-common": "git+ssh://git@github.com:dataplugoy/tasenor-common.git",
     "history": "^5.2.0",
     "react-interactive-stateful-process": "1.0.132"
   },
