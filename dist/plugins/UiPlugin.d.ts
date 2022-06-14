@@ -39,6 +39,10 @@ export declare class UiPlugin extends Component {
      */
     getSettings(): Record<string, unknown> | null;
     /**
+     * Get all known default values for settings.
+     */
+    getDefaults(): Record<string, unknown> | null;
+    /**
      * Get the value of the plugin setting.
      * @param name
      */

@@ -91,6 +91,12 @@ class UiPlugin extends react_1.Component {
         return null;
     }
     /**
+     * Get all known default values for settings.
+     */
+    getDefaults() {
+        return null;
+    }
+    /**
      * Get the value of the plugin setting.
      * @param name
      */

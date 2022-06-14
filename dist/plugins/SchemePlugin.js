@@ -13,6 +13,13 @@ class SchemePlugin extends UiPlugin_1.UiPlugin {
     getAccountingSchemes() {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
     }
+    /**
+     * Get the data from the .tsv file.
+     * @returns
+     */
+    getAccountData() {
+        return [];
+    }
 }
 exports.SchemePlugin = SchemePlugin;
 //# sourceMappingURL=SchemePlugin.js.map

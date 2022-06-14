@@ -8,4 +8,9 @@ export declare class SchemePlugin extends UiPlugin {
      * @returns A map from accounting scheme code names to their visual titles.
      */
     getAccountingSchemes(): void;
+    /**
+     * Get the data from the .tsv file.
+     * @returns
+     */
+    getAccountData(): never[];
 }

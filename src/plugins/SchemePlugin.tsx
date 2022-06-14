@@ -12,4 +12,12 @@ export class SchemePlugin extends UiPlugin {
   getAccountingSchemes() {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   }
+
+  /**
+   * Get the data from the .tsv file.
+   * @returns
+   */
+  getAccountData() {
+    return []
+  }
 }
