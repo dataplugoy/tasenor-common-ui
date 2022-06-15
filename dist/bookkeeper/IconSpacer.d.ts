@@ -1,1 +1,1 @@
-export declare const IconSpacer: () => JSX.Element;
+export declare const IconSpacer: () => any;
