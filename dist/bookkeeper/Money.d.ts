@@ -9,4 +9,4 @@ export declare type MoneyProps = {
  * @param props
  * @returns
  */
-export declare const Money: (props: MoneyProps) => any;
+export declare const Money: (props: MoneyProps) => JSX.Element;

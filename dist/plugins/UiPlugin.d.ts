@@ -47,5 +47,5 @@ export declare class UiPlugin extends Component {
      * @param name
      */
     getSetting(name: any): unknown;
-    render(): any;
+    render(): JSX.Element;
 }

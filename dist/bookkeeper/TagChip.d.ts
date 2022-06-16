@@ -4,4 +4,4 @@ export declare type TagChipProps = {
     onClick?: CallableFunction;
     tag: TagModel;
 };
-export declare const TagChip: (props: TagChipProps) => any;
+export declare const TagChip: (props: TagChipProps) => JSX.Element;

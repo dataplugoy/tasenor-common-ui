@@ -7,4 +7,4 @@ export declare type TagGroupProps = {
     single?: boolean;
     onChange: CallableFunction;
 };
-export declare const TagGroup: any;
+export declare const TagGroup: (props: TagGroupProps) => JSX.Element;

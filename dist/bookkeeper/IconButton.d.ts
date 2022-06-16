@@ -8,4 +8,4 @@ export interface IconButtonProps {
     pressKey?: string;
     disabled?: boolean;
 }
-export declare const IconButton: (props: IconButtonProps) => any;
+export declare const IconButton: (props: IconButtonProps) => JSX.Element;
