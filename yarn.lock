@@ -300,7 +300,7 @@
 
 "@dataplug/tasenor-common@git+ssh://git@github.com:dataplugoy/tasenor-common.git":
   version "1.6.20"
-  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#2eb5bc774e6baae515da6afa40e41ec71bb2c9a2"
+  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#cc1c983cea94e853568d66fec47a4aa47d354799"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
     "@typescript-eslint/parser" "^5.9.1"
@@ -3217,6 +3217,11 @@ interactive-elements@1.0.81:
   resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.81.tgz#0a7d6cecec7a33f6a1e530d446d0c8c831fbd723"
   integrity sha512-eGat9CK5XM15J2zp/nmEZYNLd1lEq9rN+dDZh3d5YkD/cpoJTYhzGmrA+vAsE8KYejXeTk8QWJoNRK50b0sZfQ==
 
+interactive-elements@1.0.82:
+  version "1.0.82"
+  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.82.tgz#5996df26ed30857f6492d48039ad7b8faab0863a"
+  integrity sha512-3fOP5bosHYSUQnbJy/ZMiAijJsiwsomQtLdJOKRBnChgfLocuX1f779B+Cdv7dvQQbtBaiQK9UDDwqTovJ5rTw==
+
 internal-slot@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.3.tgz#7347e307deeea2faac2ac6205d4bc7d34967f59c"
@@ -4889,15 +4894,15 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.133:
-  version "1.0.133"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.133.tgz#ce99d3868a3ca7a81ee412e740a6691f7055d89d"
-  integrity sha512-5dlDt4hXnLpw7AYy/GM4puAEUukmH4Qxa1DBDUrpt87B18MMo9Q0ympnn/QyjKyKoPUiqp43qvc6IMRyD+jfsQ==
+react-interactive-stateful-process@1.0.134:
+  version "1.0.134"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.134.tgz#3a075541d9926bf65fc3dd92c68bf7dd86f14ae8"
+  integrity sha512-WvNZ3oD53svfbdxVj4s9xFye3ThO9DDY0F+pUja2klQdTCKfXsBOnQUaSX+0WxOk75w4IQVbZrlzeP+FySlXDw==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
     get-value "^3.0.1"
-    interactive-elements "1.0.81"
+    interactive-elements "1.0.82"
     jsoneditor "^9.5.11"
     set-value "^4.1.0"
 
