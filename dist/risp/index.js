@@ -18,6 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Additional React classes for interactive stateful processes.
  * @module tasenor-common-ui/src/risp
  */
+// TODO: Rename elements by adding Element to file name.
 __exportStar(require("./Account"), exports);
 __exportStar(require("./CurrencySelector"), exports);
 __exportStar(require("./RISP"), exports);
