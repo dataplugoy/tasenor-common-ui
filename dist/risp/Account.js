@@ -16,7 +16,7 @@ const AccountRenderer = (props) => {
     const label = element.label ? element.label : t(`label-${element.name}`);
     const value = values[element.name];
     const [, setValue] = react_1.default.useState(value);
-    const accounts = [];
+    let accounts = [];
     const preferred = [];
     if (element.preferred) {
         const preferredSet = new Set(element.preferred);
@@ -30,7 +30,7 @@ const AccountRenderer = (props) => {
         });
     }
     else {
-        setup.store.accounts.filter((a) => filter(a));
+        accounts = setup.store.accounts.filter((a) => filter(a));
     }
     return react_1.default.createElement(material_1.TextField, { select: true, fullWidth: true, label: label, value: value && setup.store.database && setup.store.database.getAccountByNumber(`${value}`) ? value : '', onChange: (e) => {
             element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: e.target.value || null }, props);

@@ -14,7 +14,7 @@ export const AccountRenderer: Renderer<TasenorSetup, AccountElement> = (props: R
   const value = values[element.name]
   const [, setValue] = React.useState(value)
 
-  const accounts: AccountModel[] = []
+  let accounts: AccountModel[] = []
   const preferred: AccountModel[] = []
 
   if (element.preferred) {
@@ -27,7 +27,7 @@ export const AccountRenderer: Renderer<TasenorSetup, AccountElement> = (props: R
       }
     })
   } else {
-    setup.store.accounts.filter((a) => filter(a))
+    accounts = setup.store.accounts.filter((a) => filter(a))
   }
 
   return <TextField
