@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { MenuItem, TextField, Typography } from '@mui/material'
+import { MenuItem, TextField } from '@mui/material'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import React from 'react'
 import { Renderer, RenderingProps } from 'react-interactive-stateful-process'
