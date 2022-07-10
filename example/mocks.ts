@@ -68,7 +68,7 @@ export class MockTagModel {
   type: AccountType
   data: {
     favourite: boolean
-    tax: VATTarget | null
+    code: VATTarget | null // TODO: Type
   }
   currency: Currency | null
   language: Language | null
@@ -80,7 +80,7 @@ export class MockTagModel {
     this.type = params.type
     this.data = {
       favourite: false,
-      tax: null
+      code: null
     }
     this.currency = 'EUR'
     this.language = 'fi'
