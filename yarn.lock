@@ -292,7 +292,7 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@dataplug/tasenor-common@git+ssh://git@github.com:dataplugoy/tasenor-common.git":
-  version "1.6.21"
+  version "1.6.23"
   resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#dc5bca18501d19038af28e992938da2ce867607c"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
@@ -300,7 +300,7 @@
     axios "0.26.0"
     clone "^2.1.2"
     dayjs "1.10.8"
-    interactive-elements "1.0.82"
+    interactive-elements "1.0.83"
     jwt-decode "^3.1.2"
     mathjs "^10.0.2"
     sprintf-js "^1.1.2"
@@ -4876,10 +4876,10 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.135:
-  version "1.0.135"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.135.tgz#f77e106c8f7086eedbaffd1e2ed3906bbd6f29aa"
-  integrity sha512-cmhDwTRPPHXo0Dg6l1FhGgPK+0LaHaSzm/vrpsNpYHCE4QNL93Bf/aAbam68f4TLk3tzQN+oVJp4T+18+f3NKw==
+react-interactive-stateful-process@1.0.136:
+  version "1.0.136"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.136.tgz#b7284fa09eaebd2ee183197028c3e9228c927e76"
+  integrity sha512-Ql7bTxBDD7ahIcIiwoKFNXUOaTDIhcnuvvBoTZ9T1wWXSz9uIu8zsUM6BQ2FuVZbDPNtS3w39J22eVmM1RL65A==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
