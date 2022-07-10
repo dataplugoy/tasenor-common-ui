@@ -18,7 +18,7 @@
   "dependencies": {
     "@dataplug/tasenor-common": "git+ssh://git@github.com:dataplugoy/tasenor-common.git",
     "history": "^5.2.0",
-    "react-interactive-stateful-process": "1.0.134"
+    "react-interactive-stateful-process": "1.0.135"
   },
   "devDependencies": {
     "@types/jest": "27.4.1",
@@ -26,14 +26,14 @@
     "@typescript-eslint/parser": "5.9.1",
     "babel-loader": "^8.2.3",
     "css-loader": "6.6.0",
-    "eslint": "7.32.0",
+    "eslint": "8.19.0",
     "eslint-config-semistandard": "16.0.0",
-    "eslint-config-standard": "16.0.3",
-    "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-mocha": "9.0.0",
+    "eslint-config-standard": "17.0.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-mocha": "10.0.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "6.0.0",
-    "eslint-plugin-react": "7.27.1",
+    "eslint-plugin-react": "7.30.0",
     "eslint-plugin-standard": "5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "i18next": "^21.4.0",
