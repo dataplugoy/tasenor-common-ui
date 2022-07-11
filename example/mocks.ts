@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { TasenorSetup, AccountModel, AccountNumber, AccountType, BalanceModel, Currency, Cursor, DatabaseModel, EntryModel, HeadingModel, ImporterModel, Language, PeriodModel, Tag, TagModel, TagType, Url, VATTarget } from '@dataplug/tasenor-common'
+import { TasenorSetup, AccountModel, AccountNumber, AccountType, BalanceModel, Currency, Cursor, DatabaseModel, EntryModel, HeadingModel, ImporterModel, Language, PeriodModel, Tag, TagModel, TagType, Url, VATTarget, Asset } from '@dataplug/tasenor-common'
 import { ID, RealID } from 'interactive-elements'
 import { sprintf } from 'sprintf-js'
 import dayjs from 'dayjs'
@@ -68,7 +68,7 @@ export class MockTagModel {
   type: AccountType
   data: {
     favourite: boolean
-    code: VATTarget | null // TODO: Type
+    code: Asset | null
   }
   currency: Currency | null
   language: Language | null
