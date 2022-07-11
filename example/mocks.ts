@@ -216,6 +216,9 @@ export class MockCatalog {
 
   async fetchBalances(db?: string, periodId?: number): Promise<void> {
   }
+
+  async request(path, method = 'GET', data = null, file = null, noDimming = false) {
+  }
 }
 
 export class CursorMock {
