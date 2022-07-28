@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
-import { Dialog } from '../src/Components/Bookkeeper/Dialog'
+import { Dialog } from '../src/bookkeeper/Dialog'
 import { Box } from '@mui/material'
 
 const PageDialog = (): JSX.Element => {

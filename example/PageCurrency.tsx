@@ -1,10 +1,10 @@
 import React from 'react'
-import { RISP } from '../src/Components/RISP'
+import { RISP } from '../src/risp/RISP'
 import { setup } from './mocks'
 import { TasenorElement } from '@dataplug/tasenor-common'
 import { makeObservable, observable } from 'mobx'
 import { observer } from 'mobx-react'
-import { Dialog } from '../src/Components/Bookkeeper/Dialog'
+import { Dialog } from '../src/bookkeeper/Dialog'
 
 const values = makeObservable({ value: { currency: null } }, { value: observable })
 
