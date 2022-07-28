@@ -20,6 +20,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @module tasenor-common-ui/src/bookkeeper
  */
 __exportStar(require("./Dialog"), exports);
+__exportStar(require("./Hooks"), exports);
 __exportStar(require("./IconButton"), exports);
 __exportStar(require("./IconSpacer"), exports);
 __exportStar(require("./Localize"), exports);

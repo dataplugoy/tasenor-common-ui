@@ -5,6 +5,7 @@ import PageCurrency from './PageCurrency'
 import PageDialog from './PageDialog'
 import PageTagGroup from './PageTagGroup'
 import { useNavigation } from '../src/bookkeeper/Hooks'
+import PageTabs from './PageTabs'
 
 
 /**
@@ -17,12 +18,14 @@ const App = observer(() => {
       <a href="#" onClick={() => nav.go({side: 'currency'})}>Currency</a>|
       <a href="#" onClick={() => nav.go({side: 'dialog'})}>Dialog</a>|
       <a href="#" onClick={() => nav.go({side: 'tagGroup'})}>Tag Group</a>
+      <a href="#" onClick={() => nav.go({side: 'tabs'})}>Tabs</a>
       <hr/>
       {JSON.stringify(nav)}
       <hr/>
       { nav.side === 'currency' && <PageCurrency />}
       { nav.side === 'dialog' && <PageDialog />}
       { nav.side === 'tagGroup' && <PageTagGroup />}
+      { nav.side === 'tabs' && <PageTabs />}
     </Paper>
   )
 })

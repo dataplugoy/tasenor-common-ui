@@ -4,6 +4,7 @@
  * @module tasenor-common-ui/src/bookkeeper
  */
 export * from './Dialog'
+export * from './Hooks'
 export * from './IconButton'
 export * from './IconSpacer'
 export * from './Localize'

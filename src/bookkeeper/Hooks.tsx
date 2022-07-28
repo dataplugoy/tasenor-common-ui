@@ -1,7 +1,8 @@
-import { useLocation, Location, useNavigate, NavigateFunction } from "react-router-dom"
+import { useLocation, useHistory, Location, History } from 'react-router-dom'
 import { DatabaseName, isDatabaseName } from '@dataplug/tasenor-common'
 import { ID } from 'interactive-elements'
 
+// TODO: This could belong to bookkeeper repo. In future generic base could be here.
 export type MainMenu = "" | "admin" | "dashboard" | "txs" | "account" | "report" | "tools" | "import" | "settings" | "classop"
 const mainMenuSet = new Set(["", "admin", "dashboard", "txs", "account", "report", "tools", "import", "settings", "classop"])
 export const isMainMenu = (name: unknown): name is MainMenu => typeof name === 'string' && mainMenuSet.has(name)
@@ -14,9 +15,9 @@ export class MenuState {
   side: string
   attrs: Record<string, string>
 
-  nav: NavigateFunction
+  history: History
 
-  constructor(loc: Location, nav: NavigateFunction) {
+  constructor(loc: Location, history: History) {
     this.db = '' as DatabaseName
     this.main = ''
     this.periodId = null
@@ -24,7 +25,7 @@ export class MenuState {
     this.side = ''
     this.attrs = {}
 
-    this.nav = nav
+    this.history = history
 
     if (loc) {
       const [ , db, main, periodId, accountId, side] = loc.pathname.split('/')
@@ -56,8 +57,7 @@ export class MenuState {
 
   go(to: Record<string, string>): void {
     this.parse(to)
-    // TODO: Could use this.nav(this.url, { replace: true }) when changing only attr values?
-    this.nav(this.url)
+    this.history.push(this.url)
   }
 
   get url(): string {
@@ -68,6 +68,6 @@ export class MenuState {
 
 export const useNavigation = (): MenuState => {
   const loc = useLocation()
-  const nav = useNavigate()
-  return new MenuState(loc, nav)
+  const his = useHistory()
+  return new MenuState(loc, his)
 }
