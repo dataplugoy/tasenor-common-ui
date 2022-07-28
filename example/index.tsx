@@ -2,6 +2,7 @@ import { Knowledge, setGlobalComponents } from '@dataplug/tasenor-common'
 import { ThemeProvider } from '@mui/material'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { RISPProvider } from '../src/risp/RISPProvider'
 import App from './App'
 import { CursorMock, MockCatalog, MockStore, SettingsMock } from './mocks'
@@ -16,10 +17,12 @@ const knowledge = new Knowledge()
 setGlobalComponents(store, catalog, cursor, settings, knowledge)
 
 ReactDOM.render(
-  <RISPProvider>
-  <ThemeProvider theme={theme}>
-    <App />
-  </ThemeProvider>
-  </RISPProvider>,
+  <BrowserRouter>
+    <RISPProvider>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </RISPProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 )

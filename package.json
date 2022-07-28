@@ -18,7 +18,7 @@
   "dependencies": {
     "@dataplug/tasenor-common": "git+ssh://git@github.com:dataplugoy/tasenor-common.git",
     "history": "^5.2.0",
-    "react-interactive-stateful-process": "1.0.138"
+    "react-interactive-stateful-process": "1.0.139"
   },
   "devDependencies": {
     "@types/jest": "27.4.1",
@@ -57,6 +57,7 @@
     "mobx-react": "^7.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-i18next": "^11.15.5"
+    "react-i18next": "^11.15.5",
+    "react-router-dom": "^6.3.0"
   }
 }
