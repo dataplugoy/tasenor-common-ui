@@ -5,7 +5,7 @@ import { TabNav } from '../src/bookkeeper/TabNav'
 const PageTabs = (): JSX.Element => {
 
   return <div>
-    <TabNav menu="periodId" labels={{'11': 'Item One', '22': 'Item Two', '33': 'Item Three'}}>
+    <TabNav menu="tab" labels={{'11': 'Item One', '22': 'Item Two', '33': 'Item Three'}}>
       <div>First Period</div>
       <div>Second Period</div>
       <div>Third Period</div>

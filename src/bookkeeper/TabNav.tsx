@@ -57,7 +57,7 @@ export const TabNav = (props: TabsProps): React.Element => {
     nav.go({ [menu]: indices[idx] })
   }
 
-  const current = Math.max(0, indices.indexOf(`${nav[menu]}`))
+  const current = Math.max(0, indices.indexOf(`${nav.get(menu)}`))
 
   return <Paper>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

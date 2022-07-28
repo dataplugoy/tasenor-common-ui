@@ -29,7 +29,8 @@ export class MenuState {
 
     if (loc) {
       const [ , db, main, periodId, accountId, side] = loc.pathname.split('/')
-      this.parse({ db, main, periodId, accountId, side })
+      const search = loc.search.length ? loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev}), {}) : {}
+      this.parse({ db, main, periodId, accountId, side, ...search })
     }
   }
 
@@ -38,21 +39,27 @@ export class MenuState {
    */
   parse(params: Record<string, string>): void {
     const { db, main, periodId, accountId, side } = params
-    if (db !== undefined) {
-      this.db = isDatabaseName(db) ? db : '' as DatabaseName
-    }
-    if (main !== undefined) {
-      this.main = isMainMenu(main) ? main : ''
-    }
-    if (periodId !== undefined) {
-      this.periodId = periodId === '' ? null : parseInt(periodId)
-    }
-    if (accountId !== undefined) {
-      this.accountId = accountId === '' ? null : parseInt(accountId)
-    }
-    if (side !== undefined) {
-      this.side = side
-    }
+    Object.keys(params).forEach(key => {
+      switch(key) {
+        case 'db':
+          this.db = isDatabaseName(db) ? db : '' as DatabaseName
+          break
+        case 'main':
+          this.main = isMainMenu(main) ? main : ''
+          break
+        case 'periodId':
+          this.periodId = periodId === '' ? null : parseInt(periodId)
+          break
+        case 'accountId':
+          this.accountId = accountId === '' ? null : parseInt(accountId)
+          break
+        case 'side':
+          this.side = side
+          break
+        default:
+          this.attrs[key] = params[key]
+      }
+    })
   }
 
   go(to: Record<string, string>): void {
@@ -60,9 +67,27 @@ export class MenuState {
     this.history.push(this.url)
   }
 
+  get(variable: string) {
+    switch(variable) {
+      case 'db':
+      case 'main':
+      case 'periodId':
+      case 'accountId':
+      case 'side':
+        return this[variable]
+      default:
+        return this.attrs[variable]
+    }
+  }
+
   get url(): string {
-    const url = `/${this.db}/${this.main}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`
-    return url.replace(/\/+$/, '')
+    let url = `/${this.db}/${this.main}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`
+    url = url.replace(/\/+$/, '')
+    const attrs = Object.keys(this.attrs).map(k => `${k}=${encodeURIComponent(this.attrs[k])}`)
+    if (attrs.length) {
+      url += `?${attrs.join('&')}`
+    }
+    return url
   }
 }
 
