@@ -4590,10 +4590,10 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.139:
-  version "1.0.139"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.139.tgz#feee90fadd1a206593e59b92389da515a9017df9"
-  integrity sha512-l67dTGn8WA7hpmJlU4te9Cb8fa+eEUjXvJ0nXZTeGWazGyvpkJiyWPwDJTu9sIkR+PHcnLJt5NU/0XSqAdSDMA==
+react-interactive-stateful-process@1.0.140:
+  version "1.0.140"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.140.tgz#9f3dddc5d904f2ab55160fb90a0509e99046d451"
+  integrity sha512-LqS4/f0qgewYa/AbySWRgjRlAd72/jCYe7sEKJ+SU/H7iuD4CQ5fUEAjSa0LQBH43wPmoeJeMy8RSBJ3ao+9Og==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
