@@ -27,6 +27,7 @@ __exportStar(require("./Localize"), exports);
 __exportStar(require("./Money"), exports);
 __exportStar(require("./Money"), exports);
 __exportStar(require("./SubPanel"), exports);
+__exportStar(require("./TabNav"), exports);
 __exportStar(require("./TagChip"), exports);
 __exportStar(require("./TagGroups"), exports);
 __exportStar(require("./Title"), exports);

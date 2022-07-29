@@ -11,6 +11,7 @@ export * from './Localize';
 export * from './Money';
 export * from './Money';
 export * from './SubPanel';
+export * from './TabNav';
 export * from './TagChip';
 export * from './TagGroups';
 export * from './Title';
