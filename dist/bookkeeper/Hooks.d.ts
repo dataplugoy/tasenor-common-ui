@@ -15,8 +15,9 @@ export declare class MenuState {
     /**
      * Collect valid path values from records and ignore the rest.
      */
-    parse(params: Record<string, string>): void;
-    go(to: Record<string, string>): void;
+    parse(params: Record<string, string | null>): void;
+    go(to: Record<string, string | null>): void;
+    get(variable: string): string | number | null;
     get url(): string;
 }
 export declare const useNavigation: () => MenuState;

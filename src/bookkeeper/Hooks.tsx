@@ -37,7 +37,7 @@ export class MenuState {
   /**
    * Collect valid path values from records and ignore the rest.
    */
-  parse(params: Record<string, string>): void {
+  parse(params: Record<string, string | null>): void {
     const { db, main, periodId, accountId, side } = params
     Object.keys(params).forEach(key => {
       switch(key) {
@@ -48,21 +48,25 @@ export class MenuState {
           this.main = isMainMenu(main) ? main : ''
           break
         case 'periodId':
-          this.periodId = periodId === '' ? null : parseInt(periodId)
+          this.periodId = periodId === '' || periodId === null ? null : parseInt(periodId)
           break
         case 'accountId':
-          this.accountId = accountId === '' ? null : parseInt(accountId)
+          this.accountId = accountId === '' || accountId === null ? null : parseInt(accountId)
           break
         case 'side':
-          this.side = side
+          this.side = side || ''
           break
         default:
-          this.attrs[key] = params[key]
+          if (params[key] !== null) {
+            this.attrs[key] = params[key] || ''
+          } else {
+            delete this.attrs[key]
+          }
       }
     })
   }
 
-  go(to: Record<string, string>): void {
+  go(to: Record<string, string | null>): void {
     this.parse(to)
     this.history.push(this.url)
   }

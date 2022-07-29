@@ -17,7 +17,8 @@ class MenuState {
         this.history = history;
         if (loc) {
             const [, db, main, periodId, accountId, side] = loc.pathname.split('/');
-            this.parse({ db, main, periodId, accountId, side });
+            const search = loc.search.length ? loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev }), {}) : {};
+            this.parse({ db, main, periodId, accountId, side, ...search });
         }
     }
     /**
@@ -25,29 +26,57 @@ class MenuState {
      */
     parse(params) {
         const { db, main, periodId, accountId, side } = params;
-        if (db !== undefined) {
-            this.db = (0, tasenor_common_1.isDatabaseName)(db) ? db : '';
-        }
-        if (main !== undefined) {
-            this.main = (0, exports.isMainMenu)(main) ? main : '';
-        }
-        if (periodId !== undefined) {
-            this.periodId = periodId === '' ? null : parseInt(periodId);
-        }
-        if (accountId !== undefined) {
-            this.accountId = accountId === '' ? null : parseInt(accountId);
-        }
-        if (side !== undefined) {
-            this.side = side;
-        }
+        Object.keys(params).forEach(key => {
+            switch (key) {
+                case 'db':
+                    this.db = (0, tasenor_common_1.isDatabaseName)(db) ? db : '';
+                    break;
+                case 'main':
+                    this.main = (0, exports.isMainMenu)(main) ? main : '';
+                    break;
+                case 'periodId':
+                    this.periodId = periodId === '' || periodId === null ? null : parseInt(periodId);
+                    break;
+                case 'accountId':
+                    this.accountId = accountId === '' || accountId === null ? null : parseInt(accountId);
+                    break;
+                case 'side':
+                    this.side = side || '';
+                    break;
+                default:
+                    if (params[key] !== null) {
+                        this.attrs[key] = params[key] || '';
+                    }
+                    else {
+                        delete this.attrs[key];
+                    }
+            }
+        });
     }
     go(to) {
         this.parse(to);
         this.history.push(this.url);
     }
+    get(variable) {
+        switch (variable) {
+            case 'db':
+            case 'main':
+            case 'periodId':
+            case 'accountId':
+            case 'side':
+                return this[variable];
+            default:
+                return this.attrs[variable];
+        }
+    }
     get url() {
-        const url = `/${this.db}/${this.main}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`;
-        return url.replace(/\/+$/, '');
+        let url = `/${this.db}/${this.main}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`;
+        url = url.replace(/\/+$/, '');
+        const attrs = Object.keys(this.attrs).map(k => `${k}=${encodeURIComponent(this.attrs[k])}`);
+        if (attrs.length) {
+            url += `?${attrs.join('&')}`;
+        }
+        return url;
     }
 }
 exports.MenuState = MenuState;
