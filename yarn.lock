@@ -292,7 +292,7 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@dataplug/tasenor-common@git+ssh://git@github.com:dataplugoy/tasenor-common.git":
-  version "1.7.0"
+  version "1.7.2"
   resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#5c67bc997eef8400cd14466c04b2243a105e7af6"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
@@ -4590,10 +4590,10 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.140:
-  version "1.0.140"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.140.tgz#9f3dddc5d904f2ab55160fb90a0509e99046d451"
-  integrity sha512-LqS4/f0qgewYa/AbySWRgjRlAd72/jCYe7sEKJ+SU/H7iuD4CQ5fUEAjSa0LQBH43wPmoeJeMy8RSBJ3ao+9Og==
+react-interactive-stateful-process@1.0.141:
+  version "1.0.141"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.141.tgz#6f37645d0e25db7a2937b87ad02089109dcdb0d1"
+  integrity sha512-4RR87hBI01fGkJSv5v9cQ+xverP07lvgf1kZF9JX29gCxBEyKkfBZVwnjV4eN/o+8cwJKBUPSiMxOBI2jPZwuw==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
