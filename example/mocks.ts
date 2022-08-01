@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { TasenorSetup, AccountModel, AccountNumber, AccountType, BalanceModel, Currency, Cursor, DatabaseModel, EntryModel, HeadingModel, ImporterModel, Language, PeriodModel, Tag, TagModel, TagType, Url, VATTarget, Asset } from '@dataplug/tasenor-common'
+import { TasenorSetup, AccountModel, AccountNumber, AccountType, BalanceModel, Currency, Cursor, DatabaseModel, EntryModel, HeadingModel, ImporterModel, Language, PeriodModel, Tag, TagModel, TagType, Url, VATTarget, Asset, TasenorPlugin } from '@dataplug/tasenor-common'
 import { ID, RealID } from 'interactive-elements'
 import { sprintf } from 'sprintf-js'
 import dayjs from 'dayjs'
@@ -166,6 +166,10 @@ export class MockCatalog {
   t(str) {
     return str
   }
+
+  getImportOptions(): Record<string, TasenorPlugin> {
+    return {}
+  }
 }
 
 /**
@@ -219,6 +223,10 @@ export class MockCatalog {
 
   async request(path, method = 'GET', data = null, file = null, noDimming = false) {
   }
+
+  rispSetup(baseUrl: string): TasenorSetup {
+    return setup
+  }
 }
 
 export class CursorMock {
@@ -236,5 +244,9 @@ export class SettingsMock {
 }
 
 export const setup: TasenorSetup = {
-  store: new MockStore()
+  store: new MockStore(),
+  baseUrl: '',
+  token: '',
+  errorMessage: () => console.log('ERROR'),
+  successMessage: () => console.log('OK')
 }

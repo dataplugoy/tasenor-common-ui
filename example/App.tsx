@@ -15,9 +15,9 @@ const App = observer(() => {
   const nav = useNavigation()
   return (
     <Paper style={{ margin: '1rem', padding: '1rem' }} elevation={4}>
-      <a href="#" onClick={() => nav.go({side: 'currency'})}>Currency</a>|
-      <a href="#" onClick={() => nav.go({side: 'dialog'})}>Dialog</a>|
-      <a href="#" onClick={() => nav.go({side: 'tagGroup'})}>Tag Group</a>
+      <a href="#" onClick={() => nav.go({side: 'currency'})}>Currency</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({side: 'dialog'})}>Dialog</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({side: 'tagGroup'})}>Tag Group</a>&nbsp;|&nbsp;
       <a href="#" onClick={() => nav.go({side: 'tabs'})}>Tabs</a>
       <hr/>
       {JSON.stringify(nav)}

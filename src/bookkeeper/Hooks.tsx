@@ -75,6 +75,7 @@ export class MenuState {
     switch(variable) {
       case 'db':
       case 'main':
+        return this[variable] === '_' ? '' : this[variable]
       case 'periodId':
       case 'accountId':
       case 'side':
@@ -85,7 +86,7 @@ export class MenuState {
   }
 
   get url(): string {
-    let url = `/${this.db}/${this.main}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`
+    let url = `/${this.db || '_'}/${this.main || '_'}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`
     url = url.replace(/\/+$/, '')
     const attrs = Object.keys(this.attrs).map(k => `${k}=${encodeURIComponent(this.attrs[k])}`)
     if (attrs.length) {
