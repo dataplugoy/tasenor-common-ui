@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { setup } from './mocks'
-import { Tag, TasenorElement } from '@dataplug/tasenor-common'
+import { TasenorElement } from '@dataplug/tasenor-common'
 import { RISP } from '../src/risp/RISP'
 import { makeObservable, observable } from 'mobx'
 

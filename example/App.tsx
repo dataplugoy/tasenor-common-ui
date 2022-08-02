@@ -7,6 +7,7 @@ import PageTagGroup from './PageTagGroup'
 import { useNavigation } from '../src/bookkeeper/Hooks'
 import PageTabs from './PageTabs'
 import PageRuleEditor from './PageRuleEditor'
+import PageRuleEditorSingle from './PageRuleEditorSingle'
 
 
 /**
@@ -20,7 +21,8 @@ const App = observer(() => {
       <a href="#" onClick={() => nav.go({side: 'dialog'})}>Dialog</a>&nbsp;|&nbsp;
       <a href="#" onClick={() => nav.go({side: 'tagGroup'})}>Tag Group</a>&nbsp;|&nbsp;
       <a href="#" onClick={() => nav.go({side: 'tabs'})}>Tabs</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({side: 'ruleEditor'})}>Rule Editor</a>
+      <a href="#" onClick={() => nav.go({side: 'ruleEditor'})}>Rule Editor</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({side: 'ruleEditorSingle'})}>Rule Editor (Single)</a>
       <hr/>
       {JSON.stringify(nav)}
       <hr/>
@@ -29,6 +31,7 @@ const App = observer(() => {
       { nav.side === 'tagGroup' && <PageTagGroup />}
       { nav.side === 'tabs' && <PageTabs />}
       { nav.side === 'ruleEditor' && <PageRuleEditor />}
+      { nav.side === 'ruleEditorSingle' && <PageRuleEditorSingle />}
     </Paper>
   )
 })

@@ -26,6 +26,7 @@ __exportStar(require("./IconSpacer"), exports);
 __exportStar(require("./Localize"), exports);
 __exportStar(require("./Money"), exports);
 __exportStar(require("./Money"), exports);
+__exportStar(require("./RuleEditor"), exports);
 __exportStar(require("./SubPanel"), exports);
 __exportStar(require("./TabNav"), exports);
 __exportStar(require("./TagChip"), exports);
