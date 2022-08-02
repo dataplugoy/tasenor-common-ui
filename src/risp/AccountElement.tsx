@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { MenuItem, TextField } from '@mui/material'
-import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import React from 'react'
 import { Renderer, RenderingProps } from 'react-interactive-stateful-process'
-import { TasenorSetup, AccountElement, AccountModel, filter2function } from '@dataplug/tasenor-common'
+import { TasenorSetup, AccountElement, AccountModel, filter2function, AccountNumber } from '@dataplug/tasenor-common'
+import { AccountSelector } from '../bookkeeper/AccountSelector'
 
 export const AccountRenderer: Renderer<TasenorSetup, AccountElement> = (props: RenderingProps<TasenorSetup, AccountElement>) => {
 
@@ -30,19 +29,15 @@ export const AccountRenderer: Renderer<TasenorSetup, AccountElement> = (props: R
     accounts = setup.store.accounts.filter((a) => filter(a))
   }
 
-  return <TextField
-    select
-    fullWidth
+  return <AccountSelector
     label={label}
-    value={value && setup.store.database && setup.store.database.getAccountByNumber(`${value}`) ? value : ''}
+    value={value && setup.store.database && setup.store.database.getAccountByNumber(`${value}`) ? value as AccountNumber : '' as AccountNumber}
     onChange={(e) => {
-      element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: e.target.value || null }, props)
-      values[element.name] = e.target.value || null
-      setValue(e.target.value || null)
+      element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: e || null }, props)
+      values[element.name] = e || null
+      setValue(e || null)
     }}
-  >
-  <MenuItem>&nbsp;</MenuItem>
-    {preferred.map((account, idx) => <MenuItem value={account.number} key={account.id} divider={idx === preferred.length - 1}>{account.number} {account.name} <StarOutlineIcon fontSize="small" sx={{ color: 'rgba(0,0,0,0.2)' }}/> </MenuItem>)}
-    {accounts.map(account => <MenuItem value={account.number} key={account.id}>{account.number} {account.name}</MenuItem>)}
-  </TextField>
+    preferred={preferred}
+    accounts={accounts}
+  />
 }
