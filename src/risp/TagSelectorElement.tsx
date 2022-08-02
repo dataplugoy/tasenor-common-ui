@@ -14,7 +14,13 @@ export const TagsSelectorRenderer: Renderer<TasenorSetup, TagsElement> = (props:
   const label = ('label' in element) ? element.label : ((isNamedElement(element) && element.name) ? t(`label-${element.name}`) : '')
 
   let Selector = <></>
+
   const tags: Record<Tag, TagModel> = setup.store.db ? setup.store.dbsByName[setup.store.db].tagsByTag : {}
+  const onChange = (selected) => {
+    setSelected(selected)
+    const newValue = element.single ? selected[0] : selected
+    element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props)
+  }
 
   if ('types' in element) {
     Selector = (
@@ -22,11 +28,7 @@ export const TagsSelectorRenderer: Renderer<TasenorSetup, TagsElement> = (props:
         tags={tags}
         single={!!element.single}
         types={element.types}
-        onChange={(selected) => {
-          setSelected(selected)
-          const newValue = element.single ? selected[0] : selected
-          element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props)
-        }}
+        onChange={onChange}
         selected={selected}
       />
     )
@@ -36,11 +38,17 @@ export const TagsSelectorRenderer: Renderer<TasenorSetup, TagsElement> = (props:
         tags={tags}
         single={!!element.single}
         options={element.options}
-        onChange={(selected) => {
-          setSelected(selected)
-          const newValue = element.single ? selected[0] : selected
-          element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props)
-        }}
+        onChange={onChange}
+        selected={selected}
+      />
+    )
+  } else if (element.all) {
+    Selector = (
+      <TagGroup
+        tags={tags}
+        single={!!element.single}
+        options={Object.keys(tags) as Tag[]}
+        onChange={onChange}
         selected={selected}
       />
     )

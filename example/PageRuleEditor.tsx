@@ -42,7 +42,7 @@ const PageRuleEditor = (): JSX.Element => {
             label: 'Select tags:',
             actions: {},
             single: false,
-            options: ['TR', 'KR', 'HIL', 'TYL', 'NIH', 'KIS', 'KRY', 'MEG', 'SPE', 'MAL'] as Tag[]
+            all: true
           },
           {
             type: 'button',
