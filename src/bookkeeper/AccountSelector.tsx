@@ -1,19 +1,38 @@
 import React from 'react'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import { MenuItem, TextField } from '@mui/material'
-import { AccountModelData, AccountNumber } from '@dataplug/tasenor-common'
+import { AccountNumber, FilterRule, AccountModel, filter2function } from '@dataplug/tasenor-common'
 
 export type AccountSelectorProps = {
   label: string
   value: AccountNumber
   onChange: (num: AccountNumber) => void
-  preferred: AccountModelData[]
-  accounts: AccountModelData[]
+  preferred?: AccountNumber[]
+  accounts: AccountModel[]
+  filter?: FilterRule
 }
 
 export const AccountSelector = (props: AccountSelectorProps) => {
 
-  const { value, onChange, label, preferred, accounts } = props
+  const { value, onChange, label } = props
+
+  const filter = filter2function<AccountModel>(props.filter)
+
+  let accounts: AccountModel[] = []
+  const preferred: AccountModel[] = []
+
+  if (props.preferred) {
+    const preferredSet = new Set(props.preferred)
+    props.accounts.filter((a) => filter(a)).forEach(a => {
+      if (preferredSet.has(a.number)) {
+        preferred.push(a)
+      } else {
+        accounts.push(a)
+      }
+    })
+  } else {
+    accounts = props.accounts.filter((a) => filter(a))
+  }
 
   return (
   <TextField

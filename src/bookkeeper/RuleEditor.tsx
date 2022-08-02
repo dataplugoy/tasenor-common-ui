@@ -1,8 +1,9 @@
 import React from 'react'
 import { TextFileLine } from 'interactive-elements'
-import { Box, Grid, Paper, styled, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, styled, Typography } from '@mui/material'
 import { Store, Tag, TagModel } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
+import { AccountSelector } from './AccountSelector'
 
 export type RuleEditorProps = {
   store: Store
@@ -22,10 +23,13 @@ export const RuleEditor = (props: RuleEditorProps) => {
   const { store, lines } = props
   const tags: Record<Tag, TagModel> = store.db ? store.dbsByName[store.db].tagsByTag : {}
   const [selected, setSelected] = React.useState<Tag[]>([])
+  const [value, setValue] = React.useState('')
 
+  // TODO: Translations.
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
+
         <Grid item xs={12}>
           <Item>
             {
@@ -33,11 +37,10 @@ export const RuleEditor = (props: RuleEditorProps) => {
             }
           </Item>
         </Grid>
-        <Grid item xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
+
         <Grid item xs={8}>
           <Item>
+            <AccountSelector label={'Select Account'} value={value} accounts={store.accounts} onChange={num => setValue(num)}/>
             <TagGroup
               tags={tags}
               single={false}
@@ -47,6 +50,13 @@ export const RuleEditor = (props: RuleEditorProps) => {
             />
           </Item>
         </Grid>
+
+        <Grid item xs={4}>
+          <Item>
+            <Button variant="outlined">Continue</Button>
+          </Item>
+        </Grid>
+
       </Grid>
     </Box>
   )
