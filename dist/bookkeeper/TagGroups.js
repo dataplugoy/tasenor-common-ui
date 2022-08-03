@@ -71,11 +71,11 @@ exports.TagGroup = (0, mobx_react_1.observer)((props) => {
     if (!found) {
         return react_1.default.createElement(react_1.default.Fragment, null,
             react_1.default.createElement(react_i18next_1.Trans, null, "No suitable tags available."),
-            options && react_1.default.createElement("div", null,
+            options && options.length > 0 && react_1.default.createElement("div", null,
                 react_1.default.createElement(react_i18next_1.Trans, null, "Tried to look for the following tags:"),
                 " ",
                 options.join(', ')),
-            types && react_1.default.createElement("div", null,
+            types && types.length > 0 && react_1.default.createElement("div", null,
                 react_1.default.createElement(react_i18next_1.Trans, null, "Tried to look for the following tag types:"),
                 " ",
                 types.join(', ')));

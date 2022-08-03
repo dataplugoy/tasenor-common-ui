@@ -4,6 +4,8 @@ import { Box, Button, Grid, Paper, styled, Typography } from '@mui/material'
 import { Store, Tag, TagModel } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
+import { useTranslation } from 'react-i18next'
+import { observer } from 'mobx-react'
 
 export type RuleEditorProps = {
   store: Store
@@ -18,12 +20,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-export const RuleEditor = (props: RuleEditorProps) => {
+export const RuleEditor = observer((props: RuleEditorProps) => {
 
   const { store, lines } = props
   const tags: Record<Tag, TagModel> = store.db ? store.dbsByName[store.db].tagsByTag : {}
   const [selected, setSelected] = React.useState<Tag[]>([])
   const [value, setValue] = React.useState('')
+  const { t } = useTranslation()
 
   // TODO: Translations.
   return (
@@ -31,9 +34,14 @@ export const RuleEditor = (props: RuleEditorProps) => {
       <Grid container spacing={2}>
 
         <Grid item xs={12}>
+          We have found lines in the imported file that does not match anything we know already.
+          Please help to determine what to do with this.
+        </Grid>
+
+        <Grid item xs={12}>
           <Item>
             {
-              lines.map((line, idx) => <Typography key={idx} sx={{ fontFamily: 'monospace' }}>{line.line} {line.text.replace(/\t/g, ' ⎵ ')}</Typography>)
+              lines.map((line, idx) => <Typography title={t('Line number #{number}').replace('{number}', `${line.line}`)} key={idx} sx={{ fontFamily: 'monospace' }}>{line.text.replace(/\t/g, ' ⎵ ')}</Typography>)
             }
           </Item>
         </Grid>
@@ -60,4 +68,4 @@ export const RuleEditor = (props: RuleEditorProps) => {
       </Grid>
     </Box>
   )
-}
+})

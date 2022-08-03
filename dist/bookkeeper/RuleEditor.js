@@ -8,6 +8,8 @@ const react_1 = __importDefault(require("react"));
 const material_1 = require("@mui/material");
 const TagGroups_1 = require("./TagGroups");
 const AccountSelector_1 = require("./AccountSelector");
+const react_i18next_1 = require("react-i18next");
+const mobx_react_1 = require("mobx-react");
 const Item = (0, material_1.styled)(material_1.Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -15,19 +17,18 @@ const Item = (0, material_1.styled)(material_1.Paper)(({ theme }) => ({
     textAlign: 'left',
     color: theme.palette.text.secondary,
 }));
-const RuleEditor = (props) => {
+exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
     const { store, lines } = props;
     const tags = store.db ? store.dbsByName[store.db].tagsByTag : {};
     const [selected, setSelected] = react_1.default.useState([]);
     const [value, setValue] = react_1.default.useState('');
+    const { t } = (0, react_i18next_1.useTranslation)();
     // TODO: Translations.
     return (react_1.default.createElement(material_1.Box, { sx: { flexGrow: 1 } },
         react_1.default.createElement(material_1.Grid, { container: true, spacing: 2 },
+            react_1.default.createElement(material_1.Grid, { item: true, xs: 12 }, "We have found lines in the imported file that does not match anything we know already. Please help to determine what to do with this."),
             react_1.default.createElement(material_1.Grid, { item: true, xs: 12 },
-                react_1.default.createElement(Item, null, lines.map((line, idx) => react_1.default.createElement(material_1.Typography, { key: idx, sx: { fontFamily: 'monospace' } },
-                    line.line,
-                    " ",
-                    line.text.replace(/\t/g, ' ⎵ '))))),
+                react_1.default.createElement(Item, null, lines.map((line, idx) => react_1.default.createElement(material_1.Typography, { title: t('Line number #{number}').replace('{number}', `${line.line}`), key: idx, sx: { fontFamily: 'monospace' } }, line.text.replace(/\t/g, ' ⎵ '))))),
             react_1.default.createElement(material_1.Grid, { item: true, xs: 8 },
                 react_1.default.createElement(Item, null,
                     react_1.default.createElement(AccountSelector_1.AccountSelector, { label: 'Select Account', value: value, accounts: store.accounts, onChange: num => setValue(num) }),
@@ -35,6 +36,5 @@ const RuleEditor = (props) => {
             react_1.default.createElement(material_1.Grid, { item: true, xs: 4 },
                 react_1.default.createElement(Item, null,
                     react_1.default.createElement(material_1.Button, { variant: "outlined" }, "Continue"))))));
-};
-exports.RuleEditor = RuleEditor;
+});
 //# sourceMappingURL=RuleEditor.js.map

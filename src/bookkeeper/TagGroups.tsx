@@ -62,8 +62,8 @@ export const TagGroup = observer((props: TagGroupProps) => {
   if (!found) {
     return <>
       <Trans>No suitable tags available.</Trans>
-      {options && <div><Trans>Tried to look for the following tags:</Trans> {options.join(', ')}</div>}
-      {types && <div><Trans>Tried to look for the following tag types:</Trans> {types.join(', ')}</div>}
+      {options && options.length > 0 && <div><Trans>Tried to look for the following tags:</Trans> {options.join(', ')}</div>}
+      {types && types.length > 0 && <div><Trans>Tried to look for the following tag types:</Trans> {types.join(', ')}</div>}
     </>
   }
 
