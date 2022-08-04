@@ -7,9 +7,13 @@ exports.RuleEditorRenderer = void 0;
 const react_1 = __importDefault(require("react"));
 const bookkeeper_1 = require("../bookkeeper");
 const RuleEditorRenderer = (props) => {
-    const { element, setup } = props;
+    const { element, setup, values } = props;
     const { lines } = element;
-    return react_1.default.createElement(bookkeeper_1.RuleEditor, { store: setup.store, lines: lines });
+    return react_1.default.createElement(bookkeeper_1.RuleEditor, { store: setup.store, lines: lines, values: values[element.name], onChange: (newValue) => {
+            element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props);
+        }, onContinue: () => {
+            element.triggerHandler && element.triggerHandler({ type: 'onContinue' }, props);
+        } });
 };
 exports.RuleEditorRenderer = RuleEditorRenderer;
 //# sourceMappingURL=RuleEditorElement.js.map

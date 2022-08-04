@@ -1,7 +1,15 @@
 import { TextFileLine } from 'interactive-elements';
-import { Store } from '@dataplug/tasenor-common';
+import { AccountNumber, Store } from '@dataplug/tasenor-common';
+export declare type RuleEditorValues = {
+    account: AccountNumber;
+    tags: string[];
+    text: string;
+};
 export declare type RuleEditorProps = {
     store: Store;
     lines: TextFileLine[];
+    values: Partial<RuleEditorValues>;
+    onChange: (update: RuleEditorValues) => void;
+    onContinue: () => void;
 };
 export declare const RuleEditor: (props: RuleEditorProps) => JSX.Element;

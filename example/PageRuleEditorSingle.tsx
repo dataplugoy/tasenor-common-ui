@@ -17,17 +17,27 @@ const PageRuleEditorSingle = (): JSX.Element => {
         title: 'Single Frame Full Editor',
         elements: [
           {
-            type: "ruleEditor",
-            actions: {},
+            type: 'ruleEditor',
+            name: 'once',
+            defaultValue: {
+              text: 'Text proposal'
+            },
+            actions: {
+              onContinue: {
+                type: 'post',
+                url: '',
+                objectWrapLevel: 1
+              }
+            },
             lines: [{
               line: 1,
-              text: "Text File Line number 1",
+              text: 'Text File Line number 1',
               columns: {
                 num: '1'
               }
             }, {
               line: 2,
-              text: "Text File Line number 2",
+              text: 'Text File Line number 2',
               columns: {
                 num: '2'
               }
