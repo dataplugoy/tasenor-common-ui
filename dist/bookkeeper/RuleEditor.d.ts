@@ -1,9 +1,10 @@
-import { TextFileLine } from 'interactive-elements';
+import { SegmentId, TextFileLine } from 'interactive-elements';
 import { AccountNumber, Store } from '@dataplug/tasenor-common';
 export declare type RuleEditorValues = {
     account: AccountNumber;
     tags: string[];
     text: string;
+    segment: SegmentId;
 };
 export declare type RuleEditorProps = {
     store: Store;

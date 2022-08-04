@@ -27,7 +27,8 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
     const result = {
         account,
         tags,
-        text
+        text,
+        segment: lines[0].segmentId
     };
     // TODO: Translations.
     return (react_1.default.createElement(material_1.Box, { sx: { flexGrow: 1 } },

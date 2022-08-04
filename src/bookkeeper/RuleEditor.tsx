@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextFileLine } from 'interactive-elements'
+import { SegmentId, TextFileLine } from 'interactive-elements'
 import { Box, Button, Grid, Paper, styled, TextField, Typography } from '@mui/material'
 import { AccountNumber, Store, Tag, TagModel } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
@@ -11,6 +11,7 @@ export type RuleEditorValues = {
   account: AccountNumber
   tags: string[]
   text: string
+  segment: SegmentId
 }
 
 export type RuleEditorProps = {
@@ -41,7 +42,8 @@ export const RuleEditor = observer((props: RuleEditorProps) => {
   const result: RuleEditorValues = {
     account,
     tags,
-    text
+    text,
+    segment: lines[0].segmentId as SegmentId
   }
 
   // TODO: Translations.
