@@ -34,10 +34,15 @@ export const RuleEditor = observer((props: RuleEditorProps) => {
 
   const { store, lines, values, onChange, onContinue } = props
   const allTags: Record<Tag, TagModel> = store.db ? store.dbsByName[store.db].tagsByTag : {}
+
   const [tags, setTags] = React.useState<string[]>(values && values.tags ? values.tags : [])
   const [account, setAccount] = React.useState(values && values.account ? values.account : '')
-  const [text, setText] = React.useState(values && values.text ? values.text : '')
+  const [text, setText] = React.useState(values && values.text ?
+    values.text : (lines && lines.length ? lines[0].columns._textField : ''))
+
   const { t } = useTranslation()
+
+  if (!lines || lines.length < 1) return <></>
 
   const result: RuleEditorValues = {
     account,

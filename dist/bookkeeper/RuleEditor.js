@@ -22,8 +22,11 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
     const allTags = store.db ? store.dbsByName[store.db].tagsByTag : {};
     const [tags, setTags] = react_1.default.useState(values && values.tags ? values.tags : []);
     const [account, setAccount] = react_1.default.useState(values && values.account ? values.account : '');
-    const [text, setText] = react_1.default.useState(values && values.text ? values.text : '');
+    const [text, setText] = react_1.default.useState(values && values.text ?
+        values.text : (lines && lines.length ? lines[0].columns._textField : ''));
     const { t } = (0, react_i18next_1.useTranslation)();
+    if (!lines || lines.length < 1)
+        return react_1.default.createElement(react_1.default.Fragment, null);
     const result = {
         account,
         tags,
