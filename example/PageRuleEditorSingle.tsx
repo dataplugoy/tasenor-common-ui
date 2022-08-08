@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { setup } from './mocks'
-import { TasenorElement } from '@dataplug/tasenor-common'
+import { AccountNumber, TasenorElement } from '@dataplug/tasenor-common'
 import { RISP } from '../src/risp/RISP'
 import { makeObservable, observable } from 'mobx'
 
@@ -29,17 +29,22 @@ const PageRuleEditorSingle = (): JSX.Element => {
                 objectWrapLevel: 1
               }
             },
+            cashAccount: '6677' as AccountNumber,
             lines: [{
               line: 1,
-              text: 'Text File Line number 1',
+              text: 'Text File Line number 1 -2,60€',
               columns: {
-                num: '1'
+                num: '1',
+                _totalAmountField: -2.6 as unknown as string, // TODO: Drop conversion once supported.
+                _textField: 'Text File Line number 1'
               }
             }, {
               line: 2,
-              text: 'Text File Line number 2',
+              text: 'Text File Line number 2 4,00€',
               columns: {
-                num: '2'
+                num: '2',
+                _totalAmountField: 4.0 as unknown as string, // TODO: Drop conversion once supported.
+                _textField: 'Text File Line number 2'
               }
             }]
           }
