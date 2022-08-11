@@ -33,7 +33,7 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
         const transfers = [];
         if (cashAccount) {
             transfers.push({
-                reason: 'currency',
+                reason: _totalAmountField < 0 ? 'expense' : 'income',
                 type: 'account',
                 asset: cashAccount,
                 amount: _totalAmountField,
@@ -44,7 +44,7 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
         }
         if (account) {
             transfers.push({
-                reason: 'statement',
+                reason: _totalAmountField < 0 ? 'expense' : 'income',
                 type: 'account',
                 asset: account,
                 amount: -_totalAmountField,

@@ -53,7 +53,7 @@ export const RuleEditor = observer((props: RuleEditorProps) => {
     const transfers: Value[] = []
     if (cashAccount) {
       transfers.push({
-        reason: 'currency',
+        reason: _totalAmountField < 0 ? 'expense' : 'income',
         type: 'account',
         asset: cashAccount,
         amount: _totalAmountField,
@@ -64,7 +64,7 @@ export const RuleEditor = observer((props: RuleEditorProps) => {
     }
     if (account) {
       transfers.push({
-        reason: 'statement',
+        reason: _totalAmountField < 0 ? 'expense' : 'income',
         type: 'account',
         asset: account,
         amount: - _totalAmountField,
