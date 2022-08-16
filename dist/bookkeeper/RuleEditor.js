@@ -10,6 +10,10 @@ const TagGroups_1 = require("./TagGroups");
 const AccountSelector_1 = require("./AccountSelector");
 const react_i18next_1 = require("react-i18next");
 const mobx_react_1 = require("mobx-react");
+const Rtt_1 = __importDefault(require("@mui/icons-material/Rtt"));
+/**
+ * Spacing and styling for a box containing rule editor section.
+ */
 const Item = (0, material_1.styled)(material_1.Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -17,6 +21,9 @@ const Item = (0, material_1.styled)(material_1.Paper)(({ theme }) => ({
     textAlign: 'left',
     color: theme.palette.text.secondary,
 }));
+/**
+ * Actual editor for rules.
+ */
 exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
     const { store, lines, cashAccount, values, onChange, onContinue } = props;
     const allTags = store.db ? store.dbsByName[store.db].tagsByTag : {};
@@ -76,6 +83,7 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
                 react_1.default.createElement(Item, null, lines.map((line, idx) => react_1.default.createElement(material_1.Typography, { title: t('Line number #{number}').replace('{number}', `${line.line}`), key: idx, sx: { fontFamily: 'monospace' } }, line.text.replace(/\t/g, ' ⎵ '))))),
             react_1.default.createElement(material_1.Grid, { item: true, xs: 8 },
                 react_1.default.createElement(Item, null,
+                    react_1.default.createElement(material_1.Typography, { variant: "h5" }, "Quick Once-Off Selection"),
                     react_1.default.createElement(AccountSelector_1.AccountSelector, { label: 'Select Account', value: account, accounts: store.accounts, onChange: num => {
                             setAccount(num);
                             onChange({ ...result, transfers: transfers({ text, tags, account: num }), account: num });
@@ -87,9 +95,31 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
                     react_1.default.createElement(TagGroups_1.TagGroup, { tags: allTags, single: false, options: Object.keys(allTags), onChange: (selected) => {
                             setTags(selected);
                             onChange({ ...result, transfers: transfers({ text, tags: selected, account }), tags: selected });
-                        }, selected: tags }))),
+                        }, selected: tags }),
+                    react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !text || !account, onClick: () => onContinue() }, "Continue"))),
             react_1.default.createElement(material_1.Grid, { item: true, xs: 4 },
                 react_1.default.createElement(Item, null,
-                    react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !text || !account, onClick: () => onContinue() }, "Continue"))))));
+                    react_1.default.createElement(material_1.Typography, { variant: "h5" }, "Construct a Permanent Rule"),
+                    lines.map((line, idx) => react_1.default.createElement(material_1.Stack, { spacing: 1, key: idx },
+                        react_1.default.createElement(RuleLineEdit, { line: line }),
+                        idx < lines.length - 1 && react_1.default.createElement(material_1.Divider, { variant: "middle" }))))))));
+});
+const RuleLineEdit = (0, mobx_react_1.observer)((props) => {
+    const { line } = props;
+    const { columns } = line;
+    return (react_1.default.createElement(material_1.TableContainer, null,
+        react_1.default.createElement(material_1.Table, null,
+            react_1.default.createElement(material_1.TableBody, null, Object.keys(columns).filter(key => !key.startsWith('_')).map(key => react_1.default.createElement(RuleColumnEdit, { key: key, name: key, value: columns[key] }))))));
+});
+const RuleColumnEdit = (0, mobx_react_1.observer)((props) => {
+    const { name, value } = props;
+    // TODO: Translations.
+    return (react_1.default.createElement(material_1.TableRow, null,
+        react_1.default.createElement(material_1.TableCell, { variant: "head" },
+            react_1.default.createElement("b", null, name)),
+        react_1.default.createElement(material_1.TableCell, null, value),
+        react_1.default.createElement(material_1.TableCell, { align: "right" },
+            react_1.default.createElement(material_1.IconButton, { color: "primary", size: "medium", title: "Match the text in this column" },
+                react_1.default.createElement(Rtt_1.default, null)))));
 });
 //# sourceMappingURL=RuleEditor.js.map

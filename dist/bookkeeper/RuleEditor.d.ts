@@ -15,4 +15,7 @@ export declare type RuleEditorProps = {
     onChange: (update: RuleEditorValues) => void;
     onContinue: () => void;
 };
+/**
+ * Actual editor for rules.
+ */
 export declare const RuleEditor: (props: RuleEditorProps) => JSX.Element;

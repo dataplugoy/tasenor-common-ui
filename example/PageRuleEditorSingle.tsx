@@ -34,7 +34,8 @@ const PageRuleEditorSingle = (): JSX.Element => {
               line: 1,
               text: 'Text File Line number 1 -2,60€',
               columns: {
-                num: '1',
+                number: '1',
+                addtionalInfo: 'Foo bar',
                 _totalAmountField: -2.6 as unknown as string, // TODO: Drop conversion once supported.
                 _textField: 'Text File Line number 1'
               }
@@ -42,7 +43,8 @@ const PageRuleEditorSingle = (): JSX.Element => {
               line: 2,
               text: 'Text File Line number 2 4,00€',
               columns: {
-                num: '2',
+                number: '2',
+                addtionalInfo: 'Baz',
                 _totalAmountField: 4.0 as unknown as string, // TODO: Drop conversion once supported.
                 _textField: 'Text File Line number 2'
               }

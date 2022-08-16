@@ -1,11 +1,12 @@
 import React from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
-import { Box, Button, Grid, Paper, styled, TextField, Typography } from '@mui/material'
+import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
 import { AccountNumber, Store, Tag, TagModel, Value } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
+import RttIcon from '@mui/icons-material/Rtt'
 
 export type RuleEditorValues = {
   account: AccountNumber
@@ -24,6 +25,9 @@ export type RuleEditorProps = {
   onContinue: () => void
 }
 
+/**
+ * Spacing and styling for a box containing rule editor section.
+ */
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -32,7 +36,10 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-export const RuleEditor = observer((props: RuleEditorProps) => {
+/**
+ * Actual editor for rules.
+ */
+export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
   const { store, lines, cashAccount, values, onChange, onContinue } = props
   const allTags: Record<Tag, TagModel> = store.db ? store.dbsByName[store.db].tagsByTag : {}
@@ -108,6 +115,7 @@ export const RuleEditor = observer((props: RuleEditorProps) => {
 
         <Grid item xs={8}>
           <Item>
+            <Typography variant="h5">Quick Once-Off Selection</Typography>
             <AccountSelector
               label={'Select Account'}
               value={account}
@@ -140,16 +148,66 @@ export const RuleEditor = observer((props: RuleEditorProps) => {
               }
               selected={tags}
             />
+            <Button variant="outlined" disabled={ !text || !account } onClick={() => onContinue()}>Continue</Button>
           </Item>
         </Grid>
 
         <Grid item xs={4}>
           <Item>
-            <Button variant="outlined" disabled={ !text || !account } onClick={() => onContinue()}>Continue</Button>
+            <Typography variant="h5">Construct a Permanent Rule</Typography>
+            {
+              lines.map((line, idx) => <Stack spacing={1} key={idx}>
+                <RuleLineEdit line={line}/>
+                {idx < lines.length - 1 && <Divider variant="middle"/>}
+                </Stack>)
+              }
           </Item>
         </Grid>
 
       </Grid>
     </Box>
+  )
+})
+
+
+interface RuleLineEditProps {
+  line: TextFileLine
+}
+
+const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
+  const { line } = props
+  const { columns } = line
+  return (
+    <TableContainer>
+      <Table>
+        <TableBody>
+        {
+          Object.keys(columns).filter(key => !key.startsWith('_')).map(key =>
+            <RuleColumnEdit key={key} name={key} value={columns[key]} />)
+        }
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+})
+
+interface RuleColumnEditProps {
+  name: string
+  value: string
+}
+
+const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
+  const { name, value } = props
+  // TODO: Translations.
+  return (
+    <TableRow>
+      <TableCell variant="head"><b>{name}</b></TableCell>
+      <TableCell>{value}</TableCell>
+      <TableCell align="right">
+        <IconButton color="primary" size="medium" title="Match the text in this column">
+          <RttIcon/>
+        </IconButton>
+      </TableCell>
+    </TableRow>
   )
 })

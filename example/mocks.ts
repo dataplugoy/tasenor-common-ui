@@ -211,6 +211,9 @@ export class MockCatalog {
     return new ImporterModel()
   }
 
+  async fetchDocuments(db?: string, periodId?: number): Promise<void> {
+  }
+
   async deleteDocument(doc): Promise<BalanceModel[]> {
     return []
   }

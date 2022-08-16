@@ -9,6 +9,7 @@ const values = makeObservable({ value: { tags: [] } }, { value: observable })
 
 const PageRuleEditor = (): JSX.Element => {
 
+  // TODO: Obsolete. Drop this page.
   const element: TasenorElement = {
     type: 'flat',
     elements: [
