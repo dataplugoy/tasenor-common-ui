@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
 import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
-import { AccountNumber, Store, Tag, TagModel, Value } from '@dataplug/tasenor-common'
+import { AccountNumber, Expression, ImportRule, RuleFilterView, Store, Tag, TagModel, Value } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +23,7 @@ export type RuleEditorProps = {
   values: Partial<RuleEditorValues>
   onChange: (update: RuleEditorValues) => void
   onContinue: () => void
+  onCreateRule: (rule: ImportRule) => void
 }
 
 /**
@@ -41,13 +42,21 @@ const Item = styled(Paper)(({ theme }) => ({
  */
 export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
-  const { store, lines, cashAccount, values, onChange, onContinue } = props
+  const { store, lines, cashAccount, values, onChange, onContinue, onCreateRule } = props
   const allTags: Record<Tag, TagModel> = store.db ? store.dbsByName[store.db].tagsByTag : {}
 
-  const [tags, setTags] = React.useState<string[]>(values && values.tags ? values.tags : [])
-  const [account, setAccount] = React.useState(values && values.account ? values.account : '')
-  const [text, setText] = React.useState(values && values.text ?
+  const [tags, setTags] = useState<string[]>(values && values.tags ? values.tags : [])
+  const [account, setAccount] = useState(values && values.account ? values.account : '')
+  const [text, setText] = useState(values && values.text ?
     values.text : (lines && lines.length ? lines[0].columns._textField : ''))
+  const [rule, setRule] = useState<ImportRule>({
+    name: 'Rule 1',
+    filter: 'null' as Expression,
+    view: {
+      filter: []
+    },
+    result: []
+  })
 
   const { t } = useTranslation()
 
@@ -157,10 +166,19 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             <Typography variant="h5">Construct a Permanent Rule</Typography>
             {
               lines.map((line, idx) => <Stack spacing={1} key={idx}>
-                <RuleLineEdit line={line}/>
+                <RuleLineEdit
+                  line={line}
+                  filters={rule.view ? rule.view.filter : []}
+                  onSetFilter={(filters) => setRule({...rule, view: { filter: filters }})}
+                />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
-                </Stack>)
-              }
+              </Stack>)
+            }
+            <br/>
+            <pre>
+              {JSON.stringify(rule, null, 2)}
+            </pre>
+            <Button variant="outlined" disabled={ !(rule.view && rule.view.filter.length) } onClick={() => onCreateRule(rule)}>Create Rule</Button>
           </Item>
         </Grid>
 
@@ -172,6 +190,8 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
 interface RuleLineEditProps {
   line: TextFileLine
+  filters: RuleFilterView[]
+  onSetFilter: (filters: RuleFilterView[]) => void
 }
 
 const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
@@ -179,11 +199,17 @@ const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
   const { columns } = line
   return (
     <TableContainer>
-      <Table>
+      <Table size="small">
         <TableBody>
         {
           Object.keys(columns).filter(key => !key.startsWith('_')).map(key =>
-            <RuleColumnEdit key={key} name={key} value={columns[key]} />)
+            <RuleColumnEdit
+              key={key}
+              name={key}
+              value={columns[key]}
+              filters={props.filters}
+              onSetFilter={props.onSetFilter}
+            />)
         }
         </TableBody>
       </Table>
@@ -194,20 +220,77 @@ const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
 interface RuleColumnEditProps {
   name: string
   value: string
+  filters: RuleFilterView[]
+  onSetFilter: (filters: RuleFilterView[]) => void
 }
 
+type RuleColumnEditMode = null | 'textMatch'
+
 const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
-  const { name, value } = props
+  const { name, value, onSetFilter } = props
+
+  const [ mode, setMode ] = useState<RuleColumnEditMode>(null)
+  const [ text, setText ] = useState<string>(value)
+
   // TODO: Translations.
-  return (
+  let IconRow: JSX.Element = (
     <TableRow>
       <TableCell variant="head"><b>{name}</b></TableCell>
       <TableCell>{value}</TableCell>
       <TableCell align="right">
-        <IconButton color="primary" size="medium" title="Match the text in this column">
+        <IconButton
+          color="primary"
+          size="medium"
+          title="Match the text in this column"
+          disabled={mode === 'textMatch'}
+          onClick={() => setMode('textMatch')}
+        >
           <RttIcon/>
         </IconButton>
       </TableCell>
     </TableRow>
   )
+
+  let EditRow: JSX.Element | null = null
+  let info = ''
+
+  if (mode === 'textMatch') {
+    info = 'Match if the text is found from `{field}` column (case insensitive)'.replace('{field}', name)
+    EditRow = (
+      <TableRow>
+        <TableCell colSpan={3}>
+          <TextField
+              fullWidth
+              autoFocus
+              onKeyUp={(event) => {
+                if (event.key === 'Enter') {
+                  // TODO: We should have functionality to neatly change the filter rule stack on our "own" rule.
+                  setMode(null)
+                  onSetFilter([{
+                    op: 'caseInsensitiveMatch', field: name, "text": text
+                  }])
+                }
+                if (event.key === 'Escape') {
+                  setMode(null)
+                }
+              }}
+              label={'The text to match'}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+        </TableCell>
+      </TableRow>
+    )
+  }
+
+  if (info) {
+    IconRow = <>
+      {IconRow}
+      <TableRow>
+        <TableCell colSpan={3}>{info}</TableCell>
+      </TableRow>
+    </>
+  }
+
+  return EditRow ? <>{IconRow}{EditRow}</> : IconRow
 })

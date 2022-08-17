@@ -13,6 +13,9 @@ const RuleEditorRenderer = (props) => {
             element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props);
         }, onContinue: () => {
             element.triggerHandler && element.triggerHandler({ type: 'onContinue' }, props);
+        }, onCreateRule: (rule) => {
+            console.log('TODO: POST', rule);
+            element.triggerHandler && element.triggerHandler({ type: 'onCreateRule' }, props);
         } });
 };
 exports.RuleEditorRenderer = RuleEditorRenderer;

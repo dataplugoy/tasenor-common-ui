@@ -1,5 +1,5 @@
 import { SegmentId, TextFileLine } from 'interactive-elements';
-import { AccountNumber, Store, Value } from '@dataplug/tasenor-common';
+import { AccountNumber, ImportRule, Store, Value } from '@dataplug/tasenor-common';
 export declare type RuleEditorValues = {
     account: AccountNumber;
     tags: string[];
@@ -14,6 +14,7 @@ export declare type RuleEditorProps = {
     values: Partial<RuleEditorValues>;
     onChange: (update: RuleEditorValues) => void;
     onContinue: () => void;
+    onCreateRule: (rule: ImportRule) => void;
 };
 /**
  * Actual editor for rules.

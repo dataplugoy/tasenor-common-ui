@@ -1,10 +1,33 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RuleEditor = void 0;
-const react_1 = __importDefault(require("react"));
+const react_1 = __importStar(require("react"));
 const material_1 = require("@mui/material");
 const TagGroups_1 = require("./TagGroups");
 const AccountSelector_1 = require("./AccountSelector");
@@ -25,12 +48,20 @@ const Item = (0, material_1.styled)(material_1.Paper)(({ theme }) => ({
  * Actual editor for rules.
  */
 exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
-    const { store, lines, cashAccount, values, onChange, onContinue } = props;
+    const { store, lines, cashAccount, values, onChange, onContinue, onCreateRule } = props;
     const allTags = store.db ? store.dbsByName[store.db].tagsByTag : {};
-    const [tags, setTags] = react_1.default.useState(values && values.tags ? values.tags : []);
-    const [account, setAccount] = react_1.default.useState(values && values.account ? values.account : '');
-    const [text, setText] = react_1.default.useState(values && values.text ?
+    const [tags, setTags] = (0, react_1.useState)(values && values.tags ? values.tags : []);
+    const [account, setAccount] = (0, react_1.useState)(values && values.account ? values.account : '');
+    const [text, setText] = (0, react_1.useState)(values && values.text ?
         values.text : (lines && lines.length ? lines[0].columns._textField : ''));
+    const [rule, setRule] = (0, react_1.useState)({
+        name: 'Rule 1',
+        filter: 'null',
+        view: {
+            filter: []
+        },
+        result: []
+    });
     const { t } = (0, react_i18next_1.useTranslation)();
     if (!lines || lines.length < 1)
         return react_1.default.createElement(react_1.default.Fragment, null);
@@ -101,25 +132,58 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
                 react_1.default.createElement(Item, null,
                     react_1.default.createElement(material_1.Typography, { variant: "h5" }, "Construct a Permanent Rule"),
                     lines.map((line, idx) => react_1.default.createElement(material_1.Stack, { spacing: 1, key: idx },
-                        react_1.default.createElement(RuleLineEdit, { line: line }),
-                        idx < lines.length - 1 && react_1.default.createElement(material_1.Divider, { variant: "middle" }))))))));
+                        react_1.default.createElement(RuleLineEdit, { line: line, filters: rule.view ? rule.view.filter : [], onSetFilter: (filters) => setRule({ ...rule, view: { filter: filters } }) }),
+                        idx < lines.length - 1 && react_1.default.createElement(material_1.Divider, { variant: "middle" }))),
+                    react_1.default.createElement("br", null),
+                    react_1.default.createElement("pre", null, JSON.stringify(rule, null, 2)),
+                    react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !(rule.view && rule.view.filter.length), onClick: () => onCreateRule(rule) }, "Create Rule"))))));
 });
 const RuleLineEdit = (0, mobx_react_1.observer)((props) => {
     const { line } = props;
     const { columns } = line;
     return (react_1.default.createElement(material_1.TableContainer, null,
-        react_1.default.createElement(material_1.Table, null,
-            react_1.default.createElement(material_1.TableBody, null, Object.keys(columns).filter(key => !key.startsWith('_')).map(key => react_1.default.createElement(RuleColumnEdit, { key: key, name: key, value: columns[key] }))))));
+        react_1.default.createElement(material_1.Table, { size: "small" },
+            react_1.default.createElement(material_1.TableBody, null, Object.keys(columns).filter(key => !key.startsWith('_')).map(key => react_1.default.createElement(RuleColumnEdit, { key: key, name: key, value: columns[key], filters: props.filters, onSetFilter: props.onSetFilter }))))));
 });
 const RuleColumnEdit = (0, mobx_react_1.observer)((props) => {
-    const { name, value } = props;
+    const { name, value, onSetFilter } = props;
+    const [mode, setMode] = (0, react_1.useState)(null);
+    const [text, setText] = (0, react_1.useState)(value);
     // TODO: Translations.
-    return (react_1.default.createElement(material_1.TableRow, null,
+    let IconRow = (react_1.default.createElement(material_1.TableRow, null,
         react_1.default.createElement(material_1.TableCell, { variant: "head" },
             react_1.default.createElement("b", null, name)),
         react_1.default.createElement(material_1.TableCell, null, value),
         react_1.default.createElement(material_1.TableCell, { align: "right" },
-            react_1.default.createElement(material_1.IconButton, { color: "primary", size: "medium", title: "Match the text in this column" },
+            react_1.default.createElement(material_1.IconButton, { color: "primary", size: "medium", title: "Match the text in this column", disabled: mode === 'textMatch', onClick: () => setMode('textMatch') },
                 react_1.default.createElement(Rtt_1.default, null)))));
+    let EditRow = null;
+    let info = '';
+    if (mode === 'textMatch') {
+        info = 'Match if the text is found from `{field}` column (case insensitive)'.replace('{field}', name);
+        EditRow = (react_1.default.createElement(material_1.TableRow, null,
+            react_1.default.createElement(material_1.TableCell, { colSpan: 3 },
+                react_1.default.createElement(material_1.TextField, { fullWidth: true, autoFocus: true, onKeyUp: (event) => {
+                        if (event.key === 'Enter') {
+                            // TODO: We should have functionality to neatly change the filter rule stack on our "own" rule.
+                            setMode(null);
+                            onSetFilter([{
+                                    op: 'caseInsensitiveMatch', field: name, "text": text
+                                }]);
+                        }
+                        if (event.key === 'Escape') {
+                            setMode(null);
+                        }
+                    }, label: 'The text to match', value: text, onChange: (e) => setText(e.target.value) }))));
+    }
+    if (info) {
+        IconRow = react_1.default.createElement(react_1.default.Fragment, null,
+            IconRow,
+            react_1.default.createElement(material_1.TableRow, null,
+                react_1.default.createElement(material_1.TableCell, { colSpan: 3 }, info)));
+    }
+    return EditRow ? react_1.default.createElement(react_1.default.Fragment, null,
+        IconRow,
+        EditRow) : IconRow;
 });
 //# sourceMappingURL=RuleEditor.js.map
