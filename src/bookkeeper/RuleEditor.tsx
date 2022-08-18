@@ -177,6 +177,18 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
         <Grid item xs={4}>
           <Item>
             <Typography variant="h5">Construct a Permanent Rule</Typography>
+            <TextField
+              fullWidth
+              label={'Name of the rule'}
+              value={rule.name}
+              onChange={(e) => {
+                  setMode('new-rule')
+                  setRule({...rule, name: e.target.value })
+                  onChange({...result, rule: { ...rule, name: e.target.value }})
+                }
+              }
+              sx={{ mt: 2 }}
+            />
             {
               lines.map((line, idx) => <Stack spacing={1} key={idx}>
                 <RuleLineEdit

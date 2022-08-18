@@ -139,6 +139,11 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
             react_1.default.createElement(material_1.Grid, { item: true, xs: 4 },
                 react_1.default.createElement(Item, null,
                     react_1.default.createElement(material_1.Typography, { variant: "h5" }, "Construct a Permanent Rule"),
+                    react_1.default.createElement(material_1.TextField, { fullWidth: true, label: 'Name of the rule', value: rule.name, onChange: (e) => {
+                            setMode('new-rule');
+                            setRule({ ...rule, name: e.target.value });
+                            onChange({ ...result, rule: { ...rule, name: e.target.value } });
+                        }, sx: { mt: 2 } }),
                     lines.map((line, idx) => react_1.default.createElement(material_1.Stack, { spacing: 1, key: idx },
                         react_1.default.createElement(RuleLineEdit, { line: line, filters: rule.view ? rule.view.filter : [], onSetFilter: (filters) => {
                                 setMode('new-rule');
