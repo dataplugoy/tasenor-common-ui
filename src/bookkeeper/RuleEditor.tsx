@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import RttIcon from '@mui/icons-material/Rtt'
 
+// TODO: Move all this stuff to sub-directory.
 export type RuleEditorMode = null | 'once-off' | 'new-rule'
 
 export type RuleEditorValues = {
@@ -59,7 +60,8 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     view: {
       filter: []
     },
-    result: []
+    result: [],
+    examples: lines
   })
   const [mode, setMode] = useState<RuleEditorMode>(null)
 

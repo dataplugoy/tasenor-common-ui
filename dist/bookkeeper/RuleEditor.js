@@ -60,7 +60,8 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
         view: {
             filter: []
         },
-        result: []
+        result: [],
+        examples: lines
     });
     const [mode, setMode] = (0, react_1.useState)(null);
     const { t } = (0, react_i18next_1.useTranslation)();
