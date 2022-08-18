@@ -8,12 +8,16 @@ import { useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import RttIcon from '@mui/icons-material/Rtt'
 
+export type RuleEditorMode = null | 'once-off' | 'new-rule'
+
 export type RuleEditorValues = {
+  mode: RuleEditorMode
   account: AccountNumber
   tags: string[]
   text: string
   segment: SegmentId
   transfers: Value[]
+  rule?: Value
 }
 
 export type RuleEditorProps = {
@@ -23,7 +27,7 @@ export type RuleEditorProps = {
   values: Partial<RuleEditorValues>
   onChange: (update: RuleEditorValues) => void
   onContinue: () => void
-  onCreateRule: (rule: ImportRule) => void
+  onCreateRule: () => void
 }
 
 /**
@@ -57,6 +61,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     },
     result: []
   })
+  const [mode, setMode] = useState<RuleEditorMode>(null)
 
   const { t } = useTranslation()
 
@@ -96,12 +101,15 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     return transfers
   }
 
+  // This is actual output value of the editor as a whole.
   const result: RuleEditorValues = {
+    mode,
     account,
     tags,
     text,
     segment: lines[0].segmentId as SegmentId,
-    transfers: transfers({ text, account, tags })
+    transfers: transfers({ text, account, tags }),
+    rule
   }
 
   // TODO: Translations.
@@ -131,6 +139,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               accounts={store.accounts}
               onChange={num => {
                   setAccount(num)
+                  setMode('once-off')
                   onChange({...result, transfers: transfers({ text, tags, account: num }), account: num})
                 }
               }
@@ -141,6 +150,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               value={text}
               onChange={(e) => {
                   setText(e.target.value)
+                  setMode('once-off')
                   onChange({...result, transfers: transfers({ text: e.target.value, tags, account }), text: e.target.value})
                 }
               }
@@ -152,6 +162,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               options={Object.keys(allTags) as Tag[]}
               onChange={(selected) => {
                   setTags(selected)
+                  setMode('once-off')
                   onChange({...result, transfers: transfers({ text, tags: selected, account }), tags: selected})
                 }
               }
@@ -169,7 +180,11 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 <RuleLineEdit
                   line={line}
                   filters={rule.view ? rule.view.filter : []}
-                  onSetFilter={(filters) => setRule({...rule, view: { filter: filters }})}
+                  onSetFilter={(filters) => {
+                    setMode('new-rule')
+                    setRule({...rule, view: { filter: filters }})
+                    onChange({...result, rule: { ...rule, view: { filter: filters } }})
+                  }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
               </Stack>)
@@ -178,7 +193,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             <pre>
               {JSON.stringify(rule, null, 2)}
             </pre>
-            <Button variant="outlined" disabled={ !(rule.view && rule.view.filter.length) } onClick={() => onCreateRule(rule)}>Create Rule</Button>
+            <Button variant="outlined" disabled={ !(rule.view && rule.view.filter.length) } onClick={() => onCreateRule()}>Create Rule</Button>
           </Item>
         </Grid>
 

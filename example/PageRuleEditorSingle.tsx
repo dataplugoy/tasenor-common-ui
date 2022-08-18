@@ -18,7 +18,7 @@ const PageRuleEditorSingle = (): JSX.Element => {
         elements: [
           {
             type: 'ruleEditor',
-            name: 'once',
+            name: 'demo',
             defaultValue: {
               text: 'Text proposal'
             },
@@ -26,7 +26,12 @@ const PageRuleEditorSingle = (): JSX.Element => {
               onContinue: {
                 type: 'post',
                 url: '',
-                objectWrapLevel: 1
+                objectWrapLevel: 0
+              },
+              onCreateRule: {
+                type: 'post',
+                url: 'rule',
+                objectWrapLevel: 0
               }
             },
             cashAccount: '6677' as AccountNumber,
@@ -58,7 +63,7 @@ const PageRuleEditorSingle = (): JSX.Element => {
   return <div>
     <RISP setup={setup} element={element} values={values.value}/>
       <pre>
-      {JSON.stringify(values.value)}
+      {JSON.stringify(values.value, null, 2)}
       </pre>
   </div>
 }

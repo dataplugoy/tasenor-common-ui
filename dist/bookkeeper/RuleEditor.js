@@ -62,6 +62,7 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
         },
         result: []
     });
+    const [mode, setMode] = (0, react_1.useState)(null);
     const { t } = (0, react_i18next_1.useTranslation)();
     if (!lines || lines.length < 1)
         return react_1.default.createElement(react_1.default.Fragment, null);
@@ -99,12 +100,15 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
         }
         return transfers;
     };
+    // This is actual output value of the editor as a whole.
     const result = {
+        mode,
         account,
         tags,
         text,
         segment: lines[0].segmentId,
-        transfers: transfers({ text, account, tags })
+        transfers: transfers({ text, account, tags }),
+        rule
     };
     // TODO: Translations.
     return (react_1.default.createElement(material_1.Box, { sx: { flexGrow: 1 } },
@@ -117,14 +121,17 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
                     react_1.default.createElement(material_1.Typography, { variant: "h5" }, "Quick Once-Off Selection"),
                     react_1.default.createElement(AccountSelector_1.AccountSelector, { label: 'Select Account', value: account, accounts: store.accounts, onChange: num => {
                             setAccount(num);
+                            setMode('once-off');
                             onChange({ ...result, transfers: transfers({ text, tags, account: num }), account: num });
                         } }),
                     react_1.default.createElement(material_1.TextField, { fullWidth: true, label: 'Describe this transaction', value: text, onChange: (e) => {
                             setText(e.target.value);
+                            setMode('once-off');
                             onChange({ ...result, transfers: transfers({ text: e.target.value, tags, account }), text: e.target.value });
                         }, sx: { pb: 1, pt: 1 } }),
                     react_1.default.createElement(TagGroups_1.TagGroup, { tags: allTags, single: false, options: Object.keys(allTags), onChange: (selected) => {
                             setTags(selected);
+                            setMode('once-off');
                             onChange({ ...result, transfers: transfers({ text, tags: selected, account }), tags: selected });
                         }, selected: tags }),
                     react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !text || !account, onClick: () => onContinue() }, "Continue"))),
@@ -132,11 +139,15 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
                 react_1.default.createElement(Item, null,
                     react_1.default.createElement(material_1.Typography, { variant: "h5" }, "Construct a Permanent Rule"),
                     lines.map((line, idx) => react_1.default.createElement(material_1.Stack, { spacing: 1, key: idx },
-                        react_1.default.createElement(RuleLineEdit, { line: line, filters: rule.view ? rule.view.filter : [], onSetFilter: (filters) => setRule({ ...rule, view: { filter: filters } }) }),
+                        react_1.default.createElement(RuleLineEdit, { line: line, filters: rule.view ? rule.view.filter : [], onSetFilter: (filters) => {
+                                setMode('new-rule');
+                                setRule({ ...rule, view: { filter: filters } });
+                                onChange({ ...result, rule: { ...rule, view: { filter: filters } } });
+                            } }),
                         idx < lines.length - 1 && react_1.default.createElement(material_1.Divider, { variant: "middle" }))),
                     react_1.default.createElement("br", null),
                     react_1.default.createElement("pre", null, JSON.stringify(rule, null, 2)),
-                    react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !(rule.view && rule.view.filter.length), onClick: () => onCreateRule(rule) }, "Create Rule"))))));
+                    react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !(rule.view && rule.view.filter.length), onClick: () => onCreateRule() }, "Create Rule"))))));
 });
 const RuleLineEdit = (0, mobx_react_1.observer)((props) => {
     const { line } = props;
