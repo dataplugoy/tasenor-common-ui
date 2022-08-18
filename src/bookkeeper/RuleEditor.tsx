@@ -9,8 +9,10 @@ import { observer } from 'mobx-react'
 import RttIcon from '@mui/icons-material/Rtt'
 
 // TODO: Move all this stuff to sub-directory.
+// TODO: Docs
 export type RuleEditorMode = null | 'once-off' | 'new-rule'
 
+// TODO: Docs
 export type RuleEditorValues = {
   mode: RuleEditorMode
   account: AccountNumber
@@ -21,6 +23,7 @@ export type RuleEditorValues = {
   rule?: Value
 }
 
+// TODO: Docs
 export type RuleEditorProps = {
   store: Store
   lines: TextFileLine[]
@@ -55,7 +58,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
   const [text, setText] = useState(values && values.text ?
     values.text : (lines && lines.length ? lines[0].columns._textField : ''))
   const [rule, setRule] = useState<ImportRule>({
-    name: 'Rule 1',
+    name: 'New Rule',
     filter: 'null' as Expression,
     view: {
       filter: []
@@ -217,12 +220,14 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 })
 
 
+// TODO: Docs
 interface RuleLineEditProps {
   line: TextFileLine
   filters: RuleFilterView[]
   onSetFilter: (filters: RuleFilterView[]) => void
 }
 
+// TODO: Docs
 const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
   const { line } = props
   const { columns } = line
@@ -246,6 +251,7 @@ const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
   )
 })
 
+// TODO: Docs
 interface RuleColumnEditProps {
   name: string
   value: string
@@ -253,8 +259,10 @@ interface RuleColumnEditProps {
   onSetFilter: (filters: RuleFilterView[]) => void
 }
 
+// TODO: Docs
 type RuleColumnEditMode = null | 'textMatch'
 
+// TODO: Docs
 const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
   const { name, value, filters, onSetFilter } = props
 
@@ -295,7 +303,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
               autoFocus
               onKeyUp={(event) => {
                 if (event.key === 'Enter') {
-                  // TODO: We should have functionality to neatly change the filter rule stack on our "own" rule.
+                  // TODO: We should have functionality to neatly change the filter rule in the stack that is our "own" rule.
                   setMode(null)
                   onSetFilter([{
                     op: 'caseInsensitiveMatch', field: name, "text": text

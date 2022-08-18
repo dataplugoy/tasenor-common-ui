@@ -55,7 +55,7 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
     const [text, setText] = (0, react_1.useState)(values && values.text ?
         values.text : (lines && lines.length ? lines[0].columns._textField : ''));
     const [rule, setRule] = (0, react_1.useState)({
-        name: 'Rule 1',
+        name: 'New Rule',
         filter: 'null',
         view: {
             filter: []
@@ -155,6 +155,7 @@ exports.RuleEditor = (0, mobx_react_1.observer)((props) => {
                     react_1.default.createElement("pre", null, JSON.stringify(rule, null, 2)),
                     react_1.default.createElement(material_1.Button, { variant: "outlined", disabled: !(rule.view && rule.view.filter.length), onClick: () => onCreateRule() }, "Create Rule"))))));
 });
+// TODO: Docs
 const RuleLineEdit = (0, mobx_react_1.observer)((props) => {
     const { line } = props;
     const { columns } = line;
@@ -162,6 +163,7 @@ const RuleLineEdit = (0, mobx_react_1.observer)((props) => {
         react_1.default.createElement(material_1.Table, { size: "small" },
             react_1.default.createElement(material_1.TableBody, null, Object.keys(columns).filter(key => !key.startsWith('_')).map(key => react_1.default.createElement(RuleColumnEdit, { key: key, name: key, value: columns[key], filters: props.filters, onSetFilter: props.onSetFilter }))))));
 });
+// TODO: Docs
 const RuleColumnEdit = (0, mobx_react_1.observer)((props) => {
     const { name, value, filters, onSetFilter } = props;
     const [mode, setMode] = (0, react_1.useState)(null);
@@ -183,7 +185,7 @@ const RuleColumnEdit = (0, mobx_react_1.observer)((props) => {
             react_1.default.createElement(material_1.TableCell, { colSpan: 3 },
                 react_1.default.createElement(material_1.TextField, { fullWidth: true, autoFocus: true, onKeyUp: (event) => {
                         if (event.key === 'Enter') {
-                            // TODO: We should have functionality to neatly change the filter rule stack on our "own" rule.
+                            // TODO: We should have functionality to neatly change the filter rule in the stack that is our "own" rule.
                             setMode(null);
                             onSetFilter([{
                                     op: 'caseInsensitiveMatch', field: name, "text": text
