@@ -158,11 +158,12 @@ const RuleLineEdit = (0, mobx_react_1.observer)((props) => {
             react_1.default.createElement(material_1.TableBody, null, Object.keys(columns).filter(key => !key.startsWith('_')).map(key => react_1.default.createElement(RuleColumnEdit, { key: key, name: key, value: columns[key], filters: props.filters, onSetFilter: props.onSetFilter }))))));
 });
 const RuleColumnEdit = (0, mobx_react_1.observer)((props) => {
-    const { name, value, onSetFilter } = props;
+    const { name, value, filters, onSetFilter } = props;
     const [mode, setMode] = (0, react_1.useState)(null);
     const [text, setText] = (0, react_1.useState)(value);
+    const hasBeenUsed = filters.filter(f => f.field === name).length > 0;
     // TODO: Translations.
-    let IconRow = (react_1.default.createElement(material_1.TableRow, null,
+    let IconRow = (react_1.default.createElement(material_1.TableRow, { selected: hasBeenUsed },
         react_1.default.createElement(material_1.TableCell, { variant: "head" },
             react_1.default.createElement("b", null, name)),
         react_1.default.createElement(material_1.TableCell, null, value),

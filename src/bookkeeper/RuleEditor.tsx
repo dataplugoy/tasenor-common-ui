@@ -244,14 +244,16 @@ interface RuleColumnEditProps {
 type RuleColumnEditMode = null | 'textMatch'
 
 const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
-  const { name, value, onSetFilter } = props
+  const { name, value, filters, onSetFilter } = props
 
   const [ mode, setMode ] = useState<RuleColumnEditMode>(null)
   const [ text, setText ] = useState<string>(value)
 
+  const hasBeenUsed = filters.filter(f => f.field === name).length > 0
+
   // TODO: Translations.
   let IconRow: JSX.Element = (
-    <TableRow>
+    <TableRow selected={hasBeenUsed}>
       <TableCell variant="head"><b>{name}</b></TableCell>
       <TableCell>{value}</TableCell>
       <TableCell align="right">
