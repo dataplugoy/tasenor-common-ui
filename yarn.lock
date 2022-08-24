@@ -299,7 +299,7 @@
 
 "@dataplug/tasenor-common@git+ssh://git@github.com:dataplugoy/tasenor-common.git":
   version "1.7.9"
-  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#32441002e9f79fb90011e60e49c89250dbb386be"
+  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#09306f13271991a644b59916879a0ccd621297e9"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
     "@typescript-eslint/parser" "^5.9.1"
@@ -3060,6 +3060,11 @@ interactive-elements@1.0.89:
   resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.89.tgz#0ddcfae43a8b50d03ffded6d1dec35e0c984d1fe"
   integrity sha512-gFd83bN1Byz8oKriOv0LydgDPG6aDUwPp9a6VMMnx+hi0GtSC/vJNtaMaq9QZpH5QIWBRCa5P9JpZUwibpCLuw==
 
+interactive-elements@1.0.90:
+  version "1.0.90"
+  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.90.tgz#d6e3bdeb031d40171a746f5e196e9b05056f7e1a"
+  integrity sha512-hmVJngE/TIBVUyVuXxmvTEY0L5zjzEUtfwrPeHnbtJt+KG6b9sfLVSfMnNmK/m+9YeA4BZvH6sRtjE/ivWU1Yg==
+
 internal-slot@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.3.tgz#7347e307deeea2faac2ac6205d4bc7d34967f59c"
@@ -4556,15 +4561,15 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.145:
-  version "1.0.145"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.145.tgz#1818b43c9109c729614a32b3aa93e034db0f72d6"
-  integrity sha512-SvIKuOTbqILDqwCCCRnNsS0yIl4xCycO3/KHJ0UidoqlR3vPnGxB527Qyk3K2CcuoMeomw7yJLnrrLC3Ti1ksw==
+react-interactive-stateful-process@1.0.146:
+  version "1.0.146"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.146.tgz#17f7a441b76d7aaf3b5132acad53418da8622570"
+  integrity sha512-PhCCndmwVUlk8Px1fKC5CFE8Xb4gF+c2zfO0BuJslybcExZRJpI6+FCx7nB8BHJC9qfaRT9i3a7fEy/G5Ql7Hw==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
     get-value "^3.0.1"
-    interactive-elements "1.0.89"
+    interactive-elements "1.0.90"
     jsoneditor "^9.5.11"
     set-value "^4.1.0"
 
@@ -5337,10 +5342,10 @@ typed-function@^2.1.0:
   resolved "https://registry.yarnpkg.com/typed-function/-/typed-function-2.1.0.tgz#ded6f8a442ba8749ff3fe75bc41419c8d46ccc3f"
   integrity sha512-bctQIOqx2iVbWGDGPWwIm18QScpu2XRmkC19D8rQGFsjKSgteq/o1hTZvIG/wuDq8fanpBDrLkLq+aEN/6y5XQ==
 
-typescript@4.7.3:
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.3.tgz#8364b502d5257b540f9de4c40be84c98e23a129d"
-  integrity sha512-WOkT3XYvrpXx4vMMqlD+8R8R37fZkjyLGlxavMc4iB8lrl8L0DeTcHbYgw/v0N/z9wAFsgBhcsF0ruoySS22mA==
+typescript@4.7.4:
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.4.tgz#1a88596d1cf47d59507a1bcdfb5b9dfe4d488235"
+  integrity sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==
 
 uc.micro@^1.0.1, uc.micro@^1.0.5:
   version "1.0.6"
