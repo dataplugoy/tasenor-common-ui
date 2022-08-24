@@ -298,8 +298,8 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@dataplug/tasenor-common@git+ssh://git@github.com:dataplugoy/tasenor-common.git":
-  version "1.7.8"
-  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#5a2abd76d3ccb6b40ab09f4850b1b4fc6802c286"
+  version "1.7.9"
+  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#7e49fc4b0764a7ed58fd50e8f17a01e76e5c3523"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
     "@typescript-eslint/parser" "^5.9.1"
@@ -307,7 +307,7 @@
     clone "^2.1.2"
     dayjs "1.10.8"
     form-data "^4.0.0"
-    interactive-elements "1.0.86"
+    interactive-elements "1.0.87"
     jwt-decode "^3.1.2"
     mathjs "^10.0.2"
     sprintf-js "^1.1.2"
@@ -3060,10 +3060,10 @@ interactive-elements@1.0.86:
   resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.86.tgz#bb98c985d1fa3a051b2de56f484a93de7b9a033f"
   integrity sha512-MHvNFoz9h8Yf6e5WBWf3UK6RPqInCmNREca4ss2QSLAQBLsZ6aWVZG03bjtb+z6hV0HvsOLTCBCe5jg5fT+Cxw==
 
-interactive-elements@1.0.87:
-  version "1.0.87"
-  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.87.tgz#f608389751584f57bf0f4c07e34b0060ea3c54c5"
-  integrity sha512-gPGqdOBHHtUH+5mWwf0bGxIesQnlEejub2OgxRpOgqUfQFQ6xx17fcXY14dPs99EpdT1WbBtI7DdM6TB4sRrWg==
+interactive-elements@1.0.88:
+  version "1.0.88"
+  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.88.tgz#76a0541bb3045a7a528f4577840d7dd9e62c8f5f"
+  integrity sha512-Gvy3nvyAvxOezfPmWM0pdL06YfIWelDX+a1dRvY1AbUDDzLBaHeI8HQi6dtLupq4oyx6974nvVvHetjqKUrDqA==
 
 internal-slot@^1.0.3:
   version "1.0.3"
@@ -4561,15 +4561,15 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.143:
-  version "1.0.143"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.143.tgz#523b9840dc4add9372ad83a24f842884bf260a9c"
-  integrity sha512-hFHiDa76szO6GTw1FBzohCJT+OF0abxOXLHXbuzc+9F//HWJ+52+gXbDuMmi0MH+x1ZinTZ9Z+LpVUd94QZ5nw==
+react-interactive-stateful-process@1.0.144:
+  version "1.0.144"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.144.tgz#9f88b5624ab6052690fe4419d5e203e3f986af10"
+  integrity sha512-tPz4HeYdKsoFR9MfdtlD1mPWDFKCJMQg2/OOMzi4JdHfYkMcLXlNw+qMuJWHF45aFx/DOUmTJXihuZw/4yNZnw==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     base64-arraybuffer "1.0.2"
     get-value "^3.0.1"
-    interactive-elements "1.0.87"
+    interactive-elements "1.0.88"
     jsoneditor "^9.5.11"
     set-value "^4.1.0"
 
