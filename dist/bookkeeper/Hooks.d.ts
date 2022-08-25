@@ -17,7 +17,7 @@ export declare class MenuState {
      */
     parse(params: Record<string, string | null>): void;
     go(to: Record<string, string | null>): void;
-    get(variable: string): string | number | null;
+    get(variable: string): any;
     get url(): string;
 }
 export declare const useNavigation: () => MenuState;
