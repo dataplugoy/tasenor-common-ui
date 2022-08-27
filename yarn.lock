@@ -307,7 +307,7 @@
     clone "^2.1.2"
     dayjs "1.10.8"
     form-data "^4.0.0"
-    interactive-elements "1.0.91"
+    interactive-elements "1.0.92"
     jwt-decode "^3.1.2"
     mathjs "^10.0.2"
     sprintf-js "^1.1.2"
@@ -4693,10 +4693,10 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.150:
-  version "1.0.150"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.150.tgz#66b95dacc96491af68c9cff5e83f3b2bb746137e"
-  integrity sha512-kiVKlE585FfJ+z2qDNyoxMwXB4hy9HvmMsf9nRidMPmnMOzRbPqB2ksCaMANpK9VmzAj45RDeJm1VQmW6dntxw==
+react-interactive-stateful-process@1.0.151:
+  version "1.0.151"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.151.tgz#79e3944becf5374170fbd926653a5ee71a0e1c44"
+  integrity sha512-l1NhjEWaVO1zHQpXe4Yni6RqoJmkOXc0cxSHas7/D+eBvfqu2/MLm3QI23ePAkEPH6x/zNNYIGWuZCJ1FdBpGQ==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     "@types/node" "^18.7.13"
