@@ -298,8 +298,8 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@dataplug/tasenor-common@git+ssh://git@github.com:dataplugoy/tasenor-common.git":
-  version "1.7.10"
-  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#5da608032d17258493556e06c3d4ab54c8e99c56"
+  version "1.7.11"
+  resolved "git+ssh://git@github.com:dataplugoy/tasenor-common.git#df2c66ab71850ff2118882ed482d61fbfaf7538a"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.9.1"
     "@typescript-eslint/parser" "^5.9.1"
@@ -3495,6 +3495,13 @@ interactive-elements@1.0.93:
   dependencies:
     node-stdlib-browser "^1.2.0"
 
+interactive-elements@1.0.94:
+  version "1.0.94"
+  resolved "https://registry.yarnpkg.com/interactive-elements/-/interactive-elements-1.0.94.tgz#1bf3484d5fe9750673ef0734153c4f0f3317df4c"
+  integrity sha512-Gssxg/FSJfNfHT3UVGfTTm1olEpTwhtSwrZvcC2CKHIm4AZUsP/PBjpz8FXI9iakHO/hJ97IkVCa+JxQ+pg0pg==
+  dependencies:
+    node-stdlib-browser "^1.2.0"
+
 internal-slot@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.3.tgz#7347e307deeea2faac2ac6205d4bc7d34967f59c"
@@ -5196,17 +5203,17 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-interactive-stateful-process@1.0.154:
-  version "1.0.154"
-  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.154.tgz#8f5f9d08d03f1fc4b7015e5f905b984879efe288"
-  integrity sha512-kZmAJ+AF6WHQZrnKi+hss+akFwbyp+3WSiVrY3GZl2yhBqtnwdzp8rzFsKIK0HdhsUaV/fptOteYkiG0D24dug==
+react-interactive-stateful-process@1.0.155:
+  version "1.0.155"
+  resolved "https://registry.yarnpkg.com/react-interactive-stateful-process/-/react-interactive-stateful-process-1.0.155.tgz#4b404343e3f90e4e471d415e2ba5eb566f2b5f62"
+  integrity sha512-jymYBZJZKD48uTUd9jbY4iyTQ+lC4YT3a8Ym6pnsgC/xhKDK2WqK0p8pccSzL0q75wLH4cC1dfBqmvGWZ6zmew==
   dependencies:
     "@mui/icons-material" "^5.2.1"
     "@types/node" "^18.7.13"
     base64-arraybuffer "1.0.2"
     esbuild "^0.15.5"
     get-value "^3.0.1"
-    interactive-elements "1.0.93"
+    interactive-elements "1.0.94"
     jsoneditor "^9.9.0"
     set-value "^4.1.0"
 
