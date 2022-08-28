@@ -6,10 +6,9 @@
   "author": "Tommi Ronkainen <tommi.ronkainen@gmail.com>",
   "license": "UNLICENCED",
   "scripts": {
-    "dev": "tsc -w",
-    "start": "npm run build",
+    "dev": "./make.js --dev --browser --minify",
+    "build": "rm -rf dist/* && ./make.js --minify && tsc --emitDeclarationOnly",
     "demo": "NODE_ENV=development webpack serve --host 0.0.0.0 --port ${PORT:=3302} --config ./config/webpack.dev.js",
-    "build": "rm -rf dist/* && tsc",
     "test:unit": "jest",
     "test:watch": "jest --watch --detectOpenHandles",
     "lint": "eslint src/**/*.{ts,tsx} example/**/*.{ts,tsx} tests/**/*.{ts,tsx}",
