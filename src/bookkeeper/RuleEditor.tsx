@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
 import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
-import { AccountNumber, Expression, ImportRule, RuleFilterView, Store, Tag, TagModel, Value } from '@dataplug/tasenor-common'
+import { AccountNumber, Expression, ImportRule, RuleFilterView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import RttIcon from '@mui/icons-material/Rtt'
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
 // TODO: Move all this stuff to sub-directory.
 // TODO: Docs
@@ -29,6 +31,7 @@ export type RuleEditorProps = {
   lines: TextFileLine[]
   cashAccount: AccountNumber | null
   values: Partial<RuleEditorValues>
+  options: TransactionImportOptions
   onChange: (update: RuleEditorValues) => void
   onContinue: () => void
   onCreateRule: () => void
@@ -50,7 +53,7 @@ const Item = styled(Paper)(({ theme }) => ({
  */
 export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
-  const { store, lines, cashAccount, values, onChange, onContinue, onCreateRule } = props
+  const { store, lines, cashAccount, values, onChange, onContinue, onCreateRule, options } = props
   const allTags: Record<Tag, TagModel> = store.db ? store.dbsByName[store.db].tagsByTag : {}
 
   const [tags, setTags] = useState<string[]>(values && values.tags ? values.tags : [])
@@ -197,6 +200,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 <RuleLineEdit
                   line={line}
                   filters={rule.view ? rule.view.filter : []}
+                  options={options}
                   onSetFilter={(filters) => {
                     setMode('new-rule')
                     setRule({...rule, view: { filter: filters }})
@@ -224,12 +228,13 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 interface RuleLineEditProps {
   line: TextFileLine
   filters: RuleFilterView[]
+  options: TransactionImportOptions
   onSetFilter: (filters: RuleFilterView[]) => void
 }
 
 // TODO: Docs
 const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
-  const { line } = props
+  const { line, options } = props
   const { columns } = line
   return (
     <TableContainer>
@@ -240,6 +245,7 @@ const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
             <RuleColumnEdit
               key={key}
               name={key}
+              options={options}
               value={columns[key]}
               filters={props.filters}
               onSetFilter={props.onSetFilter}
@@ -256,6 +262,7 @@ interface RuleColumnEditProps {
   name: string
   value: string
   filters: RuleFilterView[]
+  options: TransactionImportOptions
   onSetFilter: (filters: RuleFilterView[]) => void
 }
 
@@ -264,12 +271,14 @@ type RuleColumnEditMode = null | 'textMatch'
 
 // TODO: Docs
 const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
-  const { name, value, filters, onSetFilter } = props
+  const { name, value, filters, onSetFilter, options } = props
 
   const [ mode, setMode ] = useState<RuleColumnEditMode>(null)
   const [ text, setText ] = useState<string>(value)
 
   const hasBeenUsed = filters.filter(f => f.field === name).length > 0
+  const isNumeric = options.numericFields.filter(f => f === name).length > 0
+  const isText = !isNumeric
 
   // TODO: Translations.
   let IconRow: JSX.Element = (
@@ -277,15 +286,42 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
       <TableCell variant="head"><b>{name}</b></TableCell>
       <TableCell>{value}</TableCell>
       <TableCell align="right">
-        <IconButton
-          color="primary"
-          size="medium"
-          title="Match the text in this column"
-          disabled={mode === 'textMatch'}
-          onClick={() => setMode('textMatch')}
-        >
-          <RttIcon/>
-        </IconButton>
+        {
+          isText &&
+            <IconButton
+            color="primary"
+            size="medium"
+            title="Match the text in this column"
+            disabled={mode === 'textMatch'}
+            onClick={() => setMode('textMatch')}
+          >
+            <RttIcon/>
+          </IconButton>
+        }
+        {
+          isNumeric &&
+          <IconButton
+            color="primary"
+            size="medium"
+            title="Require that this field is negative"
+            disabled={mode === 'textMatch'}
+            onClick={() => alert('TODO')}
+          >
+            <RemoveCircleOutlineIcon/>
+          </IconButton>
+        }
+        {
+          isNumeric &&
+          <IconButton
+            color="primary"
+            size="medium"
+            title="Require that this field is positive"
+            disabled={mode === 'textMatch'}
+            onClick={() => alert('TODO')}
+          >
+            <AddCircleOutlineIcon/>
+          </IconButton>
+        }
       </TableCell>
     </TableRow>
   )

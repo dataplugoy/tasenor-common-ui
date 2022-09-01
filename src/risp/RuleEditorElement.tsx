@@ -6,11 +6,12 @@ import { RuleEditor, RuleEditorValues } from '../bookkeeper'
 export const RuleEditorRenderer: Renderer<TasenorSetup, RuleEditorElement> = (props: RenderingProps<TasenorSetup, RuleEditorElement>) => {
 
   const { element, setup, values } = props
-  const { lines, cashAccount } = element
+  const { lines, cashAccount, options } = element
 
   return <RuleEditor
     store={setup.store}
     lines={lines}
+    options={options}
     cashAccount={cashAccount}
     values={values[element.name] as Partial<RuleEditorValues>}
     onChange={(newValue) => {
