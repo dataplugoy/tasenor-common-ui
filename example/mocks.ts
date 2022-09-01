@@ -51,7 +51,7 @@ export class MockTagModel {
       MK: 'mk.jpeg',
       Nordnet: 'nordnet.jpeg',
     }
-    return `http://localhost:3302/${this.tag && PICS[this.tag] ? PICS[this.tag] : PICS['CASH']}` as Url
+    return `/${this.tag && PICS[this.tag] ? PICS[this.tag] : PICS['CASH']}` as Url
   }
 
   async save(): Promise<void> {}
