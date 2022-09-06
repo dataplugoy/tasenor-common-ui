@@ -10,6 +10,7 @@ export declare class MenuState {
     accountId: ID;
     side: string;
     attrs: Record<string, string>;
+    indirectPath: boolean;
     history: History;
     constructor(loc: Location, history: History);
     /**
