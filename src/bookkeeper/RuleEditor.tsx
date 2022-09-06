@@ -10,6 +10,7 @@ import RttIcon from '@mui/icons-material/Rtt'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import clone from 'clone'
+import { filterView2rule } from '@dataplug/tasenor-common'
 
 // TODO: Move all this stuff to sub-directory.
 
@@ -210,9 +211,10 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                   filters={rule.view ? rule.view.filter : []}
                   options={options}
                   onSetFilter={(filters) => {
+                    const filter = filterView2rule(filters)
                     setMode('new-rule')
-                    setRule({...rule, view: { filter: filters }})
-                    onChange({...result, rule: { ...rule, view: { filter: filters } }})
+                    setRule({...rule, filter, view: { filter: filters }})
+                    onChange({...result, rule: { ...rule, filter, view: { filter: filters } }})
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
