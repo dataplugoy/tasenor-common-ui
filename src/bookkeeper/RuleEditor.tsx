@@ -324,7 +324,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
             size="medium"
             title="Require that this field is negative"
             disabled={mode === 'textMatch'}
-            onClick={() => updateFilter({ op: 'isLessThan', field: name, "limit": 0 })}
+            onClick={() => updateFilter({ op: 'isLessThan', field: name, "value": 0 })}
           >
             <RemoveCircleOutlineIcon/>
           </IconButton>
@@ -336,7 +336,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
             size="medium"
             title="Require that this field is positive"
             disabled={mode === 'textMatch'}
-            onClick={() => updateFilter({ op: 'isGreaterThan', field: name, "limit": 0 })
+            onClick={() => updateFilter({ op: 'isGreaterThan', field: name, "value": 0 })
           }
         >
             <AddCircleOutlineIcon/>
