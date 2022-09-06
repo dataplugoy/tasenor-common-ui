@@ -9,12 +9,18 @@ import { observer } from 'mobx-react'
 import RttIcon from '@mui/icons-material/Rtt'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import clone from 'clone'
 
 // TODO: Move all this stuff to sub-directory.
-// TODO: Docs
+
+/**
+ * Major operating mode for the editor: either build once off rule or complete new permanent rule.
+ */
 export type RuleEditorMode = null | 'once-off' | 'new-rule'
 
-// TODO: Docs
+/**
+ * The collection of values produced and used by the rule editor.
+ */
 export type RuleEditorValues = {
   mode: RuleEditorMode
   account: AccountNumber
@@ -25,7 +31,9 @@ export type RuleEditorValues = {
   rule?: Value
 }
 
-// TODO: Docs
+/**
+ * Input attributes needed by the rule editor.
+ */
 export type RuleEditorProps = {
   store: Store
   lines: TextFileLine[]
@@ -224,7 +232,6 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 })
 
 
-// TODO: Docs
 interface RuleLineEditProps {
   line: TextFileLine
   filters: RuleFilterView[]
@@ -232,7 +239,9 @@ interface RuleLineEditProps {
   onSetFilter: (filters: RuleFilterView[]) => void
 }
 
-// TODO: Docs
+/**
+ * Editor for a single text line displaying all columns to edit for sample line.
+ */
 const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
   const { line, options } = props
   const { columns } = line
@@ -257,7 +266,11 @@ const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
   )
 })
 
-// TODO: Docs
+/**
+ * Mode definitions for column editor.
+ */
+type RuleColumnEditMode = null | 'textMatch'
+
 interface RuleColumnEditProps {
   name: string
   value: string
@@ -266,10 +279,10 @@ interface RuleColumnEditProps {
   onSetFilter: (filters: RuleFilterView[]) => void
 }
 
-// TODO: Docs
-type RuleColumnEditMode = null | 'textMatch'
 
-// TODO: Docs
+/**
+ * Editor for single named column of the example line.
+ */
 const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
   const { name, value, filters, onSetFilter, options } = props
 
@@ -279,6 +292,12 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
   const hasBeenUsed = filters.filter(f => f.field === name).length > 0
   const isNumeric = options.numericFields.filter(f => f === name).length > 0
   const isText = !isNumeric
+
+  const updateFilter = (view: RuleFilterView): void => {
+    const rules = clone(filters).filter((f: RuleFilterView) => f.field !== view.field)
+    rules.push(view)
+    onSetFilter(rules)
+  }
 
   // TODO: Translations.
   let IconRow: JSX.Element = (
@@ -305,7 +324,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
             size="medium"
             title="Require that this field is negative"
             disabled={mode === 'textMatch'}
-            onClick={() => alert('TODO')}
+            onClick={() => updateFilter({ op: 'isLessThan', field: name, "limit": 0 })}
           >
             <RemoveCircleOutlineIcon/>
           </IconButton>
@@ -317,8 +336,9 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
             size="medium"
             title="Require that this field is positive"
             disabled={mode === 'textMatch'}
-            onClick={() => alert('TODO')}
-          >
+            onClick={() => updateFilter({ op: 'isGreaterThan', field: name, "limit": 0 })
+          }
+        >
             <AddCircleOutlineIcon/>
           </IconButton>
         }
@@ -339,11 +359,8 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
               autoFocus
               onKeyUp={(event) => {
                 if (event.key === 'Enter') {
-                  // TODO: We should have functionality to neatly change the filter rule in the stack that is our "own" rule.
                   setMode(null)
-                  onSetFilter([{
-                    op: 'caseInsensitiveMatch', field: name, "text": text
-                  }])
+                  updateFilter({op: 'caseInsensitiveMatch', field: name, "text": text})
                 }
                 if (event.key === 'Escape') {
                   setMode(null)
