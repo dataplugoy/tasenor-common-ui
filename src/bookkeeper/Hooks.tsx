@@ -14,6 +14,7 @@ export class MenuState {
   accountId: ID
   side: string
   attrs: Record<string, string>
+  indirectPath: boolean
 
   history: History
 
@@ -24,13 +25,23 @@ export class MenuState {
     this.accountId = null
     this.side = ''
     this.attrs = {}
+    this.indirectPath = false
 
     this.history = history
 
     if (loc) {
-      const [ , db, main, periodId, accountId, side] = loc.pathname.split('/')
-      const search = loc.search.length ? loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev}), {}) : {}
-      this.parse({ db, main, periodId, accountId, side, ...search })
+      if (loc.search.startsWith('?path=')) {
+        this.indirectPath = true
+        const search = loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev}), {})
+        const [ , db, main, periodId, accountId, side] = search.path.split('/')
+        this.parse({ db, main, periodId, accountId, side, ...search })
+        delete this.attrs.path
+        delete this.attrs.indirect
+      } else {
+        const [ , db, main, periodId, accountId, side] = loc.pathname.split('/')
+        const search = loc.search.length ? loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev}), {}) : {}
+        this.parse({ db, main, periodId, accountId, side, ...search })
+      }
     }
   }
 
@@ -88,11 +99,19 @@ export class MenuState {
   get url(): string {
     let url = `/${this.db || '_'}/${this.main || '_'}/${this.periodId || ''}/${this.accountId || ''}/${this.side}`
     url = url.replace(/\/+$/, '')
-    const attrs = Object.keys(this.attrs).map(k => `${k}=${encodeURIComponent(this.attrs[k])}`)
-    if (attrs.length) {
-      url += `?${attrs.join('&')}`
+    if (this.attrs.indirect === 'yes') {
+      delete this.attrs.indirect
+      this.indirectPath = true
     }
-    return url
+    const attrs = Object.keys(this.attrs).map(k => `${k}=${encodeURIComponent(this.attrs[k])}`)
+    if (this.indirectPath) {
+      return `?path=${url}&${attrs.join('&')}`
+    } else {
+      if (attrs.length) {
+        url += `?${attrs.join('&')}`
+      }
+      return url
+    }
   }
 }
 

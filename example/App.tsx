@@ -17,12 +17,12 @@ const App = observer(() => {
   const nav = useNavigation()
   return (
     <Paper style={{ margin: '1rem', padding: '1rem' }} elevation={4}>
-      <a href="#" onClick={() => nav.go({side: 'currency'})}>Currency</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({side: 'dialog'})}>Dialog</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({side: 'tagGroup'})}>Tag Group</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({side: 'tabs'})}>Tabs</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({side: 'ruleEditor'})}>Rule Editor</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({side: 'ruleEditorSingle'})}>Rule Editor (Single)</a>
+      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'currency'})}>Currency</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'dialog'})}>Dialog</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'tagGroup'})}>Tag Group</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'tabs'})}>Tabs</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'ruleEditor'})}>Rule Editor</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'ruleEditorSingle'})}>Rule Editor (Single)</a>
       <hr/>
       {JSON.stringify(nav)}
       <hr/>
