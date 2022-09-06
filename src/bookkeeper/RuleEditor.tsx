@@ -147,7 +147,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
           </Item>
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <Item>
             <Typography variant="h5">Quick Once-Off Selection</Typography>
             <AccountSelector
@@ -189,7 +189,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
           </Item>
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={5}>
           <Item>
             <Typography variant="h5">Construct a Permanent Rule</Typography>
             <TextField
@@ -220,10 +220,6 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
               </Stack>)
             }
-            <br/>
-            <pre>
-              {JSON.stringify(rule, null, 2)}
-            </pre>
             <Button variant="outlined" disabled={ !(rule.view && rule.view.filter.length) } onClick={() => onCreateRule()}>Create Rule</Button>
           </Item>
         </Grid>
