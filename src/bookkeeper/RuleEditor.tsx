@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
 import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
-import { AccountNumber, Expression, ImportRule, RuleFilterView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
+import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { Trans, useTranslation } from 'react-i18next'
@@ -80,6 +80,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     examples: lines
   })
   const [mode, setMode] = useState<RuleEditorMode>(null)
+  const [autonaming, setAutonaming] = useState(true)
 
   const { t } = useTranslation()
 
@@ -198,6 +199,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               label={'Name of the rule'}
               value={rule.name}
               onChange={(e) => {
+                  setAutonaming(e.target.value.length === 0)
                   setMode('new-rule')
                   setRule({...rule, name: e.target.value })
                   onChange({...result, rule: { ...rule, name: e.target.value }})
@@ -213,9 +215,10 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                   options={options}
                   onSetFilter={(filters) => {
                     const filter = filterView2rule(filters)
+                    const name = autonaming ? filterView2name(filters) : rule.name
                     setMode('new-rule')
-                    setRule({...rule, filter, view: { filter: filters }})
-                    onChange({...result, rule: { ...rule, filter, view: { filter: filters } }})
+                    setRule({...rule, name, filter, view: { filter: filters }})
+                    onChange({...result, rule: { ...rule, name, filter, view: { filter: filters } }})
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
