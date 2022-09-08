@@ -309,6 +309,8 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
   const hasBeenUsed = filters.filter(f => f.field === name).length > 0
   const isNumeric = options.numericFields.filter(f => f === name).length > 0
   const isText = !isNumeric
+  const isGreaterThan = filters.filter(f => f.op === 'isGreaterThan').length > 0
+  const isLessThan = filters.filter(f => f.op === 'isLessThan').length > 0
 
   const updateFilter = (view: RuleFilterView): void => {
     const rules = clone(filters).filter((f: RuleFilterView) => f.field !== view.field)
@@ -340,7 +342,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
             color="primary"
             size="medium"
             title="Require that this field is negative"
-            disabled={mode === 'textMatch'}
+            disabled={isLessThan}
             onClick={() => updateFilter({ op: 'isLessThan', field: name, "value": 0 })}
           >
             <RemoveCircleOutlineIcon/>
@@ -352,7 +354,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
             color="primary"
             size="medium"
             title="Require that this field is positive"
-            disabled={mode === 'textMatch'}
+            disabled={isGreaterThan}
             onClick={() => updateFilter({ op: 'isGreaterThan', field: name, "value": 0 })
           }
         >
