@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { IconButton as MuiIconButton } from '@mui/material'
-import { HelpOutline, AccountBalance, StarRate, AttachMoney, CreditCard, LocalGroceryStore, AddShoppingCart, PersonAdd, Print, CloudDownload, FormatIndentDecrease, Filter2, Filter3, Filter1, Filter4, LocalOffer, Lock, LockOpen, AttachFile, Functions, Event, Sort, Delete, Storage, CloudUpload, ZoomIn, ZoomOut, Visibility, VisibilityOff, PlaylistAdd, DeleteSweep, Build, Extension, Refresh, Add, AddCircleOutline, Settings, ShowChartTwoTone, Pageview } from '@mui/icons-material'
+import { HelpOutline, AccountBalance, StarRate, AttachMoney, CreditCard, LocalGroceryStore, AddShoppingCart, PersonAdd, Print, CloudDownload, FormatIndentDecrease, Filter2, Filter3, Filter1, Filter4, LocalOffer, Lock, LockOpen, AttachFile, Functions, Event, Sort, Delete, Storage, CloudUpload, ZoomIn, ZoomOut, Visibility, VisibilityOff, PlaylistAdd, DeleteSweep, Build, Extension, Refresh, Add, AddCircleOutline, Settings, ShowChartTwoTone, Pageview, ExpandMore, ExpandLess } from '@mui/icons-material'
 import { haveCursor, Cursor } from '@dataplug/tasenor-common'
 
 const ICONS = {
@@ -22,8 +22,10 @@ const ICONS = {
   compact: FormatIndentDecrease,
   database: Storage,
   download: CloudDownload,
+  less: ExpandLess,
   lock: Lock,
   money: AttachMoney,
+  more: ExpandMore,
   new: AddCircleOutline,
   paperclip: AttachFile,
   plugin: Extension,

@@ -42,6 +42,7 @@ const PageRuleEditorSingle = (): JSX.Element => {
                 number: '1',
                 amount: -2.60 as unknown as string, // TODO: Drop conversion once supported.
                 addtionalInfo: 'Foo bar',
+                silly: 'A',
                 _totalAmountField: -2.6 as unknown as string, // TODO: Drop conversion once supported.
                 _textField: 'Text File Line number 1'
               }
@@ -52,6 +53,7 @@ const PageRuleEditorSingle = (): JSX.Element => {
                 number: '2',
                 amount: 4.00 as unknown as string, // TODO: Drop conversion once supported.
                 addtionalInfo: 'Baz',
+                silly: 'V',
                 _totalAmountField: 4.0 as unknown as string, // TODO: Drop conversion once supported.
                 _textField: 'Text File Line number 2'
               }
@@ -59,6 +61,7 @@ const PageRuleEditorSingle = (): JSX.Element => {
             options: {
               parser: 'csv',
               numericFields: ['amount'],
+              insignificantFields: ['silly'],
               requiredFields: [],
               totalAmountField: 'amount',
               textField: 'additionalinfo'

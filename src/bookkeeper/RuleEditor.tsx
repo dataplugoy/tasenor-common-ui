@@ -4,13 +4,14 @@ import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, Ta
 import { AccountNumber, Expression, ImportRule, RuleFilterView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import RttIcon from '@mui/icons-material/Rtt'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import clone from 'clone'
 import { filterView2rule } from '@dataplug/tasenor-common'
+import { IconButton as TasenorIconButton } from './IconButton'
 
 // TODO: Move all this stuff to sub-directory.
 
@@ -243,12 +244,19 @@ interface RuleLineEditProps {
 const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
   const { line, options } = props
   const { columns } = line
+  const { t } = useTranslation()
+  const [ more, setMore ] = useState(false)
+
+  const insignificantFields = new Set(options.insignificantFields || [])
+
   return (
     <TableContainer>
       <Table size="small">
         <TableBody>
         {
           Object.keys(columns).filter(key => !key.startsWith('_')).map(key =>
+            insignificantFields.has(key) && !more ?
+            <React.Fragment key={key}></React.Fragment> :
             <RuleColumnEdit
               key={key}
               name={key}
@@ -257,6 +265,17 @@ const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => {
               filters={props.filters}
               onSetFilter={props.onSetFilter}
             />)
+        }
+        {
+          insignificantFields.size > 0 &&
+          <TableRow>
+            <TableCell colSpan={3}>
+              {more && <Trans>Show Less</Trans>}
+              {more && <TasenorIconButton id="less" icon="less" title={t('Show Less')} onClick={() => setMore(false)}/>}
+              {!more && <Trans>Show More</Trans>}
+              {!more && <TasenorIconButton id="more" icon="more" title={t('Show More')} onClick={() => setMore(true)}/>}
+            </TableCell>
+          </TableRow>
         }
         </TableBody>
       </Table>
