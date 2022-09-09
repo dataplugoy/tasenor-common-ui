@@ -18,6 +18,7 @@
     "dev": "./make.js --dev --browser --minify",
     "build": "rm -rf dist/* && ./make.js --minify && tsc --emitDeclarationOnly",
     "demo": "cd example && NODE_ENV=development esbuild --bundle index.tsx --define:global=window --outfile=public/index.js --servedir=./public/",
+    "test:unit:ci": "jest --clearCache && yarn test:unit",
     "test:unit": "jest",
     "test:watch": "jest --watch --detectOpenHandles",
     "lint": "eslint src/**/*.{ts,tsx} example/**/*.{ts,tsx} tests/**/*.{ts,tsx}",
