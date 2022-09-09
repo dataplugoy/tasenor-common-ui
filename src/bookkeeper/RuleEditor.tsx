@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
 import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
-import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
+import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { Trans, useTranslation } from 'react-i18next'
@@ -74,7 +74,8 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     name: 'New Rule',
     filter: 'null' as Expression,
     view: {
-      filter: []
+      filter: [],
+      result: []
     },
     result: [],
     examples: lines
@@ -120,6 +121,54 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     return transfers
   }
 
+  // Helper to construct result views from the known facts, if possible.
+  const resultViews = ({ account, tags }): RuleResultView[] => {
+    const _totalAmountField = parseFloat(lines[0].columns._totalAmountField)
+
+    const results: RuleResultView[] = []
+
+    if (!options.totalAmountField) {
+      throw new Error(`Cannot use rule editor since options has no 'totalAmountField' in ${JSON.stringify(options)}`)
+    } else if (!options.textField) {
+      throw new Error(`Canno else {
+        t use rule editor since options has no 'textField' in ${JSON.stringify(options)}`)
+    } else {
+      if (cashAccount && options.totalAmountField) {
+        results.push(
+          {
+            reason: { op: 'setLiteral', 'value': _totalAmountField < 0 ? 'expense' : 'income' },
+            type: { op: 'setLiteral', 'value': 'account' },
+            asset: { op: 'setLiteral', 'value': cashAccount },
+            amount: { op: 'copyField', 'field': options.totalAmountField },
+            data: {
+              text: { op: 'copyField', 'field': options.textField },
+            }
+          }
+        )
+      }
+    }
+    if (account) {
+      results.push(
+        {
+          reason: { op: 'setLiteral', 'value': _totalAmountField < 0 ? 'expense' : 'income' },
+          type: { op: 'setLiteral', 'value': 'account' },
+          asset: { op: 'setLiteral', 'value': account },
+          amount: { op: 'copyInverseField', 'field': options.totalAmountField },
+          data: {
+            text: { op: 'copyField', 'field': options.textField },
+          }
+        }
+      )
+    }
+    if (tags.length) {
+      if (results[0]) results[0]['tags'] = { op: 'setLiteral', 'value': JSON.stringify(tags) }
+      if (results[1]) results[1]['tags'] = { op: 'setLiteral', 'value': JSON.stringify(tags) }
+    }
+
+    return results
+  }
+
+
   // This is actual output value of the editor as a whole.
   const result: RuleEditorValues = {
     mode,
@@ -159,7 +208,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               onChange={num => {
                   setAccount(num)
                   setMode('once-off')
-                  onChange({...result, transfers: transfers({ text, tags, account: num }), account: num})
+                  const newRule = {...rule, view: { ...rule.view, result: resultViews({account: num, tags}) }}
+                  setRule(newRule)
+                  onChange({...result, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num})
                 }
               }
             />
@@ -182,7 +233,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               onChange={(selected) => {
                   setTags(selected)
                   setMode('once-off')
-                  onChange({...result, transfers: transfers({ text, tags: selected, account }), tags: selected})
+                  const newRule = {...rule, view: { ...rule.view, result: resultViews({account, tags: selected}) }}
+                  setRule(newRule)
+                  onChange({...result, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected})
                 }
               }
               selected={tags}
@@ -217,8 +270,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                     const filter = filterView2rule(filters)
                     const name = autonaming ? filterView2name(filters) : rule.name
                     setMode('new-rule')
-                    setRule({...rule, name, filter, view: { filter: filters }})
-                    onChange({...result, rule: { ...rule, name, filter, view: { filter: filters } }})
+                    const newRule = {...rule, name, filter, view: { filter: filters, result: resultViews({ account, tags }) }}
+                    setRule(newRule)
+                    onChange({...result, rule: newRule })
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
