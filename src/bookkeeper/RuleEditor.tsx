@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
-import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
-import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
+import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, RuleViewOp } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { Trans, useTranslation } from 'react-i18next'
@@ -12,6 +12,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import clone from 'clone'
 import { filterView2rule } from '@dataplug/tasenor-common'
 import { IconButton as TasenorIconButton } from './IconButton'
+import TextFieldsIcon from '@mui/icons-material/TextFields'
+import TextFormatIcon from '@mui/icons-material/TextFormat'
 
 // TODO: Move all this stuff to sub-directory.
 
@@ -130,8 +132,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     if (!options.totalAmountField) {
       throw new Error(`Cannot use rule editor since options has no 'totalAmountField' in ${JSON.stringify(options)}`)
     } else if (!options.textField) {
-      throw new Error(`Canno else {
-        t use rule editor since options has no 'textField' in ${JSON.stringify(options)}`)
+      throw new Error(`Cannot use rule editor since options has no 'textField' in ${JSON.stringify(options)}`)
     } else {
       if (cashAccount && options.totalAmountField) {
         results.push(
@@ -362,6 +363,7 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
 
   const [ mode, setMode ] = useState<RuleColumnEditMode>(null)
   const [ text, setText ] = useState<string>(value)
+  const [ toggles, setToggles ] = useState<string[]>([])
 
   const hasBeenUsed = filters.filter(f => f.field === name).length > 0
   const isNumeric = options.numericFields.filter(f => f === name).length > 0
@@ -423,10 +425,25 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
   )
 
   let EditRow: JSX.Element | null = null
-  let info = ''
 
   if (mode === 'textMatch') {
-    info = 'Match if the text is found from `{field}` column (case insensitive)'.replace('{field}', name)
+    const info = (toggles.includes('whole') ?
+      'Match if the full text in `{field}` column is the text below ({case})' :
+      'Match if the text is found from `{field}` column ({case})'
+    ).replace('{field}', name).replace('{case}', toggles.includes('case') ? 'case sensitive' : 'ignore case')
+
+    IconRow = (
+      <TableRow>
+        <TableCell colSpan={2}>{info}</TableCell>
+        <TableCell>
+          <ToggleButtonGroup value={toggles} onChange={(_, val) => setToggles(val)}>
+            <ToggleButton title="Case sensitive match" value="case"><TextFieldsIcon/></ToggleButton>
+            <ToggleButton title="Match complete field value" value="whole"><TextFormatIcon/></ToggleButton>
+          </ToggleButtonGroup>
+        </TableCell>
+      </TableRow>
+    )
+
     EditRow = (
       <TableRow>
         <TableCell colSpan={3}>
@@ -436,7 +453,8 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
               onKeyUp={(event) => {
                 if (event.key === 'Enter') {
                   setMode(null)
-                  updateFilter({op: 'caseInsensitiveMatch', field: name, "text": text})
+                  const op = `case${toggles.includes('case') ? 'Insensitive' : 'Sensitive'}${toggles.includes('whole') ? 'Full' : ''}Match` as RuleViewOp
+                  updateFilter({op, field: name, "text": text})
                 }
                 if (event.key === 'Escape') {
                   setMode(null)
@@ -449,15 +467,6 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
         </TableCell>
       </TableRow>
     )
-  }
-
-  if (info) {
-    IconRow = <>
-      {IconRow}
-      <TableRow>
-        <TableCell colSpan={3}>{info}</TableCell>
-      </TableRow>
-    </>
   }
 
   return EditRow ? <>{IconRow}{EditRow}</> : IconRow

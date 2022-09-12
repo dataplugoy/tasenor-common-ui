@@ -2,24 +2,53 @@ import { filterView2rule, filterView2name } from '@dataplug/tasenor-common'
 
 test('Filter view to rule conversions', async () => {
 
-  // TODO: Case is still sensitive!
   expect(filterView2rule({
-    op: 'caseInsensitiveMatch',
+    op: 'caseInsensitiveFullMatch',
     field: 'x',
     text: 'Simple'
   })).toBe('(lower(x) === "simple")')
 
   expect(filterView2rule({
-    op: 'caseInsensitiveMatch',
+    op: 'caseInsensitiveFullMatch',
     field: 'x',
     text: '"A"'
   })).toBe('(lower(x) === "\\\"a\\\"")')
 
   expect(filterView2rule({
-    op: 'caseInsensitiveMatch',
+    op: 'caseInsensitiveFullMatch',
     field: 'A&B',
     text: 'Simple'
   })).toBe('(lower($("A&B")) === "simple")')
+
+  expect(filterView2rule({
+    op: 'caseSensitiveFullMatch',
+    field: 'x',
+    text: 'Simple'
+  })).toBe('(x === "Simple")')
+
+  expect(filterView2rule({
+    op: 'caseSensitiveFullMatch',
+    field: 'x',
+    text: '"A"'
+  })).toBe('(x === "\\\"A\\\"")')
+
+  expect(filterView2rule({
+    op: 'caseSensitiveFullMatch',
+    field: 'A&B',
+    text: 'Simple'
+  })).toBe('($("A&B") === "Simple")')
+
+  expect(filterView2rule({
+    op: 'caseInsensitiveMatch',
+    field: 'x',
+    text: 'Simple'
+  })).toBe('contains(lower(x), "simple")')
+
+  expect(filterView2rule({
+    op: 'caseSensitiveMatch',
+    field: 'x',
+    text: 'Simple'
+  })).toBe('contains(x, "Simple")')
 
   expect(filterView2rule({
     op: 'isLessThan',
@@ -34,7 +63,7 @@ test('Filter view to rule conversions', async () => {
   })).toBe('(num > 0)')
 
   expect(filterView2rule([{
-    op: 'caseInsensitiveMatch',
+    op: 'caseInsensitiveFullMatch',
     field: 'y2',
     text: 'Simple'
   },{
