@@ -71,6 +71,41 @@ test('Filter view to rule conversions', async () => {
     field: 'num',
     value: 0
   }])).toBe('(lower(y2) === "simple") && (num > 0)')
+
+  expect(filterView2rule({
+    op: 'copyField',
+    field: 'xyz'
+  })).toBe('xyz')
+
+  expect(filterView2rule({
+    op: 'copyField',
+    field: 'a/b'
+  })).toBe('$("a/b")')
+
+  expect(filterView2rule({
+    op: 'copyInverseField',
+    field: 'xyz'
+  })).toBe('(-xyz)')
+
+  expect(filterView2rule({
+    op: 'copyInverseField',
+    field: 'A Ä'
+  })).toBe('(-$("A Ä"))')
+
+  expect(filterView2rule({
+    op: 'setLiteral',
+    value: 1
+  })).toBe('1')
+
+  expect(filterView2rule({
+    op: 'setLiteral',
+    value: 1.234
+  })).toBe('1.234')
+
+  expect(filterView2rule({
+    op: 'setLiteral',
+    value: 'abc'
+  })).toBe('"abc"')
 })
 
 test('Filter view to name conversion', async () => {
@@ -114,4 +149,39 @@ test('Filter view to name conversion', async () => {
     field: 'num',
     value: 0
   }])).toBe("y2 in lower case contains 'simple' and num is greater than 0")
+
+  expect(filterView2name({
+    op: 'copyField',
+    field: 'xyz'
+  })).toBe("copy 'xyz'")
+
+  expect(filterView2name({
+    op: 'copyField',
+    field: 'a/b'
+  })).toBe("copy 'a/b'")
+
+  expect(filterView2name({
+    op: 'copyInverseField',
+    field: 'xyz'
+  })).toBe("copy 'xyz' negated")
+
+  expect(filterView2name({
+    op: 'copyInverseField',
+    field: 'A Ä'
+  })).toBe("copy 'A Ä' negated")
+
+  expect(filterView2name({
+    op: 'setLiteral',
+    value: 1
+  })).toBe('set 1')
+
+  expect(filterView2name({
+    op: 'setLiteral',
+    value: 1.234
+  })).toBe('set 1.234')
+
+  expect(filterView2name({
+    op: 'setLiteral',
+    value: 'abc'
+  })).toBe('set "abc"')
 })
