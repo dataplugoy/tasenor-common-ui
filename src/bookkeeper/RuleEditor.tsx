@@ -283,6 +283,19 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
           </Item>
         </Grid>
 
+        <Grid item xs={7}>
+          <Item>
+            <Typography variant="h5">Resulting Transfers</Typography>
+            TODO: DISPLAY TRANSFERS HERE
+          </Item>
+        </Grid>
+
+        <Grid item xs={5}>
+          <Item>
+            <Typography variant="h5">Current Rule</Typography>
+            {rule && rule.view && <VisualRule rule={rule.view}/>}
+          </Item>
+        </Grid>
       </Grid>
     </Box>
   )
@@ -471,3 +484,27 @@ const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
 
   return EditRow ? <>{IconRow}{EditRow}</> : IconRow
 })
+
+export interface VisualRuleProps {
+  rule: {
+    filter: RuleFilterView[]
+    result: RuleResultView[]
+  }
+}
+
+const VisualRule = (props: VisualRuleProps): JSX.Element => {
+  const { rule } = props
+
+  return (
+    <>
+      <Typography variant="h6">Filter</Typography>
+      <pre>
+        {JSON.stringify(rule.filter, null, 2)}
+      </pre>
+      <Typography variant="h6">Result</Typography>
+      <pre>
+        {JSON.stringify(rule.result, null, 2)}
+      </pre>
+    </>
+  )
+}
