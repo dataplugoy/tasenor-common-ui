@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
-import { Box, Button, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import { Box, Button, Chip, Divider, Grid, Icon, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, RuleViewOp } from '@dataplug/tasenor-common'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
@@ -498,13 +498,81 @@ const VisualRule = (props: VisualRuleProps): JSX.Element => {
   return (
     <>
       <Typography variant="h6">Filter</Typography>
-      <pre>
-        {JSON.stringify(rule.filter, null, 2)}
-      </pre>
+        <Stack spacing={1}>
+        {
+          rule.filter.map((filter, idx) =>
+            <VisualRuleLine key={idx} op={filter.op} field={filter.field} text={filter.text} value={filter.value}/>)
+        }
+        </Stack>
       <Typography variant="h6">Result</Typography>
       <pre>
         {JSON.stringify(rule.result, null, 2)}
       </pre>
+    </>
+  )
+}
+
+export interface VisualRuleLineProps {
+  op: RuleViewOp
+  field?: string
+  text?: string
+  value?: number | string
+}
+
+const VisualRuleLine = (props: VisualRuleLineProps): JSX.Element => {
+
+  const { op, field, text, value } = props
+
+  let leftLabel = 'undefined'
+  let opChar: string | JSX.Element = '?'
+  let opTitle = op
+  let rightLabel = 'undefined'
+
+  switch (op) {
+    case 'isGreaterThan':
+      leftLabel = `${field}`
+      opChar = <>&gt;</>
+      opTitle = op
+      rightLabel = `${value}`
+      break
+    case 'isLessThan':
+      leftLabel = `${field}`
+      opChar = <>&lt;</>
+      opTitle = op
+      rightLabel = `${value}`
+      break
+    case 'caseSensitiveMatch':
+      leftLabel = `${field}`
+      opChar = '='
+      opTitle = op
+      rightLabel = `${text}`
+      break
+    case 'caseInsensitiveMatch':
+      leftLabel = `${field}`
+      opChar = '≈'
+      opTitle = op
+      rightLabel = `${text}`
+      break
+    case 'caseInsensitiveFullMatch':
+      leftLabel = `${field}`
+      opChar = '⏵≈⏴'
+      opTitle = op
+      rightLabel = `${text}`
+      break
+    case 'caseSensitiveFullMatch':
+      leftLabel = `${field}`
+      opChar = '⏵=⏴'
+      opTitle = op
+      rightLabel = `${text}`
+      break
+  }
+
+  const left = <Chip label={leftLabel} color={leftLabel === 'undefined' ? 'error' : 'primary' } variant="outlined" />
+  const center = <Chip label={opChar} sx={{ fontSize: 24 }} color={opChar === '?' ? 'error' : undefined } title={opTitle} variant="filled" />
+  const right = <Chip label={rightLabel} color={rightLabel === 'undefined' ? 'error' : 'secondary' } variant="outlined" />
+  return (
+    <>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>{left}{center}{right}</Box>
     </>
   )
 }
