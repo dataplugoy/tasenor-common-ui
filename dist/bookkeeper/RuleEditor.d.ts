@@ -1,5 +1,5 @@
 import { SegmentId, TextFileLine } from 'interactive-elements';
-import { AccountNumber, Store, TransactionImportOptions, Value } from '@dataplug/tasenor-common';
+import { AccountNumber, RuleFilterView, RuleResultView, Store, TransactionImportOptions, Value, RuleViewOp } from '@dataplug/tasenor-common';
 /**
  * Major operating mode for the editor: either build once off rule or complete new permanent rule.
  */
@@ -33,3 +33,15 @@ export declare type RuleEditorProps = {
  * Actual editor for rules.
  */
 export declare const RuleEditor: (props: RuleEditorProps) => JSX.Element;
+export interface VisualRuleProps {
+    rule: {
+        filter: RuleFilterView[];
+        result: RuleResultView[];
+    };
+}
+export interface VisualRuleLineProps {
+    op: RuleViewOp;
+    field?: string;
+    text?: string;
+    value?: number | string;
+}
