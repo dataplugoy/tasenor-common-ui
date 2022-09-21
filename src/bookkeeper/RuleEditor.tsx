@@ -140,9 +140,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             reason: { op: 'setLiteral', 'value': _totalAmountField < 0 ? 'expense' : 'income' },
             type: { op: 'setLiteral', 'value': 'account' },
             asset: { op: 'setLiteral', 'value': cashAccount },
-            amount: { op: 'copyField', 'field': options.totalAmountField },
+            amount: { op: 'copyField', 'value': options.totalAmountField },
             data: {
-              text: { op: 'copyField', 'field': options.textField },
+              text: { op: 'copyField', 'value': options.textField },
             }
           }
         )
@@ -154,9 +154,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
           reason: { op: 'setLiteral', 'value': _totalAmountField < 0 ? 'expense' : 'income' },
           type: { op: 'setLiteral', 'value': 'account' },
           asset: { op: 'setLiteral', 'value': account },
-          amount: { op: 'copyInverseField', 'field': options.totalAmountField },
+          amount: { op: 'copyInverseField', 'value': options.totalAmountField },
           data: {
-            text: { op: 'copyField', 'field': options.textField },
+            text: { op: 'copyField', 'value': options.textField },
           }
         }
       )
@@ -497,18 +497,54 @@ const VisualRule = (props: VisualRuleProps): JSX.Element => {
 
   return (
     <>
-      <Typography variant="h6">Filter</Typography>
-        <Stack spacing={1}>
-        {
-          rule.filter.map((filter, idx) =>
-            <VisualRuleLine key={idx} op={filter.op} field={filter.field} text={filter.text} value={filter.value}/>)
-        }
-        </Stack>
-      <Typography variant="h6">Result</Typography>
-      <pre>
-        {JSON.stringify(rule.result, null, 2)}
-      </pre>
+      {
+        rule.filter.length > 0 && <>
+          <Typography variant="h5">Filter</Typography>
+          <Stack spacing={1}>
+          {
+            rule.filter.map((filter, idx) =>
+              <VisualRuleLine key={idx} op={filter.op} field={filter.field} text={filter.text} value={filter.value}/>)
+          }
+          </Stack>
+        </>
+      }
+      {
+        rule.result.length > 0 && <>
+          <Typography variant="h5"><Trans>Result</Trans></Typography>
+          <Stack spacing={2}>
+          {
+            rule.result.map((result, idx) => <VisualResultRule key={idx} view={result}/>)
+          }
+          </Stack>
+        </>
+      }
     </>
+  )
+}
+
+export interface VisualResultRuleProps {
+  view: RuleResultView
+}
+
+const VisualResultRule = (props: VisualResultRuleProps): JSX.Element => {
+  const { view } = props
+
+  return (
+    <Box>
+      <VisualRuleLine field="reason" op={view.reason.op} value={view.reason.value}/>
+      <VisualRuleLine field="type" op={view.type.op} value={view.type.value}/>
+      <VisualRuleLine field="asset" op={view.asset.op} value={view.asset.value}/>
+      <VisualRuleLine field="amount" op={view.amount.op} value={view.amount.value}/>
+      {
+        view.tags && <VisualRuleLine field="tags" op={view.tags.op} value={view.tags.value}/>
+      }
+      {
+        view.data && Object.keys(view.data).length > 0 &&
+          Object.keys(view.data).map(key =>
+            view.data && key in view.data &&
+            <VisualRuleLine key={key} field={`data.${key}`} op={view.data[key].op} value={view.data[key].value}/>)
+      }
+    </Box>
   )
 }
 
@@ -525,51 +561,63 @@ const VisualRuleLine = (props: VisualRuleLineProps): JSX.Element => {
 
   let leftLabel = 'undefined'
   let opChar: string | JSX.Element = '?'
-  let opTitle = op
+  const opTitle = op
   let rightLabel = 'undefined'
+  const sx: Record<string, string> = {}
 
+  // TODO: Transaltions for hover title, e.g. `rule-op-setLiteral`.
   switch (op) {
+    case 'setLiteral':
+      leftLabel = `${field}`
+      opChar = '='
+      rightLabel = `${JSON.stringify(value)}`
+      sx.fontFamily = 'monospace'
+      break
+    case 'copyField':
+      leftLabel = `${field}`
+      opChar = '⟻'
+      rightLabel = `${value}`
+      break
+    case 'copyInverseField':
+      leftLabel = `${field}`
+      opChar = '⟻'
+      rightLabel = `- ${value}`
+      break
     case 'isGreaterThan':
       leftLabel = `${field}`
       opChar = <>&gt;</>
-      opTitle = op
       rightLabel = `${value}`
       break
     case 'isLessThan':
       leftLabel = `${field}`
       opChar = <>&lt;</>
-      opTitle = op
       rightLabel = `${value}`
       break
     case 'caseSensitiveMatch':
       leftLabel = `${field}`
       opChar = '='
-      opTitle = op
       rightLabel = `${text}`
       break
     case 'caseInsensitiveMatch':
       leftLabel = `${field}`
       opChar = '≈'
-      opTitle = op
       rightLabel = `${text}`
       break
     case 'caseInsensitiveFullMatch':
       leftLabel = `${field}`
       opChar = '⏵≈⏴'
-      opTitle = op
       rightLabel = `${text}`
       break
     case 'caseSensitiveFullMatch':
       leftLabel = `${field}`
       opChar = '⏵=⏴'
-      opTitle = op
       rightLabel = `${text}`
       break
   }
 
   const left = <Chip label={leftLabel} color={leftLabel === 'undefined' ? 'error' : 'primary' } variant="outlined" />
   const center = <Chip label={opChar} sx={{ fontSize: 24 }} color={opChar === '?' ? 'error' : undefined } title={opTitle} variant="filled" />
-  const right = <Chip label={rightLabel} color={rightLabel === 'undefined' ? 'error' : 'secondary' } variant="outlined" />
+  const right = <Chip sx={ sx } label={rightLabel} color={rightLabel === 'undefined' ? 'error' : 'secondary' } variant="outlined" />
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>{left}{center}{right}</Box>
