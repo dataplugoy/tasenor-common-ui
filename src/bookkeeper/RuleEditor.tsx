@@ -14,6 +14,7 @@ import { filterView2rule } from '@dataplug/tasenor-common'
 import { IconButton as TasenorIconButton } from './IconButton'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TextFormatIcon from '@mui/icons-material/TextFormat'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
 // TODO: Move all this stuff to sub-directory.
 
@@ -293,7 +294,19 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
         <Grid item xs={5}>
           <Item>
             <Typography variant="h5">Current Rule</Typography>
-            {rule && rule.view && <VisualRule rule={rule.view}/>}
+            {rule && rule.view && (
+              <VisualRule
+                rule={rule.view}
+                onSetFilter={(filters) => {
+                    const filter = filterView2rule(filters)
+                    const name = autonaming ? filterView2name(filters) : rule.name
+                    const newRule = {...rule, name, filter, view: { ...rule.view, filter: filters}}
+                    setRule(newRule)
+                    onChange({...result, rule: newRule })
+                  }
+                }
+              />
+            )}
           </Item>
         </Grid>
       </Grid>
@@ -489,23 +502,27 @@ export interface VisualRuleProps {
   rule: {
     filter: RuleFilterView[]
     result: RuleResultView[]
-  }
+  },
+  onSetFilter: (filters: RuleFilterView[]) => void
 }
 
 const VisualRule = (props: VisualRuleProps): JSX.Element => {
-  const { rule } = props
+  const { rule, onSetFilter } = props
+
+  const onDelete = (idx: number) => {
+    const remaining = rule.filter.filter((f, i) => i !== idx)
+    onSetFilter(remaining)
+  }
 
   return (
     <>
       {
         rule.filter.length > 0 && <>
           <Typography variant="h5">Filter</Typography>
-          <Stack spacing={1}>
           {
             rule.filter.map((filter, idx) =>
-              <VisualRuleLine key={idx} op={filter.op} field={filter.field} text={filter.text} value={filter.value}/>)
+              <VisualRuleLine key={idx} onDelete={() => onDelete(idx)} op={filter.op} field={filter.field} text={filter.text} value={filter.value}/>)
           }
-          </Stack>
         </>
       }
       {
@@ -553,11 +570,12 @@ export interface VisualRuleLineProps {
   field?: string
   text?: string
   value?: number | string
+  onDelete?: () => void
 }
 
 const VisualRuleLine = (props: VisualRuleLineProps): JSX.Element => {
 
-  const { op, field, text, value } = props
+  const { op, field, text, value, onDelete } = props
 
   let leftLabel = 'undefined'
   let opChar: string | JSX.Element = '?'
@@ -618,9 +636,10 @@ const VisualRuleLine = (props: VisualRuleLineProps): JSX.Element => {
   const left = <Chip label={leftLabel} color={leftLabel === 'undefined' ? 'error' : 'primary' } variant="outlined" />
   const center = <Chip label={opChar} sx={{ fontSize: 24 }} color={opChar === '?' ? 'error' : undefined } title={opTitle} variant="filled" />
   const right = <Chip sx={ sx } label={rightLabel} color={rightLabel === 'undefined' ? 'error' : 'secondary' } variant="outlined" />
+  const del = onDelete ? <IconButton onClick={onDelete} color="error"><DeleteForeverIcon/></IconButton> : <></>
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>{left}{center}{right}</Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>{left}{center}{right}{del}</Box>
     </>
   )
 }
