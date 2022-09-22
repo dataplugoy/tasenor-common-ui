@@ -6,10 +6,11 @@ import { RuleEditor, RuleEditorValues } from '../bookkeeper'
 export const RuleEditorRenderer: Renderer<TasenorSetup, RuleEditorElement> = (props: RenderingProps<TasenorSetup, RuleEditorElement>) => {
 
   const { element, setup, values } = props
-  const { lines, cashAccount, options } = element
+  const { lines, cashAccount, options, config } = element
 
   return <RuleEditor
     store={setup.store}
+    config={config}
     lines={lines}
     options={options}
     cashAccount={cashAccount}

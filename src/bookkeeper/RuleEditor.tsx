@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { SegmentId, TextFileLine } from 'interactive-elements'
 import { Box, Button, Chip, Divider, Grid, IconButton, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { AccountNumber, Expression, filterView2name, ImportRule, RuleFilterView, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, RuleViewOp } from '@dataplug/tasenor-common'
+import { ProcessConfig } from 'interactive-elements'
 import { TagGroup } from './TagGroups'
 import { AccountSelector } from './AccountSelector'
 import { Trans, useTranslation } from 'react-i18next'
@@ -41,6 +42,7 @@ export type RuleEditorValues = {
  */
 export type RuleEditorProps = {
   store: Store
+  config: ProcessConfig
   lines: TextFileLine[]
   cashAccount: AccountNumber | null
   values: Partial<RuleEditorValues>
@@ -309,6 +311,14 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             )}
           </Item>
         </Grid>
+
+        <Grid item xs={7}>
+          <Item>
+            <Typography variant="h5">Resulting Transactions</Typography>
+            TODO: DISPLAY TRANSACTION HERE
+          </Item>
+        </Grid>
+
       </Grid>
     </Box>
   )

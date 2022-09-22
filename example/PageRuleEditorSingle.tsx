@@ -22,6 +22,9 @@ const PageRuleEditorSingle = (): JSX.Element => {
             defaultValue: {
               text: 'Text proposal'
             },
+            config: {
+              language: 'en'
+            },
             actions: {
               onContinue: {
                 type: 'post',
