@@ -1,5 +1,6 @@
 import { SegmentId, TextFileLine } from 'interactive-elements';
 import { AccountNumber, RuleFilterView, RuleResultView, Store, TransactionImportOptions, Value, RuleViewOp } from '@dataplug/tasenor-common';
+import { ProcessConfig } from 'interactive-elements';
 /**
  * Major operating mode for the editor: either build once off rule or complete new permanent rule.
  */
@@ -21,6 +22,7 @@ export declare type RuleEditorValues = {
  */
 export declare type RuleEditorProps = {
     store: Store;
+    config: ProcessConfig;
     lines: TextFileLine[];
     cashAccount: AccountNumber | null;
     values: Partial<RuleEditorValues>;
@@ -38,10 +40,15 @@ export interface VisualRuleProps {
         filter: RuleFilterView[];
         result: RuleResultView[];
     };
+    onSetFilter: (filters: RuleFilterView[]) => void;
+}
+export interface VisualResultRuleProps {
+    view: RuleResultView;
 }
 export interface VisualRuleLineProps {
     op: RuleViewOp;
     field?: string;
     text?: string;
     value?: number | string;
+    onDelete?: () => void;
 }
