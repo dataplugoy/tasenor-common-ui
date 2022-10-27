@@ -11,7 +11,7 @@ import RttIcon from '@mui/icons-material/Rtt'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import clone from 'clone'
-import { filterView2rule } from '@dataplug/tasenor-common'
+import { filterView2rule, filterView2results } from '@dataplug/tasenor-common'
 import { IconButton as TasenorIconButton } from './IconButton'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TextFormatIcon from '@mui/icons-material/TextFormat'
@@ -174,7 +174,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
 
   // This is actual output value of the editor as a whole.
-  const result: RuleEditorValues = {
+  const editorOuput: RuleEditorValues = {
     mode,
     account,
     tags,
@@ -212,9 +212,11 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               onChange={num => {
                   setAccount(num)
                   setMode('once-off')
-                  const newRule = {...rule, view: { ...rule.view, result: resultViews({account: num, tags}) }}
+                  const resView = resultViews({ account, tags })
+                  const result = filterView2results(resView)
+                  const newRule = {...rule, result, view: { ...rule.view, result: resView }}
                   setRule(newRule)
-                  onChange({...result, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num})
+                  onChange({...editorOuput, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num})
                 }
               }
             />
@@ -225,7 +227,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               onChange={(e) => {
                   setText(e.target.value)
                   setMode('once-off')
-                  onChange({...result, transfers: transfers({ text: e.target.value, tags, account }), text: e.target.value})
+                  onChange({...editorOuput, transfers: transfers({ text: e.target.value, tags, account }), text: e.target.value})
                 }
               }
               sx={{ pb: 1, pt: 1 }}
@@ -237,9 +239,11 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               onChange={(selected) => {
                   setTags(selected)
                   setMode('once-off')
-                  const newRule = {...rule, view: { ...rule.view, result: resultViews({account, tags: selected}) }}
+                  const resView = resultViews({ account, tags })
+                  const result = filterView2results(resView)
+                  const newRule = {...rule, result, view: { ...rule.view, result: resView }}
                   setRule(newRule)
-                  onChange({...result, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected})
+                  onChange({...editorOuput, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected})
                 }
               }
               selected={tags}
@@ -259,7 +263,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                   setAutonaming(e.target.value.length === 0)
                   setMode('new-rule')
                   setRule({...rule, name: e.target.value })
-                  onChange({...result, rule: { ...rule, name: e.target.value }})
+                  onChange({...editorOuput, rule: { ...rule, name: e.target.value }})
                 }
               }
               sx={{ mt: 2 }}
@@ -274,9 +278,11 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                     const filter = filterView2rule(filters)
                     const name = autonaming ? filterView2name(filters) : rule.name
                     setMode('new-rule')
-                    const newRule = {...rule, name, filter, view: { filter: filters, result: resultViews({ account, tags }) }}
+                    const resView = resultViews({ account, tags })
+                    const result = filterView2results(resView)
+                    const newRule = {...rule, name, result, filter, view: { filter: filters, result: resView }}
                     setRule(newRule)
-                    onChange({...result, rule: newRule })
+                    onChange({...editorOuput, rule: newRule })
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
@@ -289,7 +295,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
         <Grid item xs={7}>
           <Item>
             <Typography variant="h5">Resulting Transfers</Typography>
-            TODO: DISPLAY TRANSFERS HERE
+            TODO: DISPLAY TRANSFERS HERE (Substitute values from sample lines)
           </Item>
         </Grid>
 
@@ -304,7 +310,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                     const name = autonaming ? filterView2name(filters) : rule.name
                     const newRule = {...rule, name, filter, view: { ...rule.view, filter: filters}}
                     setRule(newRule)
-                    onChange({...result, rule: newRule })
+                    onChange({...editorOuput, rule: newRule })
                   }
                 }
               />

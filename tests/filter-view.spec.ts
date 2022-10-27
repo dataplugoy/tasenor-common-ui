@@ -1,4 +1,4 @@
-import { filterView2rule, filterView2name } from '@dataplug/tasenor-common'
+import { filterView2rule, filterView2name, filterView2results } from '@dataplug/tasenor-common'
 
 test('Filter view to rule conversions', async () => {
 
@@ -74,22 +74,22 @@ test('Filter view to rule conversions', async () => {
 
   expect(filterView2rule({
     op: 'copyField',
-    field: 'xyz'
+    value: 'xyz'
   })).toBe('xyz')
 
   expect(filterView2rule({
     op: 'copyField',
-    field: 'a/b'
+    value: 'a/b'
   })).toBe('$("a/b")')
 
   expect(filterView2rule({
     op: 'copyInverseField',
-    field: 'xyz'
+    value: 'xyz'
   })).toBe('(-xyz)')
 
   expect(filterView2rule({
     op: 'copyInverseField',
-    field: 'A Ä'
+    value: 'A Ä'
   })).toBe('(-$("A Ä"))')
 
   expect(filterView2rule({
@@ -106,6 +106,45 @@ test('Filter view to rule conversions', async () => {
     op: 'setLiteral',
     value: 'abc'
   })).toBe('"abc"')
+})
+
+test('Filter view to result conversion', async () => {
+  expect(filterView2results([
+    {
+      "reason": {
+        "op": "setLiteral",
+        "value": "expense"
+      },
+      "type": {
+        "op": "setLiteral",
+        "value": "account"
+      },
+      "asset": {
+        "op": "setLiteral",
+        "value": "6677"
+      },
+      "amount": {
+        "op": "copyField",
+        "value": "amount"
+      },
+      "data": {
+        "text": {
+          "op": "copyField",
+          "value": "additionalinfo"
+        }
+      }
+    }
+  ])).toStrictEqual([
+    {
+      "amount": "amount",
+      "asset": "\"6677\"",
+      "data":  {
+        "text": "additionalinfo",
+      },
+      "reason": "\"expense\"",
+      "type": "\"account\"",
+    },
+  ])
 })
 
 test('Filter view to name conversion', async () => {
