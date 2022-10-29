@@ -16,7 +16,7 @@ export const RuleEditorRenderer: Renderer<TasenorSetup, RuleEditorElement> = (pr
     cashAccount={cashAccount}
     values={values[element.name] as Partial<RuleEditorValues>}
     onChange={(newValue) => {
-        element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props)
+      element.triggerHandler && element.triggerHandler({ type: 'onChange', name: element.name, value: newValue }, props)
     }}
     onContinue={() => {
       element.triggerHandler && element.triggerHandler({ type: 'onContinue' }, props)
