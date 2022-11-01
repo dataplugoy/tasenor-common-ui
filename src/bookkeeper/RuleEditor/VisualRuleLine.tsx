@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Chip, IconButton } from '@mui/material'
 import { RuleViewOp } from '@dataplug/tasenor-common'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { useTranslation } from 'react-i18next'
 
 export interface VisualRuleLineProps {
   op: RuleViewOp
@@ -13,15 +14,15 @@ export interface VisualRuleLineProps {
 
 export const VisualRuleLine = (props: VisualRuleLineProps): JSX.Element => {
 
+  const { t } = useTranslation()
   const { op, field, text, value, onDelete } = props
 
   let leftLabel = 'undefined'
   let opChar: string | JSX.Element = '?'
-  const opTitle = op
+  const opTitle = t(`rule-op-${op}`)
   let rightLabel = 'undefined'
   const sx: Record<string, string> = {}
 
-  // TODO: Transaltions for hover title, e.g. `rule-op-setLiteral`.
   switch (op) {
     case 'setLiteral':
       leftLabel = `${field}`
@@ -75,6 +76,7 @@ export const VisualRuleLine = (props: VisualRuleLineProps): JSX.Element => {
   const center = <Chip label={opChar} sx={{ fontSize: 24 }} color={opChar === '?' ? 'error' : undefined } title={opTitle} variant="filled" />
   const right = <Chip sx={ sx } label={rightLabel} color={rightLabel === 'undefined' ? 'error' : 'secondary' } variant="outlined" />
   const del = onDelete ? <IconButton onClick={onDelete} color="error"><DeleteForeverIcon/></IconButton> : <></>
+
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>{left}{center}{right}{del}</Box>
