@@ -28,7 +28,7 @@
     "@dataplug/tasenor-common": "git+ssh://git@github.com:dataplugoy/tasenor-common.git",
     "crypto-browserify": "^3.12.0",
     "history": "^5.2.0",
-    "react-interactive-stateful-process": "1.0.161"
+    "react-interactive-stateful-process": "1.0.162"
   },
   "devDependencies": {
     "@types/jest": "27.4.1",
