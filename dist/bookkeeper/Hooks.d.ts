@@ -1,6 +1,6 @@
 import { Location, History } from 'react-router-dom';
 import { DatabaseName } from '@dataplug/tasenor-common';
-import { ID } from 'interactive-elements';
+import { ID } from '@dataplug/tasenor-common';
 export declare type MainMenu = "" | "admin" | "dashboard" | "txs" | "account" | "report" | "tools" | "data" | "settings" | "classop";
 export declare const isMainMenu: (name: unknown) => name is MainMenu;
 export declare class MenuState {

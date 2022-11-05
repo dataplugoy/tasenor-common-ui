@@ -1,4 +1,4 @@
-import { TextFileLine } from 'interactive-elements';
+import { TextFileLine } from '@dataplug/tasenor-common';
 import { RuleFilterView, TransactionImportOptions } from '@dataplug/tasenor-common';
 interface RuleLineEditProps {
     line: TextFileLine;

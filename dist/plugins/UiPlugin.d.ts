@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Catalog, Store, Settings, PluginCode, Version, ShortDate, PluginUse, PluginType } from '@dataplug/tasenor-common';
-import { ID } from 'interactive-elements';
+import { ID } from '@dataplug/tasenor-common';
 export declare class UiPlugin extends Component {
     store: Store;
     settings: Settings;

@@ -1,8 +1,8 @@
 import { Trans, useTranslation } from 'react-i18next'
 import { MenuItem, TextField } from '@mui/material'
 import React from 'react'
-import { Renderer, RenderingProps } from 'react-interactive-stateful-process'
-import { TasenorSetup, CurrencyElement } from '@dataplug/tasenor-common'
+import { TasenorSetup, CurrencyElement, RenderingProps } from '@dataplug/tasenor-common'
+import { Renderer } from './RenderingEngine'
 
 export const CurrencySelectorRenderer: Renderer<TasenorSetup, CurrencyElement> = (props: RenderingProps<TasenorSetup, CurrencyElement>) => {
 

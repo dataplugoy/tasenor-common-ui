@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextFileLine } from 'interactive-elements'
+import { TextFileLine } from '@dataplug/tasenor-common'
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material'
 import { RuleFilterView, TransactionImportOptions } from '@dataplug/tasenor-common'
 import { Trans, useTranslation } from 'react-i18next'

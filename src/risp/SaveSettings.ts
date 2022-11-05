@@ -1,6 +1,4 @@
-import { TasenorSetup, SaveSettingsAction } from "@dataplug/tasenor-common"
-import { ActionHandler, InteractiveElement } from "interactive-elements"
-import { RenderingProps } from "react-interactive-stateful-process"
+import { TasenorSetup, SaveSettingsAction, ActionHandler, InteractiveElement, RenderingProps } from "@dataplug/tasenor-common"
 
 export const saveSettingActionHandler: ActionHandler<TasenorSetup, InteractiveElement, SaveSettingsAction> = async (action: SaveSettingsAction, props: RenderingProps<TasenorSetup>) => {
   const { values, setup } = props

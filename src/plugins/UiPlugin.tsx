@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Catalog, Store, Settings, PluginCode, Version, ShortDate, PluginUse, PluginType } from '@dataplug/tasenor-common'
 import { History } from 'history'
-import { ID } from 'interactive-elements'
+import { ID } from '@dataplug/tasenor-common'
 
 export class UiPlugin extends Component {
 

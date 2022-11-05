@@ -1,11 +1,10 @@
 import React from 'react'
-import { Renderer, RenderingProps } from 'react-interactive-stateful-process'
-import { TasenorSetup, Tag, TagModel, TagsElement } from '@dataplug/tasenor-common'
-import { isNamedElement } from 'interactive-elements'
-import { TagGroup } from '..'
+import { TasenorSetup, Tag, TagModel, TagsElement, RenderingProps } from '@dataplug/tasenor-common'
+import { isNamedElement } from '@dataplug/tasenor-common'
 import { FormGroup, FormLabel } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-
+import { TagGroup } from '../bookkeeper/TagGroups'
+import { Renderer } from './RenderingEngine'
 
 export const TagsSelectorRenderer: Renderer<TasenorSetup, TagsElement> = (props: RenderingProps<TasenorSetup, TagsElement>) => {
   const { t } = useTranslation()

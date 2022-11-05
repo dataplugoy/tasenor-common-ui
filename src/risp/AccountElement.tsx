@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { Renderer, RenderingProps } from 'react-interactive-stateful-process'
-import { TasenorSetup, AccountElement, AccountNumber } from '@dataplug/tasenor-common'
+import { TasenorSetup, AccountElement, AccountNumber, RenderingProps } from '@dataplug/tasenor-common'
 import { AccountSelector } from '../bookkeeper/AccountSelector'
+import { Renderer } from './RenderingEngine'
 
 export const AccountRenderer: Renderer<TasenorSetup, AccountElement> = (props: RenderingProps<TasenorSetup, AccountElement>) => {
 

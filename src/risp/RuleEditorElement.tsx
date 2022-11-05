@@ -1,7 +1,7 @@
 import React from 'react'
-import { Renderer, RenderingProps } from 'react-interactive-stateful-process'
-import { TasenorSetup, RuleEditorElement } from '@dataplug/tasenor-common'
+import { TasenorSetup, RuleEditorElement, RenderingProps } from '@dataplug/tasenor-common'
 import { RuleEditor, RuleEditorValues } from '../bookkeeper'
+import { Renderer } from './RenderingEngine'
 
 export const RuleEditorRenderer: Renderer<TasenorSetup, RuleEditorElement> = (props: RenderingProps<TasenorSetup, RuleEditorElement>) => {
 

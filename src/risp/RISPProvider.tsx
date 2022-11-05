@@ -1,36 +1,55 @@
-import React from 'react'
-import { ActionEngine, RenderingEngine } from 'react-interactive-stateful-process'
-import { InteractiveElement } from 'interactive-elements'
-import { TasenorSetup, SaveSettingsAction } from '@dataplug/tasenor-common'
+import { ActionEngine, debugActionHandler, patchActionHandler, postActionHandler } from './ActionEngine'
+import { RenderingEngine } from './RenderingEngine'
+import { BooleanRenderer, BoxRenderer, ButtonRenderer, CaseRenderer, FlatRenderer, HtmlRenderer, MessageRenderer, NumberRenderer, RadioRenderer, TextFileLineRenderer, TextRenderer, YesNoRenderer } from '../elements'
 
-// One need to import RISP from here in order to use registerd custom elements.
-import { RISPProvider as OriginalRISPProvider } from 'react-interactive-stateful-process'
-import { CurrencySelectorRenderer } from '.'
-import { AccountRenderer } from './AccountElement'
-import { TagsSelectorRenderer } from './TagSelectorElement'
-import { RuleEditorRenderer } from './RuleEditorElement'
-import { saveSettingActionHandler } from './SaveSettings'
+let onBlurHook, onFocusHook
 
 export type RISPProviderProps = {
   children: JSX.Element
+  onInit?: () => void
   onBlur?: () => void | Promise<void>
   onFocus?: () => void | Promise<void>
 }
 
+/**
+ * Register all renderers and action handlers.
+ */
 export const RISPProvider = (props: RISPProviderProps) => {
+  const { onBlur, onFocus, children } = props
+  onBlurHook = onBlur
+  onFocusHook = onFocus
 
-  return <OriginalRISPProvider
-    onInit={() => {
-      RenderingEngine.register('account', AccountRenderer)
-      RenderingEngine.register('tags', TagsSelectorRenderer)
-      RenderingEngine.register('currency', CurrencySelectorRenderer)
-      RenderingEngine.register('ruleEditor', RuleEditorRenderer)
+  RenderingEngine.register('boolean', BooleanRenderer)
+  RenderingEngine.register('box', BoxRenderer)
+  RenderingEngine.register('button', ButtonRenderer)
+  RenderingEngine.register('case', CaseRenderer)
+  RenderingEngine.register('flat', FlatRenderer)
+  RenderingEngine.register('html', HtmlRenderer)
+  RenderingEngine.register('message', MessageRenderer)
+  RenderingEngine.register('number', NumberRenderer)
+  RenderingEngine.register('radio', RadioRenderer)
+  RenderingEngine.register('text', TextRenderer)
+  RenderingEngine.register('textFileLine', TextFileLineRenderer)
+  RenderingEngine.register('yesno', YesNoRenderer)
 
-      ActionEngine.register<TasenorSetup, InteractiveElement, SaveSettingsAction>('saveSettings', saveSettingActionHandler)
-    }}
-    onBlur={props.onBlur}
-    onFocus={props.onFocus}
-    >
-    {props.children}
-  </OriginalRISPProvider>
+  ActionEngine.register('debug', debugActionHandler)
+  ActionEngine.register('patch', patchActionHandler)
+  ActionEngine.register('post', postActionHandler)
+
+  if (props.onInit) {
+    props.onInit()
+  }
+
+  return children
+}
+
+/**
+ * Extrnal calling interface for hooks.
+ */
+RISPProvider.onBlur = () => {
+  if (onBlurHook) onBlurHook()
+}
+
+RISPProvider.onFocus = () => {
+  if (onFocusHook) onFocusHook()
 }
