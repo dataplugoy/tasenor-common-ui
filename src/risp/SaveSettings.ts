@@ -1,6 +1,6 @@
-import { TasenorSetup, SaveSettingsAction, ActionHandler, InteractiveElement, RenderingProps } from "@dataplug/tasenor-common"
+import { SaveSettingsAction, ActionHandler, RenderingProps } from "@dataplug/tasenor-common"
 
-export const saveSettingActionHandler: ActionHandler<TasenorSetup, InteractiveElement, SaveSettingsAction> = async (action: SaveSettingsAction, props: RenderingProps<TasenorSetup>) => {
+export const saveSettingActionHandler: ActionHandler = async (action: SaveSettingsAction, props: RenderingProps) => {
   const { values, setup } = props
   const settings = {}
   if (action.plugin) {

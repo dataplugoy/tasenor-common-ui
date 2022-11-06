@@ -1,4 +1,4 @@
-import { ProcessStepModelData, elementNames } from '@dataplug/tasenor-common'
+import { ProcessStepModelData, elementNames, TasenorElement } from '@dataplug/tasenor-common'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfigView } from './ConfigView'
@@ -20,7 +20,7 @@ export const ConfigChangeView = (props: ConfigChangeViewProps): JSX.Element => {
   if (!props.step.action || !props.step.action.configure) {
     return <></>
   }
-  const names = [...elementNames(props.step.directions.element)].sort()
+  const names = [...elementNames(props.step.directions.element as TasenorElement)].sort()
   const changes = {}
   for (let name of names) {
     if (name.startsWith('configure.')) {

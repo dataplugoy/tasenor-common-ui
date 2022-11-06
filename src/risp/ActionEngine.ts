@@ -1,9 +1,8 @@
 import { runInAction } from 'mobx'
-import { RenderingProps } from './RenderingEngine'
 import axios from 'axios'
 import setValue from 'set-value'
 import getValue from 'get-value'
-import { ActionHandler, Action, Setup, InteractiveElement, ActionName, ActionResult, isActiveElement, PatchAction, PostAction, TasenorAction } from '@dataplug/tasenor-common'
+import { ActionHandler, ActionName, ActionResult, isActiveElement, PatchAction, PostAction, RenderingProps, TasenorAction } from '@dataplug/tasenor-common'
 
 /**
  * Registry where all action handlers has been stored.
@@ -27,7 +26,7 @@ export class ActionEngine {
    * @param handler
    * @returns The old registered handler if there was any.
    */
-  static register<SetupType = Setup, ElementType = InteractiveElement>(name: ActionName, handler: ActionHandler<SetupType, ElementType>): ActionHandler | null {
+  static register(name: ActionName, handler: ActionHandler): ActionHandler | null {
     const old = ActionEngineHandlers[name] || null
     // Not too nice but need to force custom types into registry as well.
     ActionEngineHandlers[name] = handler as unknown as ActionHandler
@@ -108,7 +107,7 @@ export class ActionEngine {
  * @param props
  * @returns
  */
-export const debugActionHandler: ActionHandler = async (action: Action, props: RenderingProps) => {
+export const debugActionHandler: ActionHandler = async (action: TasenorAction, props: RenderingProps) => {
   const { element, values } = props
   if (isActiveElement(element)) {
     console.log('Action:', action)

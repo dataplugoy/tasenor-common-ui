@@ -1,25 +1,13 @@
 import React from 'react';
-import { Setup, InteractiveElement, TriggerValues } from '@dataplug/tasenor-common';
+import { RenderingProps } from '@dataplug/tasenor-common';
 /**
  * Readability helper to specify that a string is being used as a renderer name.
  */
 export declare type RendererName = string;
 /**
- * A parameter collection used when rendering element.
- *
- * @property element Actual top level element to render.
- * @property values A set of values to edit associated with the rendering process.
- * @property setup Global configuration for the rendering system.
- */
-export declare type RenderingProps<SetupType = Setup, ElementType = InteractiveElement> = {
-    element: ElementType;
-    values: TriggerValues;
-    setup: SetupType;
-};
-/**
  * A function rendering certain type of element providing React Element presentation for it.
  */
-export declare type Renderer<SetupType = Setup, ElementType = InteractiveElement> = React.FC<RenderingProps<SetupType, ElementType>>;
+export declare type Renderer = React.FC<RenderingProps>;
 /**
  * Registry where all renderers has been stored.
  */
@@ -42,7 +30,7 @@ export declare class RenderingEngine {
      * @param renderer
      * @returns Old handler if there was any.
      */
-    static register<SetupType = Setup, ElementType = InteractiveElement>(name: RendererName, renderer: Renderer<SetupType, ElementType>): Renderer | null;
+    static register(name: RendererName, renderer: Renderer): Renderer | null;
     /**
      * Find the registered renderer for the given properties and call the renderer if found.
      * @param props

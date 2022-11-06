@@ -11,7 +11,7 @@ import { DefaultResultViewProps } from './DefaultResultView'
 import { ConfigViewProps } from './ConfigView'
 import { StepList } from './StepList'
 import { ConfigChangeView } from './ConfigChangeView'
-import { Setup, RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, TriggerValues, TriggerValue, InteractiveElement } from '@dataplug/tasenor-common'
+import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, TriggerValues, TriggerValue, TasenorSetup } from '@dataplug/tasenor-common'
 import { RISP } from '../risp'
 import { ArrowBackOutlined, NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { useAxios } from '../misc'
@@ -21,7 +21,7 @@ export type ProcessViewProps = {
   token?: string
   id: number
   step?: number
-  setup?: Setup
+  setup?: TasenorSetup
   onBack?: () => void
   onChangeStep?: (step: number) => void
   stepView?: (props: DefaultStepViewProps) => JSX.Element
@@ -213,7 +213,7 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
                 <Typography variant="subtitle1"><Trans>Additional information needed</Trans></Typography>
                 <RISP
                   key="directions"
-                  element={directions.element as InteractiveElement}
+                  element={directions.element}
                   values={values}
                   setup={props.setup || { baseUrl: `${props.api}/${process.id}` }}
                   onActionSuccess={onActionSuccess}

@@ -1,5 +1,4 @@
-import { RenderingProps } from './RenderingEngine';
-import { ActionHandler, Action, Setup, InteractiveElement, ActionName, ActionResult } from '@dataplug/tasenor-common';
+import { ActionHandler, ActionName, ActionResult, RenderingProps, TasenorAction } from '@dataplug/tasenor-common';
 /**
  * Registry where all action handlers has been stored.
  */
@@ -19,7 +18,7 @@ export declare class ActionEngine {
      * @param handler
      * @returns The old registered handler if there was any.
      */
-    static register<SetupType = Setup, ElementType = InteractiveElement, ActionType = Action>(name: ActionName, handler: ActionHandler<SetupType, ElementType, ActionType>): ActionHandler | null;
+    static register(name: ActionName, handler: ActionHandler): ActionHandler | null;
     /**
      * Construct a result indicating a failure in action execution.
      * @param message Reason for the failure.
@@ -41,7 +40,7 @@ export declare class ActionEngine {
      * an array of actions, all of them are executed. If any of them fails, the
      * result is failure. Otherwise success.
      */
-    static handle<ActionType extends Action = Action>(action: ActionType | ActionType[], props: RenderingProps): Promise<ActionResult>;
+    static handle(action: TasenorAction | TasenorAction[], props: RenderingProps): Promise<ActionResult>;
 }
 /**
  * Handler that just prints the content of the trigger, the element and current values to the console.

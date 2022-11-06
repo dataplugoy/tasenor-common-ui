@@ -4,9 +4,9 @@ import { observable, runInAction } from 'mobx'
 import { Button, Paper, Typography } from '@mui/material'
 import { RISP, FileUploader, ActionEngine, RenderingEngine, ProcessList, ProcessView, ImportStateView, JsonEditor, ConfigJSONView } from '../src'
 import { observer } from 'mobx-react'
-import { customActionHandler, CustomElement, CustomRenderer, CustomSetup } from './Components'
+import { customActionHandler, CustomRenderer, CustomSetup } from './Components'
 import { AccountCircle } from '@mui/icons-material'
-import { TriggerValues, FlatElement, InteractiveElement } from '@dataplug/tasenor-common'
+import { TriggerValues, FlatElement } from '@dataplug/tasenor-common'
 
 const API = 'http://localhost:3302/api/isp'
 
@@ -27,7 +27,7 @@ const App = observer(() => {
     b: ''
   })
 
-  const element: FlatElement<CustomElement | InteractiveElement> = {
+  const element: FlatElement = {
     type: 'flat',
     elements: [
       {
@@ -104,14 +104,6 @@ const App = observer(() => {
         }
       },
       {
-        type: 'custom',
-        data: {
-          a: 1, b: 2, c: 3
-        },
-        actions: {
-        }
-      },
-      {
         type: 'message',
         severity: 'error',
         text: 'Hello, this is an error message.'
@@ -169,7 +161,7 @@ const App = observer(() => {
 
       <Paper style={{ margin: '1rem', padding: '1rem' }} elevation={4}>
         <Typography className="text" variant="h3">Element Dashboard</Typography>
-        <RISP key="demo1" element={element as InteractiveElement} values={values} setup={setup}/>
+        <RISP key="demo1" element={element} values={values} setup={setup}/>
         <br/>
         <Button variant="outlined" onClick={() => { runInAction(() => { values.a = 6; values.b = '' }) }}>RESET</Button>
         <Button variant="outlined" onClick={() => { runInAction(() => { values.a = 12345 }) }}>CHANGE A</Button>
