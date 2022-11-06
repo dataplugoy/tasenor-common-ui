@@ -1,6 +1,12 @@
 import { ActionEngine, debugActionHandler, patchActionHandler, postActionHandler } from './ActionEngine'
 import { RenderingEngine } from './RenderingEngine'
 import { BooleanRenderer, BoxRenderer, ButtonRenderer, CaseRenderer, FlatRenderer, HtmlRenderer, MessageRenderer, NumberRenderer, RadioRenderer, TextFileLineRenderer, TextRenderer, YesNoRenderer } from '../elements'
+import { InteractiveElement, SaveSettingsAction, TasenorSetup } from '@dataplug/tasenor-common'
+import { CurrencySelectorRenderer } from './CurrencySelectorElement'
+import { AccountRenderer } from './AccountElement'
+import { TagsSelectorRenderer } from './TagSelectorElement'
+import { RuleEditorRenderer } from './RuleEditorElement'
+import { saveSettingActionHandler } from './SaveSettings'
 
 let onBlurHook, onFocusHook
 
@@ -19,15 +25,19 @@ export const RISPProvider = (props: RISPProviderProps) => {
   onBlurHook = onBlur
   onFocusHook = onFocus
 
+  RenderingEngine.register('account', AccountRenderer)
   RenderingEngine.register('boolean', BooleanRenderer)
   RenderingEngine.register('box', BoxRenderer)
   RenderingEngine.register('button', ButtonRenderer)
   RenderingEngine.register('case', CaseRenderer)
+  RenderingEngine.register('currency', CurrencySelectorRenderer)
   RenderingEngine.register('flat', FlatRenderer)
   RenderingEngine.register('html', HtmlRenderer)
   RenderingEngine.register('message', MessageRenderer)
   RenderingEngine.register('number', NumberRenderer)
   RenderingEngine.register('radio', RadioRenderer)
+  RenderingEngine.register('ruleEditor', RuleEditorRenderer)
+  RenderingEngine.register('tags', TagsSelectorRenderer)
   RenderingEngine.register('text', TextRenderer)
   RenderingEngine.register('textFileLine', TextFileLineRenderer)
   RenderingEngine.register('yesno', YesNoRenderer)
@@ -35,6 +45,7 @@ export const RISPProvider = (props: RISPProviderProps) => {
   ActionEngine.register('debug', debugActionHandler)
   ActionEngine.register('patch', patchActionHandler)
   ActionEngine.register('post', postActionHandler)
+  ActionEngine.register<TasenorSetup, InteractiveElement, SaveSettingsAction>('saveSettings', saveSettingActionHandler)
 
   if (props.onInit) {
     props.onInit()
