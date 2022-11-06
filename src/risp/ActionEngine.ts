@@ -3,7 +3,7 @@ import { RenderingProps } from './RenderingEngine'
 import axios from 'axios'
 import setValue from 'set-value'
 import getValue from 'get-value'
-import { ActionHandler, Action, Setup, InteractiveElement, ActionName, ActionResult, isActiveElement, PatchAction, PostAction } from '@dataplug/tasenor-common'
+import { ActionHandler, Action, Setup, InteractiveElement, ActionName, ActionResult, isActiveElement, PatchAction, PostAction, TasenorAction } from '@dataplug/tasenor-common'
 
 /**
  * Registry where all action handlers has been stored.
@@ -27,7 +27,7 @@ export class ActionEngine {
    * @param handler
    * @returns The old registered handler if there was any.
    */
-  static register<SetupType = Setup, ElementType = InteractiveElement, ActionType = Action>(name: ActionName, handler: ActionHandler<SetupType, ElementType, ActionType>): ActionHandler | null {
+  static register<SetupType = Setup, ElementType = InteractiveElement>(name: ActionName, handler: ActionHandler<SetupType, ElementType>): ActionHandler | null {
     const old = ActionEngineHandlers[name] || null
     // Not too nice but need to force custom types into registry as well.
     ActionEngineHandlers[name] = handler as unknown as ActionHandler
@@ -67,7 +67,7 @@ export class ActionEngine {
    * an array of actions, all of them are executed. If any of them fails, the
    * result is failure. Otherwise success.
    */
-  static async handle<ActionType extends Action = Action>(action: ActionType | ActionType[], props: RenderingProps): Promise<ActionResult> {
+  static async handle(action: TasenorAction | TasenorAction[], props: RenderingProps): Promise<ActionResult> {
     if (!action) {
       throw new Error('Action engine called without action.')
     }
