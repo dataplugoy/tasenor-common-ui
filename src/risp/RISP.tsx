@@ -1,9 +1,9 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { RenderingEngine, RenderingProps } from './RenderingEngine'
+import { RenderingEngine } from './RenderingEngine'
 import { runInAction } from 'mobx'
 import { ActionEngine } from './ActionEngine'
-import { InteractiveElement, isNamedElement, ActiveElement, isActiveElement, isContainerElement, isCaseElement } from '@dataplug/tasenor-common'
+import { isNamedElement, ActiveElement, isActiveElement, isContainerElement, isCaseElement, TasenorElement, RenderingProps } from '@dataplug/tasenor-common'
 
 export type RISPProps = RenderingProps & {
   onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps) => void
@@ -30,7 +30,7 @@ export const RISP: React.FC<RISPProps> = observer((rispProps: RISPProps) => {
   const { values, element } = rispProps
 
   // Fill in appropriate fields for elements.
-  const prepare = (element: InteractiveElement) => {
+  const prepare = (element: TasenorElement) => {
     // Named components have values.
     if (isNamedElement(element)) {
       if (values[element.name] === undefined && element.defaultValue !== undefined) {

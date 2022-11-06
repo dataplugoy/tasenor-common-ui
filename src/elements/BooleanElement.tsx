@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FormControlLabel, Checkbox } from '@mui/material'
-import { Renderer, RenderingProps } from '..'
-import { isNamedElement, isBooleanElement } from '@dataplug/tasenor-common'
+import { isNamedElement, isBooleanElement, RenderingProps } from '@dataplug/tasenor-common'
+import { Renderer } from '../risp'
 
 /**
  * Rendering for boolean toggle element.

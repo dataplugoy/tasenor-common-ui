@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { TasenorSetup, AccountElement, AccountNumber, RenderingProps } from '@dataplug/tasenor-common'
+import { AccountElement, AccountNumber, RenderingProps } from '@dataplug/tasenor-common'
 import { AccountSelector } from '../bookkeeper/AccountSelector'
 import { Renderer } from './RenderingEngine'
 
-export const AccountRenderer: Renderer<TasenorSetup, AccountElement> = (props: RenderingProps<TasenorSetup, AccountElement>) => {
+export const AccountRenderer: Renderer = (props: RenderingProps<AccountElement>) => {
 
   const { t } = useTranslation()
   const { element, setup, values } = props

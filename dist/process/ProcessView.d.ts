@@ -5,13 +5,13 @@ import { DefaultErrorViewProps } from './DefaultErrorView';
 import { DefaultSuccessViewProps } from './DefaultSuccessView';
 import { DefaultResultViewProps } from './DefaultResultView';
 import { ConfigViewProps } from './ConfigView';
-import { Setup, RenderingProps } from '@dataplug/tasenor-common';
+import { RenderingProps, TasenorSetup } from '@dataplug/tasenor-common';
 export declare type ProcessViewProps = {
     api: string;
     token?: string;
     id: number;
     step?: number;
-    setup?: Setup;
+    setup?: TasenorSetup;
     onBack?: () => void;
     onChangeStep?: (step: number) => void;
     stepView?: (props: DefaultStepViewProps) => JSX.Element;

@@ -1,13 +1,14 @@
 import { Trans, useTranslation } from 'react-i18next'
 import { MenuItem, TextField } from '@mui/material'
 import React from 'react'
-import { TasenorSetup, CurrencyElement, RenderingProps } from '@dataplug/tasenor-common'
+import { CurrencyElement, RenderingProps } from '@dataplug/tasenor-common'
 import { Renderer } from './RenderingEngine'
 
-export const CurrencySelectorRenderer: Renderer<TasenorSetup, CurrencyElement> = (props: RenderingProps<TasenorSetup, CurrencyElement>) => {
+export const CurrencySelectorRenderer: Renderer = (props: RenderingProps<CurrencyElement>) => {
 
   const { t } = useTranslation()
   const { element, setup, values } = props
+
   const label = element.label ? element.label : t(`label-${element.name}`)
   const value: string = values[element.name] as string || 'Not Selected'
   const [, setValue] = React.useState<string>(value)

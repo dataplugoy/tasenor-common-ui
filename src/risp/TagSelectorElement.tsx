@@ -1,12 +1,12 @@
 import React from 'react'
-import { TasenorSetup, Tag, TagModel, TagsElement, RenderingProps } from '@dataplug/tasenor-common'
+import { Tag, TagModel, TagsElement, RenderingProps } from '@dataplug/tasenor-common'
 import { isNamedElement } from '@dataplug/tasenor-common'
 import { FormGroup, FormLabel } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { TagGroup } from '../bookkeeper/TagGroups'
 import { Renderer } from './RenderingEngine'
 
-export const TagsSelectorRenderer: Renderer<TasenorSetup, TagsElement> = (props: RenderingProps<TasenorSetup, TagsElement>) => {
+export const TagsSelectorRenderer: Renderer = (props: RenderingProps<TagsElement>) => {
   const { t } = useTranslation()
   const { element, setup, values } = props
   const [selected, setSelected] = React.useState<Tag[]>(isNamedElement(element) ? values[element.name] as Tag[] || [] : [])

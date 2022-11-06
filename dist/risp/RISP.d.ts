@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderingProps } from './RenderingEngine';
+import { RenderingProps } from '@dataplug/tasenor-common';
 export declare type RISPProps = RenderingProps & {
     onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps) => void;
 };

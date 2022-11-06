@@ -1,4 +1,4 @@
-import { Renderer } from '..';
+import { Renderer } from '../risp';
 /**
  * Rendering for boolean toggle element.
  */

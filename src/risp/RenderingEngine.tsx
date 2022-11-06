@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography } from '@mui/material'
-import { Setup, InteractiveElement, TriggerValues } from '@dataplug/tasenor-common'
+import { RenderingProps } from '@dataplug/tasenor-common'
 
 /**
  * Readability helper to specify that a string is being used as a renderer name.
@@ -8,22 +8,9 @@ import { Setup, InteractiveElement, TriggerValues } from '@dataplug/tasenor-comm
 export type RendererName = string
 
 /**
- * A parameter collection used when rendering element.
- *
- * @property element Actual top level element to render.
- * @property values A set of values to edit associated with the rendering process.
- * @property setup Global configuration for the rendering system.
- */
-export type RenderingProps<SetupType=Setup, ElementType=InteractiveElement> = {
-  element: ElementType,
-  values: TriggerValues,
-  setup: SetupType
-}
-
-/**
  * A function rendering certain type of element providing React Element presentation for it.
  */
-export type Renderer<SetupType=Setup, ElementType=InteractiveElement> = React.FC<RenderingProps<SetupType, ElementType>>
+export type Renderer = React.FC<RenderingProps>
 
 /**
  * Registry where all renderers has been stored.
@@ -50,7 +37,7 @@ export class RenderingEngine {
    * @param renderer
    * @returns Old handler if there was any.
    */
-  static register<SetupType=Setup, ElementType=InteractiveElement>(name: RendererName, renderer: Renderer<SetupType, ElementType>): Renderer | null {
+  static register(name: RendererName, renderer: Renderer): Renderer | null {
     const old = RenderingEngineRenderers[name] || null
     // Not too nice but need to force custom types into registry as well.
     RenderingEngineRenderers[name] = renderer as unknown as Renderer

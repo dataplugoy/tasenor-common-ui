@@ -1,9 +1,9 @@
 import React from 'react'
-import { TasenorSetup, RuleEditorElement, RenderingProps } from '@dataplug/tasenor-common'
+import { RuleEditorElement, RenderingProps } from '@dataplug/tasenor-common'
 import { RuleEditor, RuleEditorValues } from '../bookkeeper'
 import { Renderer } from './RenderingEngine'
 
-export const RuleEditorRenderer: Renderer<TasenorSetup, RuleEditorElement> = (props: RenderingProps<TasenorSetup, RuleEditorElement>) => {
+export const RuleEditorRenderer: Renderer = (props: RenderingProps<RuleEditorElement>) => {
 
   const { element, setup, values } = props
   const { lines, cashAccount, options, config } = element

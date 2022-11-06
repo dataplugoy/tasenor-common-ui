@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { RenderingProps, isFlatElement, InteractiveElement } from '@dataplug/tasenor-common'
+import { RenderingProps, isFlatElement, TasenorElement } from '@dataplug/tasenor-common'
 import { Renderer, RenderingEngine } from '../risp'
 
 export const FlatRenderer: Renderer = (props: RenderingProps) => {
@@ -9,7 +9,7 @@ export const FlatRenderer: Renderer = (props: RenderingProps) => {
     throw new Error(`Wrong renderer ${JSON.stringify(element)}.`)
   }
   return <>{
-    element.elements.map((element: InteractiveElement, idx) => (
+    element.elements.map((element: TasenorElement, idx) => (
       <Box key={idx} sx={{ mt: idx > 0 ? 1.5 : 0 }}>
         {RenderingEngine.render({ values: props.values, setup: props.setup, element })}
       </Box>)
