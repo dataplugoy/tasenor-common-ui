@@ -2,23 +2,19 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { observable, runInAction } from 'mobx'
 import { Button, Paper, Typography } from '@mui/material'
-import { RISP, FileUploader, ActionEngine, RenderingEngine, ProcessList, ProcessView, ImportStateView, JsonEditor, ConfigJSONView } from '../src'
+import { RISP, FileUploader, ProcessList, ProcessView, ImportStateView, JsonEditor, ConfigJSONView } from '../src'
 import { observer } from 'mobx-react'
-import { customActionHandler, CustomRenderer, CustomSetup } from './Components'
 import { AccountCircle } from '@mui/icons-material'
 import { TriggerValues, FlatElement } from '@dataplug/tasenor-common'
 
 const API = 'http://localhost:3302/api/isp'
-
-RenderingEngine.register('custom', CustomRenderer)
-ActionEngine.register('custom', customActionHandler)
 
 /**
  * Sample application.
  */
 const App = observer(() => {
 
-  const setup: CustomSetup = {
+  const setup = {
     baseUrl: 'http://localhost',
     sample: 999
   }

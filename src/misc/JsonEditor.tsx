@@ -1,8 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React from 'react'
 import { Trans } from 'react-i18next'
-import JSONEditor, { JSONEditorOptions } from 'jsoneditor'
-import 'jsoneditor/dist/jsoneditor.min.css'
+// TODO: Where to get functional JSON editor? This one breaks on esbuild.
+// import JSONEditor, { JSONEditorOptions } from 'jsoneditor'
+// import 'jsoneditor/dist/jsoneditor.min.css'
 
 export type JsonEditorProps = {
   visible: boolean,
@@ -28,13 +29,14 @@ export const JsonEditor = (props: JsonEditorProps): JSX.Element => {
 
   const createEditor = (ref) => {
     if (editor) return
-
+/*
     const options: JSONEditorOptions = {
       mode: 'code',
       mainMenuBar: false,
       statusBar: true
     }
     editor = new JSONEditor(ref, options, value)
+*/
   }
 
   const onSave = async () => {
