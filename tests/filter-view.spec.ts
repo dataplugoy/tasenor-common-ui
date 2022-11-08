@@ -12,7 +12,7 @@ test('Filter view to rule conversions', async () => {
     op: 'caseInsensitiveFullMatch',
     field: 'x',
     text: '"A"'
-  })).toBe('(lower(x) === "\\\"a\\\"")')
+  })).toBe('(lower(x) === "\\"a\\"")')
 
   expect(filterView2rule({
     op: 'caseInsensitiveFullMatch',
@@ -30,7 +30,7 @@ test('Filter view to rule conversions', async () => {
     op: 'caseSensitiveFullMatch',
     field: 'x',
     text: '"A"'
-  })).toBe('(x === "\\\"A\\\"")')
+  })).toBe('(x === "\\"A\\"")')
 
   expect(filterView2rule({
     op: 'caseSensitiveFullMatch',

@@ -1,12 +1,9 @@
 {
   "parser": "@typescript-eslint/parser",
+  "root": true,
   "extends": [
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "semistandard"
-  ],
-  "plugins": [
-    "@typescript-eslint"
+    "semistandard",
+    "react-app"
   ],
   "env": {
     "node": true,

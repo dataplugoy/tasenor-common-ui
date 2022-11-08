@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { TasenorSetup, AccountModel, AccountNumber, AccountType, BalanceModel, Currency, Cursor, DatabaseModel, EntryModel, HeadingModel, ImporterModel, Language, PeriodModel, Tag, TagModel, TagType, Url, VATTarget, Asset, TasenorPlugin } from '@dataplug/tasenor-common'
-import { ID, RealID } from '@dataplug/tasenor-common'
+import { TasenorSetup, AccountModel, AccountNumber, AccountType, BalanceModel, Currency, Cursor, DatabaseModel, EntryModel, HeadingModel, ID, RealID, ImporterModel, Language, PeriodModel, Tag, TagModel, TagType, Url, VATTarget, Asset, TasenorPlugin } from '@dataplug/tasenor-common'
 import { sprintf } from 'sprintf-js'
 import dayjs from 'dayjs'
 
