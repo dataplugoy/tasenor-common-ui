@@ -11,7 +11,7 @@ import { DefaultResultViewProps } from './DefaultResultView'
 import { ConfigViewProps } from './ConfigView'
 import { StepList } from './StepList'
 import { ConfigChangeView } from './ConfigChangeView'
-import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, TriggerValues, TriggerValue, TasenorSetup } from '@dataplug/tasenor-common'
+import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value } from '@dataplug/tasenor-common'
 import { RISP } from '../risp'
 import { ArrowBackOutlined, NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { useAxios } from '../misc'
@@ -143,9 +143,9 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
   ).map(label => t(`step-${label}`))
 
   // Extract values from the process config.
-  const values: TriggerValues = {}
+  const values: Values = {}
   Object.keys(process.config).forEach(key => {
-    values[`configure.${key}`] = process.config[key] as TriggerValue
+    values[`configure.${key}`] = process.config[key] as Value
   })
 
   return (

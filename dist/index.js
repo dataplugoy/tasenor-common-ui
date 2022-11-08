@@ -5406,8 +5406,6 @@ init_shim();
 var import_material37 = require("@mui/material");
 var import_react45 = __toESM(require("react"));
 var import_react_i18next24 = require("react-i18next");
-var import_jsoneditor = __toESM(require("jsoneditor"));
-var import_jsoneditor_min = require("jsoneditor/dist/jsoneditor.min.css");
 var JsonEditor = (props) => {
   if (!props.visible) {
     return /* @__PURE__ */ import_react45.default.createElement(import_react45.default.Fragment, null);
@@ -5417,12 +5415,6 @@ var JsonEditor = (props) => {
   const createEditor = (ref) => {
     if (editor)
       return;
-    const options = {
-      mode: "code",
-      mainMenuBar: false,
-      statusBar: true
-    };
-    editor = new import_jsoneditor.default(ref, options, value);
   };
   const onSave = async () => {
     try {
