@@ -66,7 +66,7 @@ test('Filter view to rule conversions', async () => {
     op: 'caseInsensitiveFullMatch',
     field: 'y2',
     text: 'Simple'
-  },{
+  }, {
     op: 'isGreaterThan',
     field: 'num',
     value: 0
@@ -111,39 +111,39 @@ test('Filter view to rule conversions', async () => {
 test('Filter view to result conversion', async () => {
   expect(filterView2results([
     {
-      "reason": {
-        "op": "setLiteral",
-        "value": "expense"
+      reason: {
+        op: 'setLiteral',
+        value: 'expense'
       },
-      "type": {
-        "op": "setLiteral",
-        "value": "account"
+      type: {
+        op: 'setLiteral',
+        value: 'account'
       },
-      "asset": {
-        "op": "setLiteral",
-        "value": "6677"
+      asset: {
+        op: 'setLiteral',
+        value: '6677'
       },
-      "amount": {
-        "op": "copyField",
-        "value": "amount"
+      amount: {
+        op: 'copyField',
+        value: 'amount'
       },
-      "data": {
-        "text": {
-          "op": "copyField",
-          "value": "additionalinfo"
+      data: {
+        text: {
+          op: 'copyField',
+          value: 'additionalinfo'
         }
       }
     }
   ])).toStrictEqual([
     {
-      "amount": "amount",
-      "asset": "\"6677\"",
-      "data":  {
-        "text": "additionalinfo",
+      amount: 'amount',
+      asset: '"6677"',
+      data: {
+        text: 'additionalinfo'
       },
-      "reason": "\"expense\"",
-      "type": "\"account\"",
-    },
+      reason: '"expense"',
+      type: '"account"'
+    }
   ])
 })
 
@@ -183,7 +183,7 @@ test('Filter view to name conversion', async () => {
     op: 'caseInsensitiveMatch',
     field: 'y2',
     text: 'Simple'
-  },{
+  }, {
     op: 'isGreaterThan',
     field: 'num',
     value: 0

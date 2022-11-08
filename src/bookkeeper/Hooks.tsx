@@ -1,10 +1,9 @@
 import { useLocation, useHistory, Location, History } from 'react-router-dom'
-import { DatabaseName, isDatabaseName } from '@dataplug/tasenor-common'
-import { ID } from '@dataplug/tasenor-common'
+import { DatabaseName, isDatabaseName, ID } from '@dataplug/tasenor-common'
 
 // TODO: This could belong to bookkeeper repo. In future generic base could be here.
-export type MainMenu = "" | "admin" | "dashboard" | "txs" | "account" | "report" | "tools" | "data" | "settings" | "classop"
-const mainMenuSet = new Set(["", "admin", "dashboard", "txs", "account", "report", "tools", "data", "settings", "classop"])
+export type MainMenu = '' | 'admin' | 'dashboard' | 'txs' | 'account' | 'report' | 'tools' | 'data' | 'settings' | 'classop'
+const mainMenuSet = new Set(['', 'admin', 'dashboard', 'txs', 'account', 'report', 'tools', 'data', 'settings', 'classop'])
 export const isMainMenu = (name: unknown): name is MainMenu => typeof name === 'string' && mainMenuSet.has(name)
 
 export class MenuState {
@@ -32,14 +31,14 @@ export class MenuState {
     if (loc) {
       if (loc.search.startsWith('?path=')) {
         this.indirectPath = true
-        const search = loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev}), {})
-        const [ , db, main, periodId, accountId, side] = search.path.split('/')
+        const search = loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev }), {})
+        const [, db, main, periodId, accountId, side] = search.path.split('/')
         this.parse({ db, main, periodId, accountId, side, ...search })
         delete this.attrs.path
         delete this.attrs.indirect
       } else {
-        const [ , db, main, periodId, accountId, side] = loc.pathname.split('/')
-        const search = loc.search.length ? loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev}), {}) : {}
+        const [, db, main, periodId, accountId, side] = loc.pathname.split('/')
+        const search = loc.search.length ? loc.search.substr(1).split('&').map(s => s.split('=')).reduce((prev, cur) => ({ [cur[0]]: cur[1], ...prev }), {}) : {}
         this.parse({ db, main, periodId, accountId, side, ...search })
       }
     }
@@ -51,7 +50,7 @@ export class MenuState {
   parse(params: Record<string, string | null>): void {
     const { db, main, periodId, accountId, side } = params
     Object.keys(params).forEach(key => {
-      switch(key) {
+      switch (key) {
         case 'db':
           this.db = isDatabaseName(db) ? db : '' as DatabaseName
           break
@@ -83,7 +82,7 @@ export class MenuState {
   }
 
   get(variable: string) {
-    switch(variable) {
+    switch (variable) {
       case 'db':
       case 'main':
         return this[variable] === '_' ? '' : this[variable]

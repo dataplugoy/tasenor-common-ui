@@ -8,7 +8,6 @@ import { useNavigation } from '../src/bookkeeper/Hooks'
 import PageTabs from './PageTabs'
 import PageRuleEditor from './PageRuleEditor'
 
-
 /**
  * Playground for stuff.
  */
@@ -16,11 +15,11 @@ const App = observer(() => {
   const nav = useNavigation()
   return (
     <Paper style={{ margin: '1rem', padding: '1rem' }} elevation={4}>
-      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'currency'})}>Currency</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'dialog'})}>Dialog</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'tagGroup'})}>Tag Group</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'tabs'})}>Tabs</a>&nbsp;|&nbsp;
-      <a href="#" onClick={() => nav.go({'indirect': 'yes', side: 'ruleEditorSingle'})}>Rule Editor</a>
+      <a href="#" onClick={() => nav.go({ indirect: 'yes', side: 'currency' })}>Currency</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({ indirect: 'yes', side: 'dialog' })}>Dialog</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({ indirect: 'yes', side: 'tagGroup' })}>Tag Group</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({ indirect: 'yes', side: 'tabs' })}>Tabs</a>&nbsp;|&nbsp;
+      <a href="#" onClick={() => nav.go({ indirect: 'yes', side: 'ruleEditorSingle' })}>Rule Editor</a>
       <hr/>
       {JSON.stringify(nav)}
       <hr/>

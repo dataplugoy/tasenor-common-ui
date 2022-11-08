@@ -31,7 +31,7 @@ export const TabPanel = (props: TabPanelProps): React.Element => {
 function a11yProps(index) {
   return {
     id: `tab-${index}`,
-    'aria-controls': `tabpanel-${index}`,
+    'aria-controls': `tabpanel-${index}`
   }
 }
 

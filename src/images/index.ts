@@ -3,4 +3,4 @@
  *
  * @module tasenor-common-ui/src/images
  */
- export * from './QuestionMark'
+export * from './QuestionMark'

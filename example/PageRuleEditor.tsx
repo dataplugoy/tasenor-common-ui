@@ -71,7 +71,7 @@ const PageRuleEditor = (): JSX.Element => {
             }
           }
         ]
-      },
+      }
     ]
   }
 

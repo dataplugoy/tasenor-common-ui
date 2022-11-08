@@ -22,31 +22,30 @@ export interface RuleColumnEditProps {
    onSetFilter: (filters: RuleFilterView[]) => void
 }
 
-
 /**
 * Editor for single named column of the example line.
 */
 export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element => {
-   const { name, value, filters, onSetFilter, options } = props
+  const { name, value, filters, onSetFilter, options } = props
 
-   const [ mode, setMode ] = useState<RuleColumnEditMode>(null)
-   const [ text, setText ] = useState<string>(value)
-   const [ toggles, setToggles ] = useState<string[]>([])
+  const [mode, setMode] = useState<RuleColumnEditMode>(null)
+  const [text, setText] = useState<string>(value)
+  const [toggles, setToggles] = useState<string[]>([])
 
-   const hasBeenUsed = filters.filter(f => f.field === name).length > 0
-   const isNumeric = options.numericFields.filter(f => f === name).length > 0
-   const isText = !isNumeric
-   const isGreaterThan = filters.filter(f => f.op === 'isGreaterThan').length > 0
-   const isLessThan = filters.filter(f => f.op === 'isLessThan').length > 0
+  const hasBeenUsed = filters.filter(f => f.field === name).length > 0
+  const isNumeric = options.numericFields.filter(f => f === name).length > 0
+  const isText = !isNumeric
+  const isGreaterThan = filters.filter(f => f.op === 'isGreaterThan').length > 0
+  const isLessThan = filters.filter(f => f.op === 'isLessThan').length > 0
 
-   const updateFilter = (view: RuleFilterView): void => {
-     const rules = clone(filters).filter((f: RuleFilterView) => f.field !== view.field)
-     rules.push(view)
-     onSetFilter(rules)
-   }
+  const updateFilter = (view: RuleFilterView): void => {
+    const rules = clone(filters).filter((f: RuleFilterView) => f.field !== view.field)
+    rules.push(view)
+    onSetFilter(rules)
+  }
 
-   // TODO: Translations.
-   let IconRow: JSX.Element = (
+  // TODO: Translations.
+  let IconRow: JSX.Element = (
      <TableRow selected={hasBeenUsed}>
        <TableCell variant="head"><b>{name}</b></TableCell>
        <TableCell>{value}</TableCell>
@@ -70,7 +69,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
              size="medium"
              title="Require that this field is negative"
              disabled={isLessThan}
-             onClick={() => updateFilter({ op: 'isLessThan', field: name, "value": 0 })}
+             onClick={() => updateFilter({ op: 'isLessThan', field: name, value: 0 })}
            >
              <RemoveCircleOutlineIcon/>
            </IconButton>
@@ -82,7 +81,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
              size="medium"
              title="Require that this field is positive"
              disabled={isGreaterThan}
-             onClick={() => updateFilter({ op: 'isGreaterThan', field: name, "value": 0 })
+             onClick={() => updateFilter({ op: 'isGreaterThan', field: name, value: 0 })
            }
          >
              <AddCircleOutlineIcon/>
@@ -90,17 +89,17 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
          }
        </TableCell>
      </TableRow>
-   )
+  )
 
-   let EditRow: JSX.Element | null = null
+  let EditRow: JSX.Element | null = null
 
-   if (mode === 'textMatch') {
-     const info = (toggles.includes('whole') ?
-       'Match if the full text in `{field}` column is the text below ({case})' :
-       'Match if the text is found from `{field}` column ({case})'
-     ).replace('{field}', name).replace('{case}', toggles.includes('case') ? 'case sensitive' : 'ignore case')
+  if (mode === 'textMatch') {
+    const info = (toggles.includes('whole')
+      ? 'Match if the full text in `{field}` column is the text below ({case})'
+      : 'Match if the text is found from `{field}` column ({case})'
+    ).replace('{field}', name).replace('{case}', toggles.includes('case') ? 'case sensitive' : 'ignore case')
 
-     IconRow = (
+    IconRow = (
        <TableRow>
          <TableCell colSpan={2}>{info}</TableCell>
          <TableCell>
@@ -110,9 +109,9 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
            </ToggleButtonGroup>
          </TableCell>
        </TableRow>
-     )
+    )
 
-     EditRow = (
+    EditRow = (
        <TableRow>
          <TableCell colSpan={3}>
            <TextField
@@ -122,7 +121,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
                  if (event.key === 'Enter') {
                    setMode(null)
                    const op = `case${toggles.includes('case') ? 'Insensitive' : 'Sensitive'}${toggles.includes('whole') ? 'Full' : ''}Match` as RuleViewOp
-                   updateFilter({op, field: name, "text": text})
+                   updateFilter({ op, field: name, text })
                  }
                  if (event.key === 'Escape') {
                    setMode(null)
@@ -134,8 +133,8 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
              />
          </TableCell>
        </TableRow>
-     )
-   }
+    )
+  }
 
-   return EditRow ? <>{IconRow}{EditRow}</> : IconRow
- })
+  return EditRow ? <>{IconRow}{EditRow}</> : IconRow
+})

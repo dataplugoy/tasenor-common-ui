@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { TextFileLine } from '@dataplug/tasenor-common'
+import { TextFileLine, RuleFilterView, TransactionImportOptions } from '@dataplug/tasenor-common'
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material'
-import { RuleFilterView, TransactionImportOptions } from '@dataplug/tasenor-common'
 import { Trans, useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { IconButton as TasenorIconButton } from '../IconButton'
@@ -21,7 +20,7 @@ export const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => 
   const { line, options } = props
   const { columns } = line
   const { t } = useTranslation()
-  const [ more, setMore ] = useState(false)
+  const [more, setMore] = useState(false)
 
   const insignificantFields = new Set(options.insignificantFields || [])
 
@@ -31,9 +30,9 @@ export const RuleLineEdit = observer((props: RuleLineEditProps): JSX.Element => 
         <TableBody>
         {
           Object.keys(columns).filter(key => !key.startsWith('_')).map(key =>
-            insignificantFields.has(key) && !more ?
-            <React.Fragment key={key}></React.Fragment> :
-            <RuleColumnEdit
+            insignificantFields.has(key) && !more
+              ? <React.Fragment key={key}></React.Fragment>
+              : <RuleColumnEdit
               key={key}
               name={key}
               options={options}

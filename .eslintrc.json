@@ -3,8 +3,7 @@
   "extends": [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "semistandard",
-    "react-app"
+    "semistandard"
   ],
   "plugins": [
     "@typescript-eslint"

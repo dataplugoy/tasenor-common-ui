@@ -29,7 +29,7 @@ export const NumberRenderer: Renderer = (props: RenderingProps) => {
     error={false}
     autoFocus
     InputProps={{
-      endAdornment: <InputAdornment position="end">{element.unit || ''}</InputAdornment>,
+      endAdornment: <InputAdornment position="end">{element.unit || ''}</InputAdornment>
     }}
     onChange={(e) => {
       const value = e.target.value === '' ? null : parseFloat(e.target.value)

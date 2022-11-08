@@ -1,22 +1,17 @@
 import React, { useState } from 'react'
-import { SegmentId, TextFileLine } from '@dataplug/tasenor-common'
-import { Box, Button, Divider, Grid, Stack, TextField, Typography } from '@mui/material'
-import { AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value } from '@dataplug/tasenor-common'
-import { ProcessConfig } from '@dataplug/tasenor-common'
+import { SegmentId, TextFileLine, AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, ProcessConfig, filterView2rule, filterView2results } from '@dataplug/tasenor-common'
+import { Box, Button, Divider, Grid, Stack, TextField, Typography, styled, Paper } from '@mui/material'
 import { TagGroup } from '../TagGroups'
 import { AccountSelector } from '../AccountSelector'
 import { useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { filterView2rule, filterView2results } from '@dataplug/tasenor-common'
-import { styled } from '@mui/material'
-import { Paper } from '@mui/material'
 import { RuleLineEdit } from './RuleLineEdit'
 import { VisualRule } from './VisualRule'
 
 /**
  * Major operating mode for the editor: either build once off rule or complete new permanent rule.
  */
- export type RuleEditorMode = null | 'once-off' | 'new-rule'
+export type RuleEditorMode = null | 'once-off' | 'new-rule'
 
 /**
  * The collection of values produced and used by the rule editor.
@@ -54,9 +49,8 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'left',
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.secondary
 }))
-
 
 /**
  * Actual editor for rules.
@@ -68,8 +62,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
   const [tags, setTags] = useState<string[]>(values && values.tags ? values.tags : [])
   const [account, setAccount] = useState(values && values.account ? values.account : '')
-  const [text, setText] = useState(values && values.text ?
-    values.text : (lines && lines.length ? lines[0].columns._textField : ''))
+  const [text, setText] = useState(values && values.text
+    ? values.text
+    : (lines && lines.length ? lines[0].columns._textField : ''))
   const [rule, setRule] = useState<ImportRule>({
     name: 'New Rule',
     filter: 'null' as Expression,
@@ -108,15 +103,15 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
         reason: _totalAmountField < 0 ? 'expense' : 'income',
         type: 'account',
         asset: account,
-        amount: - _totalAmountField,
+        amount: -_totalAmountField,
         data: {
           text
         }
       })
     }
     if (tags.length) {
-      if (transfers[0]) transfers[0]['tags'] = tags
-      if (transfers[1]) transfers[1]['tags'] = tags
+      if (transfers[0]) transfers[0].tags = tags
+      if (transfers[1]) transfers[1].tags = tags
     }
     return transfers
   }
@@ -135,12 +130,12 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
       if (cashAccount && options.totalAmountField) {
         results.push(
           {
-            reason: { op: 'setLiteral', 'value': _totalAmountField < 0 ? 'expense' : 'income' },
-            type: { op: 'setLiteral', 'value': 'account' },
-            asset: { op: 'setLiteral', 'value': cashAccount },
-            amount: { op: 'copyField', 'value': options.totalAmountField },
+            reason: { op: 'setLiteral', value: _totalAmountField < 0 ? 'expense' : 'income' },
+            type: { op: 'setLiteral', value: 'account' },
+            asset: { op: 'setLiteral', value: cashAccount },
+            amount: { op: 'copyField', value: options.totalAmountField },
             data: {
-              text: { op: 'copyField', 'value': options.textField },
+              text: { op: 'copyField', value: options.textField }
             }
           }
         )
@@ -149,24 +144,23 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     if (account) {
       results.push(
         {
-          reason: { op: 'setLiteral', 'value': _totalAmountField < 0 ? 'expense' : 'income' },
-          type: { op: 'setLiteral', 'value': 'account' },
-          asset: { op: 'setLiteral', 'value': account },
-          amount: { op: 'copyInverseField', 'value': options.totalAmountField },
+          reason: { op: 'setLiteral', value: _totalAmountField < 0 ? 'expense' : 'income' },
+          type: { op: 'setLiteral', value: 'account' },
+          asset: { op: 'setLiteral', value: account },
+          amount: { op: 'copyInverseField', value: options.totalAmountField },
           data: {
-            text: { op: 'copyField', 'value': options.textField },
+            text: { op: 'copyField', value: options.textField }
           }
         }
       )
     }
     if (tags.length) {
-      if (results[0]) results[0]['tags'] = { op: 'setLiteral', 'value': JSON.stringify(tags) }
-      if (results[1]) results[1]['tags'] = { op: 'setLiteral', 'value': JSON.stringify(tags) }
+      if (results[0]) results[0].tags = { op: 'setLiteral', value: JSON.stringify(tags) }
+      if (results[1]) results[1].tags = { op: 'setLiteral', value: JSON.stringify(tags) }
     }
 
     return results
   }
-
 
   // This is actual output value of the editor as a whole.
   const editorOuput: RuleEditorValues = {
@@ -205,14 +199,14 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               value={account}
               accounts={store.accounts}
               onChange={num => {
-                  setAccount(num)
-                  setMode('once-off')
-                  const resView = resultViews({ account, tags })
-                  const result = filterView2results(resView)
-                  const newRule = {...rule, result, view: { ...rule.view, result: resView }}
-                  setRule(newRule)
-                  onChange({...editorOuput, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num})
-                }
+                setAccount(num)
+                setMode('once-off')
+                const resView = resultViews({ account, tags })
+                const result = filterView2results(resView)
+                const newRule = { ...rule, result, view: { ...rule.view, result: resView } }
+                setRule(newRule)
+                onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num })
+              }
               }
             />
             <TextField
@@ -220,10 +214,10 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               label={'Describe this transaction'}
               value={text}
               onChange={(e) => {
-                  setText(e.target.value)
-                  setMode('once-off')
-                  onChange({...editorOuput, transfers: transfers({ text: e.target.value, tags, account }), text: e.target.value})
-                }
+                setText(e.target.value)
+                setMode('once-off')
+                onChange({ ...editorOuput, transfers: transfers({ text: e.target.value, tags, account }), text: e.target.value })
+              }
               }
               sx={{ pb: 1, pt: 1 }}
             />
@@ -232,14 +226,14 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               single={false}
               options={Object.keys(allTags) as Tag[]}
               onChange={(selected) => {
-                  setTags(selected)
-                  setMode('once-off')
-                  const resView = resultViews({ account, tags })
-                  const result = filterView2results(resView)
-                  const newRule = {...rule, result, view: { ...rule.view, result: resView }}
-                  setRule(newRule)
-                  onChange({...editorOuput, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected})
-                }
+                setTags(selected)
+                setMode('once-off')
+                const resView = resultViews({ account, tags })
+                const result = filterView2results(resView)
+                const newRule = { ...rule, result, view: { ...rule.view, result: resView } }
+                setRule(newRule)
+                onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected })
+              }
               }
               selected={tags}
             />
@@ -255,11 +249,11 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               label={'Name of the rule'}
               value={rule.name}
               onChange={(e) => {
-                  setAutonaming(e.target.value.length === 0)
-                  setMode('new-rule')
-                  setRule({...rule, name: e.target.value })
-                  onChange({...editorOuput, rule: { ...rule, name: e.target.value }})
-                }
+                setAutonaming(e.target.value.length === 0)
+                setMode('new-rule')
+                setRule({ ...rule, name: e.target.value })
+                onChange({ ...editorOuput, rule: { ...rule, name: e.target.value } })
+              }
               }
               sx={{ mt: 2 }}
             />
@@ -275,9 +269,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                     setMode('new-rule')
                     const resView = resultViews({ account, tags })
                     const result = filterView2results(resView)
-                    const newRule = {...rule, name, result, filter, view: { filter: filters, result: resView }}
+                    const newRule = { ...rule, name, result, filter, view: { filter: filters, result: resView } }
                     setRule(newRule)
-                    onChange({...editorOuput, rule: newRule })
+                    onChange({ ...editorOuput, rule: newRule })
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
@@ -301,12 +295,12 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               <VisualRule
                 rule={rule.view}
                 onSetFilter={(filters) => {
-                    const filter = filterView2rule(filters)
-                    const name = autonaming ? filterView2name(filters) : rule.name
-                    const newRule = {...rule, name, filter, view: { ...rule.view, filter: filters}}
-                    setRule(newRule)
-                    onChange({...editorOuput, rule: newRule })
-                  }
+                  const filter = filterView2rule(filters)
+                  const name = autonaming ? filterView2name(filters) : rule.name
+                  const newRule = { ...rule, name, filter, view: { ...rule.view, filter: filters } }
+                  setRule(newRule)
+                  onChange({ ...editorOuput, rule: newRule })
+                }
                 }
               />
             )}

@@ -19,7 +19,7 @@ const PageCurrency = (): JSX.Element => {
         type: 'currency',
         name: 'currency',
         actions: {}
-      },
+      }
     ]
   }
 

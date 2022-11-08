@@ -95,7 +95,7 @@ export const ImportFile = (props: ImportFileProps): JSX.Element => {
     palette.primary.main,
     palette.secondary.dark,
     palette.primary.light,
-    palette.secondary.main,
+    palette.secondary.main
   ]
   const segmentIds: Set<string> = new Set()
   const segementNumbers: Record<string, number> = {}

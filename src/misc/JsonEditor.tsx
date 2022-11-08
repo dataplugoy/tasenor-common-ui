@@ -29,7 +29,7 @@ export const JsonEditor = (props: JsonEditorProps): JSX.Element => {
 
   const createEditor = (ref) => {
     if (editor) return
-/*
+    /*
     const options: JSONEditorOptions = {
       mode: 'code',
       mainMenuBar: false,

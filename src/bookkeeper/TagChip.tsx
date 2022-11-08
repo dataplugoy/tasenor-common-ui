@@ -1,7 +1,7 @@
 import React from 'react'
 import { TagModel } from '@dataplug/tasenor-common'
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material'
-import { Avatar, Chip } from "@mui/material"
+import { Avatar, Chip } from '@mui/material'
 
 export type TagChipProps = {
   disabled?: boolean

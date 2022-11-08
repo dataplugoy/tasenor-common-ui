@@ -12,7 +12,6 @@ export const AccountRenderer: Renderer = (props: RenderingProps<AccountElement>)
   const value = values[element.name]
   const [, setValue] = React.useState(value)
 
-
   return <AccountSelector
     label={label}
     value={value && setup.store.database && setup.store.database.getAccountByNumber(`${value}`) ? value as AccountNumber : '' as AccountNumber}
