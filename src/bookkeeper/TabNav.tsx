@@ -3,12 +3,12 @@ import React from 'react'
 import { useNavigation } from './Hooks'
 
 export interface TabPanelProps {
-  children: React.Element
+  children: JSX.Element
   value: number
   index: number
 }
 
-export const TabPanel = (props: TabPanelProps): React.Element => {
+export const TabPanel = (props: TabPanelProps): JSX.Element => {
   const { children, value, index, ...other } = props
 
   return (
@@ -38,7 +38,7 @@ function a11yProps(index) {
 export interface TabsProps {
   menu: string
   labels: Record<string, string>
-  children: React.Element[]
+  children: JSX.Element[]
 }
 
 /**
@@ -48,7 +48,7 @@ export interface TabsProps {
  * @param props.labels Mapping from menu values to tab display names.
  * @returns
  */
-export const TabNav = (props: TabsProps): React.Element => {
+export const TabNav = (props: TabsProps): JSX.Element => {
   const { menu, labels, children } = props
   const nav = useNavigation()
 
