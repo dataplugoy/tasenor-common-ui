@@ -1,5 +1,4 @@
-import { TextFileLine } from '@dataplug/tasenor-common';
-import { RuleFilterView, TransactionImportOptions } from '@dataplug/tasenor-common';
+import { TextFileLine, RuleFilterView, TransactionImportOptions } from '@dataplug/tasenor-common';
 interface RuleLineEditProps {
     line: TextFileLine;
     filters: RuleFilterView[];

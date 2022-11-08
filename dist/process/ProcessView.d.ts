@@ -8,10 +8,10 @@ import { ConfigViewProps } from './ConfigView';
 import { RenderingProps, TasenorSetup } from '@dataplug/tasenor-common';
 export declare type ProcessViewProps = {
     api: string;
+    setup: TasenorSetup;
     token?: string;
     id: number;
     step?: number;
-    setup?: TasenorSetup;
     onBack?: () => void;
     onChangeStep?: (step: number) => void;
     stepView?: (props: DefaultStepViewProps) => JSX.Element;

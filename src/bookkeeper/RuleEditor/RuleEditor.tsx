@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SegmentId, TextFileLine, AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, ProcessConfig, filterView2rule, filterView2results } from '@dataplug/tasenor-common'
+import { SegmentId, TextFileLine, AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, ProcessConfig, filterView2rule, filterView2results, isValues, isValue } from '@dataplug/tasenor-common'
 import { Box, Button, Divider, Grid, Stack, TextField, Typography, styled, Paper } from '@mui/material'
 import { TagGroup } from '../TagGroups'
 import { AccountSelector } from '../AccountSelector'
@@ -109,9 +109,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
         }
       })
     }
-    if (tags.length) {
-      if (transfers[0]) transfers[0].tags = tags
-      if (transfers[1]) transfers[1].tags = tags
+    if (tags.length && isValue(tags)) {
+      if (isValues(transfers[0])) transfers[0].tags = tags
+      if (isValues(transfers[1])) transfers[1].tags = tags
     }
     return transfers
   }

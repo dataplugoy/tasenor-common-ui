@@ -1,6 +1,4 @@
-import { SegmentId, TextFileLine } from '@dataplug/tasenor-common';
-import { AccountNumber, Store, TransactionImportOptions, Value } from '@dataplug/tasenor-common';
-import { ProcessConfig } from '@dataplug/tasenor-common';
+import { SegmentId, TextFileLine, AccountNumber, Store, TransactionImportOptions, Value, ProcessConfig } from '@dataplug/tasenor-common';
 /**
  * Major operating mode for the editor: either build once off rule or complete new permanent rule.
  */

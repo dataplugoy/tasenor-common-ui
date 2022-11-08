@@ -18,10 +18,10 @@ import { useAxios } from '../misc'
 
 export type ProcessViewProps = {
   api: string
+  setup: TasenorSetup
   token?: string
   id: number
   step?: number
-  setup?: TasenorSetup
   onBack?: () => void
   onChangeStep?: (step: number) => void
   stepView?: (props: DefaultStepViewProps) => JSX.Element
@@ -215,7 +215,7 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
                   key="directions"
                   element={directions.element}
                   values={values}
-                  setup={props.setup || { baseUrl: `${props.api}/${process.id}` }}
+                  setup={props.setup}
                   onActionSuccess={onActionSuccess}
                 />
               </>}
