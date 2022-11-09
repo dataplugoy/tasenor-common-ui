@@ -196,14 +196,14 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             <Typography variant="h5">Quick Once-Off Selection</Typography>
             <AccountSelector
               label={'Select Account'}
-              value={account}
+              value={account as AccountNumber}
               accounts={store.accounts}
               onChange={num => {
                 setAccount(num)
                 setMode('once-off')
                 const resView = resultViews({ account, tags })
                 const result = filterView2results(resView)
-                const newRule = { ...rule, result, view: { ...rule.view, result: resView } }
+                const newRule: ImportRule = { ...rule, result, view: { ...rule.view, result: resView } }
                 setRule(newRule)
                 onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num })
               }
@@ -230,12 +230,12 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 setMode('once-off')
                 const resView = resultViews({ account, tags })
                 const result = filterView2results(resView)
-                const newRule = { ...rule, result, view: { ...rule.view, result: resView } }
+                const newRule: ImportRule = { ...rule, result, view: { ...rule.view, result: resView } }
                 setRule(newRule)
                 onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected })
               }
               }
-              selected={tags}
+              selected={tags as Tag[]}
             />
             <Button variant="outlined" disabled={ !text || !account } onClick={() => onContinue()}>Continue</Button>
           </Item>
@@ -251,8 +251,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               onChange={(e) => {
                 setAutonaming(e.target.value.length === 0)
                 setMode('new-rule')
-                setRule({ ...rule, name: e.target.value })
-                onChange({ ...editorOuput, rule: { ...rule, name: e.target.value } })
+                const newRule: ImportRule = { ...rule, name: e.target.value }
+                setRule(newRule)
+                onChange({ ...editorOuput, rule: newRule })
               }
               }
               sx={{ mt: 2 }}
@@ -269,9 +270,9 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                     setMode('new-rule')
                     const resView = resultViews({ account, tags })
                     const result = filterView2results(resView)
-                    const newRule = { ...rule, name, result, filter, view: { filter: filters, result: resView } }
+                    const newRule: ImportRule = { ...rule, name, result, filter, view: { filter: filters, result: resView } }
                     setRule(newRule)
-                    onChange({ ...editorOuput, rule: newRule })
+                    onChange({ ...editorOuput, rule: newRule})
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
@@ -297,7 +298,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 onSetFilter={(filters) => {
                   const filter = filterView2rule(filters)
                   const name = autonaming ? filterView2name(filters) : rule.name
-                  const newRule = { ...rule, name, filter, view: { ...rule.view, filter: filters } }
+                  const newRule: ImportRule = { ...rule, name, filter, view: { ...rule.view, filter: filters } }
                   setRule(newRule)
                   onChange({ ...editorOuput, rule: newRule })
                 }
