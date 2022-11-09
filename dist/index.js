@@ -4126,8 +4126,9 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
     onChange: (e) => {
       setAutonaming(e.target.value.length === 0);
       setMode("new-rule");
-      setRule({ ...rule, name: e.target.value });
-      onChange({ ...editorOuput, rule: { ...rule, name: e.target.value } });
+      const newRule = { ...rule, name: e.target.value };
+      setRule(newRule);
+      onChange({ ...editorOuput, rule: newRule });
     },
     sx: { mt: 2 }
   }), lines.map((line, idx) => /* @__PURE__ */ import_react13.default.createElement(import_material12.Stack, {
@@ -5699,13 +5700,13 @@ var ProcessView = (props) => {
     step: process2.steps[(currentStep || 0) - 1]
   }), needAnswers && /* @__PURE__ */ import_react50.default.createElement(import_react50.default.Fragment, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.Typography, {
     variant: "subtitle1"
-  }, /* @__PURE__ */ import_react50.default.createElement(import_react_i18next26.Trans, null, "Additional information needed")), /* @__PURE__ */ import_react50.default.createElement(RISP, {
+  }, /* @__PURE__ */ import_react50.default.createElement(import_react_i18next26.Trans, null, "Additional information needed")), (0, import_tasenor_common23.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react50.default.createElement(RISP, {
     key: "directions",
     element: directions.element,
     values,
     setup: props.setup,
     onActionSuccess
-  })))), hasSteps && /* @__PURE__ */ import_react50.default.createElement(import_material39.TableRow, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, {
+  }) || /* @__PURE__ */ import_react50.default.createElement(import_react50.default.Fragment, null, "INVALID RISP ELEMENT")))), hasSteps && /* @__PURE__ */ import_react50.default.createElement(import_material39.TableRow, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, {
     colSpan: 5,
     align: "left"
   }, /* @__PURE__ */ import_react50.default.createElement(StepView, {
