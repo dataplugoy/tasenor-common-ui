@@ -203,7 +203,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 setMode('once-off')
                 const resView = resultViews({ account, tags })
                 const result = filterView2results(resView)
-                const ruleView: RuleView = { ...rule.view, result: resView }
+                const ruleView: RuleView = { ...rule.view || { filter: [] }, result: resView }
                 const newRule: ImportRule = { ...rule, result, view: ruleView }
                 setRule(newRule)
                 onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num })
@@ -231,7 +231,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 setMode('once-off')
                 const resView = resultViews({ account, tags })
                 const result = filterView2results(resView)
-                const ruleView: RuleView = { ...rule.view, result: resView }
+                const ruleView: RuleView = { ...rule.view || { filter: [] }, result: resView }
                 const newRule: ImportRule = { ...rule, result, view: ruleView }
                 setRule(newRule)
                 onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected })
@@ -300,7 +300,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 onSetFilter={(filters) => {
                   const filter = filterView2rule(filters)
                   const name = autonaming ? filterView2name(filters) : rule.name
-                  const ruleView: RuleView = { ...rule.view, filter: filters }
+                  const ruleView: RuleView = { ...rule.view || { result: [] }, filter: filters }
                   const newRule: ImportRule = { ...rule, name, filter, view: ruleView }
                   setRule(newRule)
                   onChange({ ...editorOuput, rule: newRule })
