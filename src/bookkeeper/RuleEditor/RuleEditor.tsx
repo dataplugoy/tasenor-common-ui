@@ -272,7 +272,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                     const result = filterView2results(resView)
                     const newRule: ImportRule = { ...rule, name, result, filter, view: { filter: filters, result: resView } }
                     setRule(newRule)
-                    onChange({ ...editorOuput, rule: newRule})
+                    onChange({ ...editorOuput, rule: newRule })
                   }}
                 />
                 {idx < lines.length - 1 && <Divider variant="middle"/>}
