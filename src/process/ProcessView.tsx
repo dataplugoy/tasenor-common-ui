@@ -11,7 +11,7 @@ import { DefaultResultViewProps } from './DefaultResultView'
 import { ConfigViewProps } from './ConfigView'
 import { StepList } from './StepList'
 import { ConfigChangeView } from './ConfigChangeView'
-import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value, Directions } from '@dataplug/tasenor-common'
+import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value, Directions, isTasenorElement } from '@dataplug/tasenor-common'
 import { RISP } from '../risp'
 import { ArrowBackOutlined, NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { useAxios } from '../misc'
@@ -109,7 +109,7 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
     directions.type === 'ui'
   )
 
-  const wasConfigured = (
+  const wasConfigured: boolean = (
     currentStep !== undefined &&
     currentStep > 0 &&
     process.steps[currentStep - 1] &&
@@ -211,13 +211,16 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
               {wasConfigured && <ConfigChangeView step={process.steps[(currentStep || 0) - 1]} />}
               {needAnswers && <>
                 <Typography variant="subtitle1"><Trans>Additional information needed</Trans></Typography>
-                <RISP
-                  key="directions"
-                  element={directions.element}
-                  values={values}
-                  setup={props.setup}
-                  onActionSuccess={onActionSuccess}
-                />
+                {
+                  (isTasenorElement(directions.element) &&
+                  <RISP
+                    key="directions"
+                    element={directions.element}
+                    values={values}
+                    setup={props.setup}
+                    onActionSuccess={onActionSuccess}
+                  />) || <>INVALID RISP ELEMENT</>
+                }
               </>}
             </TableCell>
           </TableRow>
