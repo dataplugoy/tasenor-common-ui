@@ -1,14 +1,13 @@
-import React from 'react';
 export interface TabPanelProps {
-    children: React.Element;
+    children: JSX.Element;
     value: number;
     index: number;
 }
-export declare const TabPanel: (props: TabPanelProps) => React.Element;
+export declare const TabPanel: (props: TabPanelProps) => JSX.Element;
 export interface TabsProps {
     menu: string;
     labels: Record<string, string>;
-    children: React.Element[];
+    children: JSX.Element[];
 }
 /**
  * Tab navigation using the navigation hook directly.
@@ -17,4 +16,4 @@ export interface TabsProps {
  * @param props.labels Mapping from menu values to tab display names.
  * @returns
  */
-export declare const TabNav: (props: TabsProps) => React.Element;
+export declare const TabNav: (props: TabsProps) => JSX.Element;
