@@ -11,7 +11,7 @@ import { DefaultResultViewProps } from './DefaultResultView'
 import { ConfigViewProps } from './ConfigView'
 import { StepList } from './StepList'
 import { ConfigChangeView } from './ConfigChangeView'
-import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value, Directions, isTasenorElement } from '@dataplug/tasenor-common'
+import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value, isTasenorElement } from '@dataplug/tasenor-common'
 import { RISP } from '../risp'
 import { ArrowBackOutlined, NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { useAxios } from '../misc'
@@ -100,7 +100,7 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
   const canChangeStep = process.currentStep !== undefined && process.currentStep !== null && process.steps && process.steps.length > 1
   const hasSteps = process.currentStep !== undefined && process.steps.length > 0
   const lastStep = currentStep !== undefined && process.steps.length > 0 && currentStep === process.steps.length - 1
-  const directions: Directions = currentStep !== undefined && process.steps[currentStep] ? process.steps[currentStep].directions || {} : {}
+  const directions = currentStep !== undefined && process.steps[currentStep] ? process.steps[currentStep].directions || {} : {}
   const needAnswers = (
     hasSteps &&
     process.status === 'WAITING' &&
