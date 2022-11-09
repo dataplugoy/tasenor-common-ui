@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SegmentId, TextFileLine, AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, ProcessConfig, filterView2rule, filterView2results, isValues, isValue } from '@dataplug/tasenor-common'
+import { SegmentId, TextFileLine, AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, ProcessConfig, filterView2rule, filterView2results, isValues, isValue, RuleView } from '@dataplug/tasenor-common'
 import { Box, Button, Divider, Grid, Stack, TextField, Typography, styled, Paper } from '@mui/material'
 import { TagGroup } from '../TagGroups'
 import { AccountSelector } from '../AccountSelector'
@@ -203,7 +203,8 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 setMode('once-off')
                 const resView = resultViews({ account, tags })
                 const result = filterView2results(resView)
-                const newRule: ImportRule = { ...rule, result, view: { ...rule.view, result: resView } }
+                const ruleView: RuleView = { ...rule.view, result: resView }
+                const newRule: ImportRule = { ...rule, result, view: ruleView }
                 setRule(newRule)
                 onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags, account: num }), account: num })
               }
@@ -230,7 +231,8 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 setMode('once-off')
                 const resView = resultViews({ account, tags })
                 const result = filterView2results(resView)
-                const newRule: ImportRule = { ...rule, result, view: { ...rule.view, result: resView } }
+                const ruleView: RuleView = { ...rule.view, result: resView }
+                const newRule: ImportRule = { ...rule, result, view: ruleView }
                 setRule(newRule)
                 onChange({ ...editorOuput, rule: newRule, transfers: transfers({ text, tags: selected, account }), tags: selected })
               }
@@ -298,7 +300,8 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
                 onSetFilter={(filters) => {
                   const filter = filterView2rule(filters)
                   const name = autonaming ? filterView2name(filters) : rule.name
-                  const newRule: ImportRule = { ...rule, name, filter, view: { ...rule.view, filter: filters } }
+                  const ruleView: RuleView = { ...rule.view, filter: filters }
+                  const newRule: ImportRule = { ...rule, name, filter, view: ruleView }
                   setRule(newRule)
                   onChange({ ...editorOuput, rule: newRule })
                 }
