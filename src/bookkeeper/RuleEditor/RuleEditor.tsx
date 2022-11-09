@@ -165,7 +165,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
   // This is actual output value of the editor as a whole.
   const editorOuput: RuleEditorValues = {
     mode,
-    account,
+    account: account as AccountNumber,
     tags,
     text,
     segment: lines[0].segmentId as SegmentId,
