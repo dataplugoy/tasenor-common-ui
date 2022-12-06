@@ -56,6 +56,7 @@ export const Dialog = (props: DialogProps): JSX.Element => {
         keyEnter: () => keyEnter()
       })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible])
 
   const muiProps: Record<string, unknown> = {

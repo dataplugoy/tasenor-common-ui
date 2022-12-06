@@ -4,4 +4,4 @@ export const QuestionMarkData = 'iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAA
 
 export const QuestionMarkInline = `data:image/png;base64,${QuestionMarkData}`
 
-export const QuestionMark = () => <img src={QuestionMarkInline} />
+export const QuestionMark = () => <img alt="Question mark" src={QuestionMarkInline} />

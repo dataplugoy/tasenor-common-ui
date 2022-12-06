@@ -24,7 +24,7 @@ export const JsonEditor = (props: JsonEditorProps): JSX.Element => {
     return <></>
   }
 
-  const value = props.json
+  //  const value = props.json
   let editor
 
   const createEditor = (ref) => {
