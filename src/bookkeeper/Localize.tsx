@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { haveCatalog } from '@dataplug/tasenor-common'
 
 export interface LocalizeProps {
-  date: string | number
+  date?: string | number
   children?: JSX.Element
 }
 
@@ -28,7 +28,7 @@ export const Localize = (props: LocalizeProps) => {
     return text
   }
 
-  if ('date' in props) {
+  if (props.date) {
     return catalog.date2str(props.date)
   }
   const what = props.children
