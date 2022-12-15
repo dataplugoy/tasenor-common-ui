@@ -1,4 +1,4 @@
-export declare type RISPProviderProps = {
+export type RISPProviderProps = {
     children: JSX.Element;
     onInit?: () => void;
     onBlur?: () => void | Promise<void>;

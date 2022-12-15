@@ -1,5 +1,5 @@
 import { ProcessStatus } from '@dataplug/tasenor-common';
-export declare type ProcessStatusIconProps = {
+export type ProcessStatusIconProps = {
     status: ProcessStatus;
 };
 /**

@@ -2,11 +2,11 @@ import { SegmentId, TextFileLine, AccountNumber, Store, TransactionImportOptions
 /**
  * Major operating mode for the editor: either build once off rule or complete new permanent rule.
  */
-export declare type RuleEditorMode = null | 'once-off' | 'new-rule';
+export type RuleEditorMode = null | 'once-off' | 'new-rule';
 /**
  * The collection of values produced and used by the rule editor.
  */
-export declare type RuleEditorValues = {
+export type RuleEditorValues = {
     mode: RuleEditorMode;
     account: AccountNumber;
     tags: string[];
@@ -18,7 +18,7 @@ export declare type RuleEditorValues = {
 /**
  * Input attributes needed by the rule editor.
  */
-export declare type RuleEditorProps = {
+export type RuleEditorProps = {
     store: Store;
     config: ProcessConfig;
     lines: TextFileLine[];

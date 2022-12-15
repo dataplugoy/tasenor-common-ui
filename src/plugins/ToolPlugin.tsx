@@ -1,3 +1,4 @@
+import { HttpMethod, Values } from '@dataplug/tasenor-common'
 import React from 'react'
 import { UiPlugin } from './UiPlugin'
 
@@ -45,5 +46,27 @@ export class ToolPlugin extends UiPlugin {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toolMainPanel(index: number): JSX.Element {
     return <></>
+  }
+
+  /**
+   * Executor for HTTP requests.
+   */
+  private async request(method: HttpMethod, params: undefined | Values = undefined) {
+    const { db } = this.store
+    return this.store.request(`/db/${db}/tools/${this.code}`, method, params || null)
+  }
+
+  /**
+   * Make a GET request to the backend component of the plugin.
+   */
+  async GET() {
+    return this.request('GET')
+  }
+
+  /**
+   * Make a POST request to the backend component of the plugin.
+   */
+  async POST(params: Values) {
+    return this.request('POST', params)
   }
 }

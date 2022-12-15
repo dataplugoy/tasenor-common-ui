@@ -1,6 +1,6 @@
 import { DefaultResultViewProps } from './DefaultResultView';
 import { ProcessConfig } from '@dataplug/tasenor-common';
-export declare type ImportStateViewProps = {
+export type ImportStateViewProps = {
     state: Record<string, unknown>;
     config: ProcessConfig;
     resultView: (props: DefaultResultViewProps) => JSX.Element;

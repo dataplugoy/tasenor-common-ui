@@ -13,9 +13,7 @@
  * * [plugins](tasenor_common_ui_src_plugins.html)
  * * [process](tasenor_common_uic_process.html)
  * * [risp](tasenor_common_ui_src_risp.html)
- * * [risp](tasenor_common_ui_src_risp.html)
  *
  * @module tasenor-common-ui
  */
-/** @hidden Dummy definition to force inclusion of this file to documentation */
-declare const __tasenorCommonUi: null;
+export * from './index';

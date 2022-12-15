@@ -1,5 +1,5 @@
 import { ProcessConfig } from '@dataplug/tasenor-common';
-export declare type DefaultResultViewProps = {
+export type DefaultResultViewProps = {
     config: ProcessConfig;
     result: unknown;
 };

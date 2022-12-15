@@ -2,7 +2,7 @@ import { ActionHandler, ActionName, ActionResult, RenderingProps, TasenorAction 
 /**
  * Registry where all action handlers has been stored.
  */
-export declare type ActionHandlerRegistry = {
+export type ActionHandlerRegistry = {
     [key: string]: ActionHandler;
 };
 declare global {

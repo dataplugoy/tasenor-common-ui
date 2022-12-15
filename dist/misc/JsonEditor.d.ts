@@ -1,4 +1,4 @@
-export declare type JsonEditorProps = {
+export type JsonEditorProps = {
     visible: boolean;
     title: string;
     json: Record<string, unknown>;

@@ -6,7 +6,7 @@ import { DefaultSuccessViewProps } from './DefaultSuccessView';
 import { DefaultResultViewProps } from './DefaultResultView';
 import { ConfigViewProps } from './ConfigView';
 import { RenderingProps, TasenorSetup } from '@dataplug/tasenor-common';
-export declare type ProcessViewProps = {
+export type ProcessViewProps = {
     api: string;
     setup: TasenorSetup;
     token?: string;

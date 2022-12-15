@@ -3,15 +3,15 @@ import { RenderingProps } from '@dataplug/tasenor-common';
 /**
  * Readability helper to specify that a string is being used as a renderer name.
  */
-export declare type RendererName = string;
+export type RendererName = string;
 /**
  * A function rendering certain type of element providing React Element presentation for it.
  */
-export declare type Renderer = React.FC<RenderingProps>;
+export type Renderer = React.FC<RenderingProps>;
 /**
  * Registry where all renderers has been stored.
  */
-export declare type RendererRegistry = {
+export type RendererRegistry = {
     [key: string]: Renderer;
 };
 declare global {

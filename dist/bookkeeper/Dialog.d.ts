@@ -1,5 +1,5 @@
 import React from 'react';
-export declare type DialogProps = {
+export type DialogProps = {
     children: React.ReactNode;
     className?: string;
     fullScreen?: boolean;

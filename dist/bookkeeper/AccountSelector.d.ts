@@ -1,5 +1,5 @@
 import { AccountNumber, FilterRule, AccountModel } from '@dataplug/tasenor-common';
-export declare type AccountSelectorProps = {
+export type AccountSelectorProps = {
     label: string;
     value: AccountNumber;
     onChange: (num: AccountNumber) => void;

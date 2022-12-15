@@ -1,5 +1,5 @@
 import { ProcessConfig } from '@dataplug/tasenor-common';
-export declare type ConfigJSONViewProps = {
+export type ConfigJSONViewProps = {
     title?: string;
     config: ProcessConfig;
 };

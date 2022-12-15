@@ -1,5 +1,5 @@
 import { TagModel } from '@dataplug/tasenor-common';
-export declare type TagChipProps = {
+export type TagChipProps = {
     disabled?: boolean;
     onClick?: CallableFunction;
     tag: TagModel;

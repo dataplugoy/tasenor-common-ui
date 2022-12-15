@@ -1,4 +1,4 @@
-export declare type DefaultErrorViewProps = {
+export type DefaultErrorViewProps = {
     error: string;
 };
 /**

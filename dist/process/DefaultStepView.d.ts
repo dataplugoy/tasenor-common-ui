@@ -3,7 +3,7 @@ import { DefaultStateViewProps } from './DefaultStateView';
 import { DefaultResultViewProps } from './DefaultResultView';
 import { ConfigViewProps } from './ConfigView';
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common';
-export declare type DefaultStepViewProps = {
+export type DefaultStepViewProps = {
     api: string;
     token?: string;
     step: ProcessStepModelData | null;

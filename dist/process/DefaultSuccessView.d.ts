@@ -1,5 +1,5 @@
 import { ProcessModelDetailedData, ProcessStepModelData } from '@dataplug/tasenor-common';
-export declare type DefaultSuccessViewProps = {
+export type DefaultSuccessViewProps = {
     process: ProcessModelDetailedData;
     step: ProcessStepModelData;
 };

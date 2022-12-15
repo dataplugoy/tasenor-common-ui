@@ -1,5 +1,5 @@
 export interface LocalizeProps {
-    date: string | number;
+    date?: string | number;
     children?: JSX.Element;
 }
 export declare const Localize: (props: LocalizeProps) => any;

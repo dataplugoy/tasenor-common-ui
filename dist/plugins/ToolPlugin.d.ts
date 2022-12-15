@@ -1,3 +1,4 @@
+import { Values } from '@dataplug/tasenor-common';
 import { UiPlugin } from './UiPlugin';
 /**
  * Tool plugins implement one or more pages under the Tools main menu.
@@ -32,4 +33,16 @@ export declare class ToolPlugin extends UiPlugin {
      * @returns
      */
     toolMainPanel(index: number): JSX.Element;
+    /**
+     * Executor for HTTP requests.
+     */
+    private request;
+    /**
+     * Make a GET request to the backend component of the plugin.
+     */
+    GET(): Promise<unknown>;
+    /**
+     * Make a POST request to the backend component of the plugin.
+     */
+    POST(params: Values): Promise<unknown>;
 }

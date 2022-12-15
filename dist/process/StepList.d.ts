@@ -1,4 +1,4 @@
-export declare type StepListProps = {
+export type StepListProps = {
     onChangeStep: (step: number) => void;
     operations: string[];
     currentStep: number;

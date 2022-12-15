@@ -1,6 +1,6 @@
 import { ConfigViewProps } from './ConfigView';
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common';
-export declare type DefaultSummaryViewProps = {
+export type DefaultSummaryViewProps = {
     step: ProcessStepModelData;
     process: ProcessModelDetailedData;
     configView?: (props: ConfigViewProps) => JSX.Element;

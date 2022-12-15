@@ -1,5 +1,5 @@
 import { TagModel, Tag, TagType } from '@dataplug/tasenor-common';
-export declare type TagGroupProps = {
+export type TagGroupProps = {
     tags: Record<Tag, TagModel>;
     types?: TagType[];
     options?: Tag[];

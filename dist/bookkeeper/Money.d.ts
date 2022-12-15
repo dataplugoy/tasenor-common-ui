@@ -1,5 +1,5 @@
 import { Currency } from '@dataplug/tasenor-common';
-export declare type MoneyProps = {
+export type MoneyProps = {
     cents: number;
     currency?: Currency;
     signed?: boolean;

@@ -1,5 +1,5 @@
 import { ProcessStepModelData } from '@dataplug/tasenor-common';
-export declare type ConfigChangeViewProps = {
+export type ConfigChangeViewProps = {
     step: ProcessStepModelData;
 };
 /**

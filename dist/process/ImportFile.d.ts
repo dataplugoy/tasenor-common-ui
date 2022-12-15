@@ -1,6 +1,6 @@
 import { ProcessConfig, TextFileLine, SegmentId } from '@dataplug/tasenor-common';
 import { DefaultResultViewProps } from './DefaultResultView';
-export declare type ImportLineProps = {
+export type ImportLineProps = {
     config: ProcessConfig;
     lineNumber: number;
     columns: Record<string, string>;
@@ -16,7 +16,7 @@ export declare type ImportLineProps = {
  * @returns
  */
 export declare const ImportLine: (props: ImportLineProps) => JSX.Element;
-export declare type ImportFileProps = {
+export type ImportFileProps = {
     config: ProcessConfig;
     name: string;
     lines: TextFileLine[];

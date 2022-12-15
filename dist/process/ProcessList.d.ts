@@ -1,5 +1,5 @@
 import { ID } from '@dataplug/tasenor-common';
-export declare type ProcessListProps = {
+export type ProcessListProps = {
     api: string;
     token?: string;
     onClick?: (id: ID) => void;

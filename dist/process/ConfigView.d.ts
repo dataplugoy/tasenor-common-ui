@@ -1,6 +1,6 @@
 import { ProcessConfig } from '@dataplug/tasenor-common';
 export declare const IGNORE_FIELDS: RegExp;
-export declare type ConfigViewProps = {
+export type ConfigViewProps = {
     title?: string;
     config: ProcessConfig;
     columns?: number;
