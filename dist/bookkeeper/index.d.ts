@@ -9,7 +9,7 @@ export * from './IconButton';
 export * from './IconSpacer';
 export * from './Localize';
 export * from './Money';
-export * from './Money';
+export * from './Note';
 export * from './RuleEditor';
 export * from './SubPanel';
 export * from './TabNav';
