@@ -3139,6 +3139,7 @@ __export(src_exports, {
   MenuState: () => MenuState,
   MessageRenderer: () => MessageRenderer,
   Money: () => Money,
+  Note: () => Note,
   NumberRenderer: () => NumberRenderer,
   ProcessList: () => ProcessList,
   ProcessStatusIcon: () => ProcessStatusIcon,
@@ -3483,6 +3484,13 @@ var Money = (props) => {
 init_shim();
 var import_react5 = __toESM(require("react"));
 var import_material4 = require("@mui/material");
+var Note = (props) => {
+  const { children, className, showIf } = props;
+  if (showIf !== void 0 && !showIf) {
+    return /* @__PURE__ */ import_react5.default.createElement(import_react5.default.Fragment, null);
+  }
+  return /* @__PURE__ */ import_react5.default.createElement(import_material4.Typography, { className: className || "Note", color: "error", align: "center", variant: "h6" }, children);
+};
 
 // src/bookkeeper/RuleEditor/index.ts
 init_shim();
@@ -4072,7 +4080,14 @@ init_shim();
 var import_react17 = __toESM(require("react"));
 var import_material16 = require("@mui/material");
 var Title = ({ children, className }) => {
-  return /* @__PURE__ */ import_react17.default.createElement("div", { className: className ? `${className} Title` : "Title", style: { paddingLeft: "2rem", marginBottom: "1rem", borderBottom: "1px solid rgba(0,0,0,0.1)" } }, /* @__PURE__ */ import_react17.default.createElement(import_material16.Typography, { className: "text", variant: "h5" }, children));
+  return /* @__PURE__ */ import_react17.default.createElement(
+    "div",
+    {
+      className: className ? `${className} Title` : "Title",
+      style: { paddingLeft: "2rem", marginBottom: "1rem", borderBottom: "1px solid rgba(0,0,0,0.1)" }
+    },
+    /* @__PURE__ */ import_react17.default.createElement(import_material16.Typography, { className: "text", variant: "h5" }, children)
+  );
 };
 
 // src/elements/index.ts
@@ -5537,11 +5552,20 @@ var ToolPlugin = class extends UiPlugin {
     const { db } = this.store;
     return this.store.request(`/db/${db}/tools/${this.code}`, method, params || null);
   }
-  async GET() {
-    return this.request("GET");
+  async GET(query = void 0) {
+    return this.request("GET", query);
+  }
+  async DELETE(query = void 0) {
+    return this.request("DELETE", query);
   }
   async POST(params) {
     return this.request("POST", params);
+  }
+  async PUT(params) {
+    return this.request("PUT", params);
+  }
+  async PATCH(params) {
+    return this.request("PATCH", params);
   }
 };
 // Annotate the CommonJS export names for ESM import in node:
@@ -5577,6 +5601,7 @@ var ToolPlugin = class extends UiPlugin {
   MenuState,
   MessageRenderer,
   Money,
+  Note,
   NumberRenderer,
   ProcessList,
   ProcessStatusIcon,

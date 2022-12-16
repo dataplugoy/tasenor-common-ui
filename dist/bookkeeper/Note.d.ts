@@ -3,5 +3,4 @@ export interface NoteProps {
     className?: string;
     showIf?: boolean;
 }
-declare const Note: (props: NoteProps) => JSX.Element;
-export default Note;
+export declare const Note: (props: NoteProps) => JSX.Element;

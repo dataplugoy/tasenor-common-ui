@@ -40,9 +40,21 @@ export declare class ToolPlugin extends UiPlugin {
     /**
      * Make a GET request to the backend component of the plugin.
      */
-    GET(): Promise<unknown>;
+    GET(query?: Values | undefined): Promise<unknown>;
+    /**
+     * Make a DELETE request to the backend component of the plugin.
+     */
+    DELETE(query?: Values | undefined): Promise<unknown>;
     /**
      * Make a POST request to the backend component of the plugin.
      */
     POST(params: Values): Promise<unknown>;
+    /**
+     * Make a POST request to the backend component of the plugin.
+     */
+    PUT(params: Values): Promise<unknown>;
+    /**
+     * Make a POST request to the backend component of the plugin.
+     */
+    PATCH(params: Values): Promise<unknown>;
 }

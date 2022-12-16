@@ -7,7 +7,7 @@ export interface NoteProps {
   showIf?: boolean
 }
 
-const Note = (props: NoteProps) => {
+export const Note = (props: NoteProps) => {
   const { children, className, showIf } = props
   if (showIf !== undefined && !showIf) {
     return <></>
@@ -18,5 +18,3 @@ const Note = (props: NoteProps) => {
     </Typography>
   )
 }
-
-export default Note

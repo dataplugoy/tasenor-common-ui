@@ -59,8 +59,15 @@ export class ToolPlugin extends UiPlugin {
   /**
    * Make a GET request to the backend component of the plugin.
    */
-  async GET() {
-    return this.request('GET')
+  async GET(query: Values | undefined = undefined) {
+    return this.request('GET', query)
+  }
+
+  /**
+   * Make a DELETE request to the backend component of the plugin.
+   */
+  async DELETE(query: Values | undefined = undefined) {
+    return this.request('DELETE', query)
   }
 
   /**
@@ -68,5 +75,19 @@ export class ToolPlugin extends UiPlugin {
    */
   async POST(params: Values) {
     return this.request('POST', params)
+  }
+
+  /**
+   * Make a POST request to the backend component of the plugin.
+   */
+  async PUT(params: Values) {
+    return this.request('PUT', params)
+  }
+
+  /**
+   * Make a POST request to the backend component of the plugin.
+   */
+  async PATCH(params: Values) {
+    return this.request('PATCH', params)
   }
 }
