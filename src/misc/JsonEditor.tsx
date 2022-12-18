@@ -53,7 +53,7 @@ export const JsonEditor = (props: JsonEditorProps): JSX.Element => {
   }
 
   const onCancel = async () => {
-    await editor.destroy()
+    // await editor.destroy()
     props.onCancel()
   }
 
@@ -61,7 +61,9 @@ export const JsonEditor = (props: JsonEditorProps): JSX.Element => {
     <Dialog fullWidth maxWidth="xl" open={props.visible} PaperProps={{ sx: { height: '90vh' } }}>
       <DialogTitle><Trans>{props.title}</Trans></DialogTitle>
       <DialogContent>
-        <div className="RISPSONEditor" style={{ height: '75vh' }} ref={ref => createEditor(ref)} />
+        <div style={{ height: '75vh' }}>
+          EDIT
+        </div>
       </DialogContent>
       <DialogActions>
         <Button id="Cancel" variant="outlined" onClick={() => onCancel()}><Trans>Cancel</Trans></Button>
