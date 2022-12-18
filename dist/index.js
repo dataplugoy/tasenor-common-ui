@@ -5141,6 +5141,8 @@ init_shim();
 var import_material36 = require("@mui/material");
 var import_react46 = __toESM(require("react"));
 var import_react_i18next24 = require("react-i18next");
+var import_react_codemirror = __toESM(require("@uiw/react-codemirror"));
+var import_lang_json = require("@codemirror/lang-json");
 var JsonEditor = (props) => {
   if (!props.visible) {
     return /* @__PURE__ */ import_react46.default.createElement(import_react46.default.Fragment, null);
@@ -5152,19 +5154,26 @@ var JsonEditor = (props) => {
     try {
       const errors = await editor.validate();
       if (Object.keys(errors).length === 0) {
-        const json = editor.get();
+        const json2 = editor.get();
         await editor.destroy();
-        props.onSave(json);
+        props.onSave(json2);
       }
     } catch (err) {
       console.error(err);
     }
   };
   const onCancel = async () => {
-    await editor.destroy();
     props.onCancel();
   };
-  return /* @__PURE__ */ import_react46.default.createElement(import_react46.default.Fragment, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Dialog, { fullWidth: true, maxWidth: "xl", open: props.visible, PaperProps: { sx: { height: "90vh" } } }, /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogTitle, null, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, props.title)), /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogContent, null, /* @__PURE__ */ import_react46.default.createElement("div", { className: "RISPSONEditor", style: { height: "75vh" }, ref: (ref) => createEditor(ref) })), /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogActions, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Button, { id: "Cancel", variant: "outlined", onClick: () => onCancel() }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Cancel")), /* @__PURE__ */ import_react46.default.createElement(import_material36.Button, { id: "Save", variant: "outlined", onClick: () => onSave(), color: "primary" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Save")))));
+  return /* @__PURE__ */ import_react46.default.createElement(import_react46.default.Fragment, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Dialog, { fullWidth: true, maxWidth: "xl", open: props.visible, PaperProps: { sx: { height: "90vh" } } }, /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogTitle, null, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, props.title)), /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogContent, null, /* @__PURE__ */ import_react46.default.createElement("div", { style: { height: "75vh" } }, /* @__PURE__ */ import_react46.default.createElement(
+    import_react_codemirror.default,
+    {
+      value: '{"foo": 12}',
+      height: "90%",
+      extensions: [(0, import_lang_json.json)()],
+      onChange: () => null
+    }
+  ))), /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogActions, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Button, { id: "Cancel", variant: "outlined", onClick: () => onCancel() }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Cancel")), /* @__PURE__ */ import_react46.default.createElement(import_material36.Button, { id: "Save", variant: "outlined", onClick: () => onSave(), color: "primary" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Save")))));
 };
 
 // src/misc/useAxios.ts

@@ -1,9 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React from 'react'
 import { Trans } from 'react-i18next'
-// TODO: Where to get functional JSON editor? This one breaks on esbuild.
-// import JSONEditor, { JSONEditorOptions } from 'jsoneditor'
-// import 'jsoneditor/dist/jsoneditor.min.css'
+import CodeMirror from '@uiw/react-codemirror'
+import { json } from '@codemirror/lang-json'
 
 export type JsonEditorProps = {
   visible: boolean,
@@ -62,7 +61,12 @@ export const JsonEditor = (props: JsonEditorProps): JSX.Element => {
       <DialogTitle><Trans>{props.title}</Trans></DialogTitle>
       <DialogContent>
         <div style={{ height: '75vh' }}>
-          EDIT
+        <CodeMirror
+          value={'{"foo": 12}'}
+          height="90%"
+          extensions={[json()]}
+          onChange={() => null}
+        />
         </div>
       </DialogContent>
       <DialogActions>

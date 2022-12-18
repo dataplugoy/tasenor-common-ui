@@ -25,12 +25,13 @@
     "lint:fix": "eslint --fix src/**/*.{ts,tsx} example/**/*.{ts,tsx} tests/**/*.{ts,tsx}"
   },
   "dependencies": {
+    "@codemirror/lang-json": "^6.0.1",
     "@dataplug/tasenor-common": "git+ssh://git@github.com:dataplugoy/tasenor-common.git",
+    "@uiw/react-codemirror": "^4.19.4",
     "base64-arraybuffer": "1.0.2",
     "crypto-browserify": "^3.12.0",
     "get-value": "^3.0.1",
     "history": "^5.2.0",
-    "jsoneditor": "^9.9.2",
     "set-value": "^4.1.0"
   },
   "devDependencies": {
