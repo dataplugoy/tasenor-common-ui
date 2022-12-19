@@ -5,5 +5,4 @@
  */
 export * from './downloader'
 export * from './FileUploader'
-export * from './JsonEditor'
 export * from './useAxios'
