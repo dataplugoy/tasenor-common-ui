@@ -3133,7 +3133,6 @@ __export(src_exports, {
   ImportFile: () => ImportFile,
   ImportLine: () => ImportLine,
   ImportStateView: () => ImportStateView,
-  JsonEditor: () => JsonEditor,
   LanguagePlugin: () => LanguagePlugin,
   Localize: () => Localize,
   MenuState: () => MenuState,
@@ -4758,9 +4757,9 @@ var TextRenderer = (props) => {
 
 // src/elements/TextFileLineElement.tsx
 init_shim();
-var import_react52 = __toESM(require("react"));
-var import_material41 = require("@mui/material");
-var import_react_i18next27 = require("react-i18next");
+var import_react51 = __toESM(require("react"));
+var import_material40 = require("@mui/material");
+var import_react_i18next26 = require("react-i18next");
 var import_tasenor_common24 = require("@dataplug/tasenor-common");
 
 // src/process/index.ts
@@ -5027,9 +5026,9 @@ var ImportStateView = (props) => {
 
 // src/process/ProcessList.tsx
 init_shim();
-var import_material38 = require("@mui/material");
-var import_react49 = __toESM(require("react"));
-var import_react_i18next25 = require("react-i18next");
+var import_material37 = require("@mui/material");
+var import_react48 = __toESM(require("react"));
+var import_react_i18next24 = require("react-i18next");
 
 // src/misc/index.ts
 init_shim();
@@ -5136,53 +5135,13 @@ var FileUploader = (props) => {
   return /* @__PURE__ */ import_react45.default.createElement(import_react45.default.Fragment, null, /* @__PURE__ */ import_react45.default.createElement("input", { id: "file-uploader-input", disabled: !!props.disabled, type: "file", multiple: !!props.multiple, hidden: true, onChange: (e) => onFileChange(e) }), /* @__PURE__ */ import_react45.default.createElement("label", { htmlFor: "file-uploader-input" }, noText && /* @__PURE__ */ import_react45.default.createElement(import_material35.Button, { component: "span", disabled: uploading || !!props.disabled, color: props.color }, icon), !noText && /* @__PURE__ */ import_react45.default.createElement(import_material35.Button, { component: "span", disabled: uploading || !!props.disabled, startIcon: icon, color: props.color, variant: props.variant }, text)));
 };
 
-// src/misc/JsonEditor.tsx
-init_shim();
-var import_material36 = require("@mui/material");
-var import_react46 = __toESM(require("react"));
-var import_react_i18next24 = require("react-i18next");
-var import_react_codemirror = __toESM(require("@uiw/react-codemirror"));
-var import_lang_json = require("@codemirror/lang-json");
-var JsonEditor = (props) => {
-  if (!props.visible) {
-    return /* @__PURE__ */ import_react46.default.createElement(import_react46.default.Fragment, null);
-  }
-  let editor;
-  const createEditor = (ref) => {
-  };
-  const onSave = async () => {
-    try {
-      const errors = await editor.validate();
-      if (Object.keys(errors).length === 0) {
-        const json2 = editor.get();
-        await editor.destroy();
-        props.onSave(json2);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const onCancel = async () => {
-    props.onCancel();
-  };
-  return /* @__PURE__ */ import_react46.default.createElement(import_react46.default.Fragment, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Dialog, { fullWidth: true, maxWidth: "xl", open: props.visible, PaperProps: { sx: { height: "90vh" } } }, /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogTitle, null, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, props.title)), /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogContent, null, /* @__PURE__ */ import_react46.default.createElement("div", { style: { height: "75vh" } }, /* @__PURE__ */ import_react46.default.createElement(
-    import_react_codemirror.default,
-    {
-      value: '{"foo": 12}',
-      height: "90%",
-      extensions: [(0, import_lang_json.json)()],
-      onChange: () => null
-    }
-  ))), /* @__PURE__ */ import_react46.default.createElement(import_material36.DialogActions, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Button, { id: "Cancel", variant: "outlined", onClick: () => onCancel() }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Cancel")), /* @__PURE__ */ import_react46.default.createElement(import_material36.Button, { id: "Save", variant: "outlined", onClick: () => onSave(), color: "primary" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Save")))));
-};
-
 // src/misc/useAxios.ts
 init_shim();
-var import_react47 = require("react");
+var import_react46 = require("react");
 var import_axios3 = __toESM(require_axios2());
 function useAxios(props) {
   const { token, url, receiver } = props;
-  (0, import_react47.useEffect)(() => {
+  (0, import_react46.useEffect)(() => {
     if (url === null) {
       receiver(null);
       return;
@@ -5201,9 +5160,9 @@ function useAxios(props) {
 
 // src/process/ProcessStatusIcon.tsx
 init_shim();
-var import_react48 = __toESM(require("react"));
+var import_react47 = __toESM(require("react"));
 var import_icons_material6 = require("@mui/icons-material");
-var import_material37 = require("@mui/material");
+var import_material36 = require("@mui/material");
 var import_colors2 = require("@mui/material/colors");
 var ProcessStatusIcon = (props) => {
   const colors = {
@@ -5213,40 +5172,40 @@ var ProcessStatusIcon = (props) => {
   };
   switch (props.status) {
     case "FAILED":
-      return /* @__PURE__ */ import_react48.default.createElement(import_material37.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react48.default.createElement(import_icons_material6.ErrorOutline, null));
+      return /* @__PURE__ */ import_react47.default.createElement(import_material36.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react47.default.createElement(import_icons_material6.ErrorOutline, null));
     case "WAITING":
-      return /* @__PURE__ */ import_react48.default.createElement(import_material37.Typography, { title: props.status, style: { color: colors.blue } }, /* @__PURE__ */ import_react48.default.createElement(import_icons_material6.Timer, null));
+      return /* @__PURE__ */ import_react47.default.createElement(import_material36.Typography, { title: props.status, style: { color: colors.blue } }, /* @__PURE__ */ import_react47.default.createElement(import_icons_material6.Timer, null));
     case "SUCCEEDED":
-      return /* @__PURE__ */ import_react48.default.createElement(import_material37.Typography, { title: props.status, style: { color: colors.green } }, /* @__PURE__ */ import_react48.default.createElement(import_icons_material6.CheckCircleOutline, null));
+      return /* @__PURE__ */ import_react47.default.createElement(import_material36.Typography, { title: props.status, style: { color: colors.green } }, /* @__PURE__ */ import_react47.default.createElement(import_icons_material6.CheckCircleOutline, null));
     case "CRASHED":
-      return /* @__PURE__ */ import_react48.default.createElement(import_material37.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react48.default.createElement(import_icons_material6.Warning, null));
+      return /* @__PURE__ */ import_react47.default.createElement(import_material36.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react47.default.createElement(import_icons_material6.Warning, null));
     case "INCOMPLETE":
-      return /* @__PURE__ */ import_react48.default.createElement(import_material37.Typography, { title: props.status, style: { color: colors.blue } }, /* @__PURE__ */ import_react48.default.createElement(import_icons_material6.HourglassEmpty, null));
+      return /* @__PURE__ */ import_react47.default.createElement(import_material36.Typography, { title: props.status, style: { color: colors.blue } }, /* @__PURE__ */ import_react47.default.createElement(import_icons_material6.HourglassEmpty, null));
   }
-  return /* @__PURE__ */ import_react48.default.createElement(import_material37.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react48.default.createElement(import_icons_material6.Help, null));
+  return /* @__PURE__ */ import_react47.default.createElement(import_material36.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react47.default.createElement(import_icons_material6.Help, null));
 };
 
 // src/process/ProcessList.tsx
 var ProcessList = (props) => {
-  const [processes, setProcesses] = (0, import_react49.useState)([]);
+  const [processes, setProcesses] = (0, import_react48.useState)([]);
   useAxios({ url: `${props.api}`, token: props.token, receiver: setProcesses });
-  return /* @__PURE__ */ import_react49.default.createElement(import_material38.TableContainer, null, /* @__PURE__ */ import_react49.default.createElement(import_material38.Table, { className: "ProcessTable", size: "small" }, /* @__PURE__ */ import_react49.default.createElement(import_material38.TableHead, null, /* @__PURE__ */ import_react49.default.createElement(import_material38.TableRow, null, /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next25.Trans, null, "#")), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next25.Trans, null, "Date")), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next25.Trans, null, "Process Name")), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next25.Trans, null, "Status")))), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableBody, null, processes.map((process2) => /* @__PURE__ */ import_react49.default.createElement(import_material38.TableRow, { key: process2.id, onClick: () => {
+  return /* @__PURE__ */ import_react48.default.createElement(import_material37.TableContainer, null, /* @__PURE__ */ import_react48.default.createElement(import_material37.Table, { className: "ProcessTable", size: "small" }, /* @__PURE__ */ import_react48.default.createElement(import_material37.TableHead, null, /* @__PURE__ */ import_react48.default.createElement(import_material37.TableRow, null, /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "#")), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "Date")), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "Process Name")), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "Status")))), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableBody, null, processes.map((process2) => /* @__PURE__ */ import_react48.default.createElement(import_material37.TableRow, { key: process2.id, onClick: () => {
     props.onClick && props.onClick(process2.id);
-  } }, /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, null, process2.id), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, null, `${process2.created}`), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, null, process2.name), /* @__PURE__ */ import_react49.default.createElement(import_material38.TableCell, null, /* @__PURE__ */ import_react49.default.createElement(ProcessStatusIcon, { status: process2.status })))))));
+  } }, /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, null, process2.id), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, null, `${process2.created}`), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, null, process2.name), /* @__PURE__ */ import_react48.default.createElement(import_material37.TableCell, null, /* @__PURE__ */ import_react48.default.createElement(ProcessStatusIcon, { status: process2.status })))))));
 };
 
 // src/process/ProcessView.tsx
 init_shim();
-var import_material40 = require("@mui/material");
-var import_react51 = __toESM(require("react"));
-var import_react_i18next26 = require("react-i18next");
+var import_material39 = require("@mui/material");
+var import_react50 = __toESM(require("react"));
+var import_react_i18next25 = require("react-i18next");
 
 // src/process/StepList.tsx
 init_shim();
-var import_material39 = require("@mui/material");
-var import_react50 = __toESM(require("react"));
+var import_material38 = require("@mui/material");
+var import_react49 = __toESM(require("react"));
 var StepList = (props) => {
-  return /* @__PURE__ */ import_react50.default.createElement(import_material39.Stepper, { activeStep: props.currentStep || 0 }, props.operations.map((label, idx) => /* @__PURE__ */ import_react50.default.createElement(import_material39.Step, { key: idx }, /* @__PURE__ */ import_react50.default.createElement(import_material39.StepLabel, { onClick: () => props.onChangeStep(idx) }, label))));
+  return /* @__PURE__ */ import_react49.default.createElement(import_material38.Stepper, { activeStep: props.currentStep || 0 }, props.operations.map((label, idx) => /* @__PURE__ */ import_react49.default.createElement(import_material38.Step, { key: idx }, /* @__PURE__ */ import_react49.default.createElement(import_material38.StepLabel, { onClick: () => props.onChangeStep(idx) }, label))));
 };
 
 // src/process/ProcessView.tsx
@@ -5269,10 +5228,10 @@ var actionStepLabel = (action) => {
 };
 var ProcessView = (props) => {
   const { summaryView, stateView, resultView, configView } = props;
-  const theme = (0, import_material40.useTheme)();
-  const { t } = (0, import_react_i18next26.useTranslation)();
-  const [process2, setProcess] = (0, import_react51.useState)(null);
-  const [step, setStep] = (0, import_react51.useState)(null);
+  const theme = (0, import_material39.useTheme)();
+  const { t } = (0, import_react_i18next25.useTranslation)();
+  const [process2, setProcess] = (0, import_react50.useState)(null);
+  const [step, setStep] = (0, import_react50.useState)(null);
   let currentStep;
   if (props.step !== void 0 && props.step !== null) {
     currentStep = props.step;
@@ -5291,7 +5250,7 @@ var ProcessView = (props) => {
     receiver: setStep
   });
   if (!process2)
-    return /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null);
+    return /* @__PURE__ */ import_react50.default.createElement(import_react50.default.Fragment, null);
   const canChangeStep = process2.currentStep !== void 0 && process2.currentStep !== null && process2.steps && process2.steps.length > 1;
   const hasSteps = process2.currentStep !== void 0 && process2.steps.length > 0;
   const lastStep = currentStep !== void 0 && process2.steps.length > 0 && currentStep === process2.steps.length - 1;
@@ -5319,32 +5278,32 @@ var ProcessView = (props) => {
   Object.keys(process2.config).forEach((key) => {
     values[`configure.${key}`] = process2.config[key];
   });
-  return /* @__PURE__ */ import_react51.default.createElement(import_material40.TableContainer, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.Table, { className: "ProcessTable", size: "small" }, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableHead, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableRow, { style: { backgroundColor: theme.palette.secondary.main } }, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText } }, /* @__PURE__ */ import_react51.default.createElement(import_material40.IconButton, { onClick: () => onBack() }, /* @__PURE__ */ import_react51.default.createElement(import_icons_material7.ArrowBackOutlined, { style: { color: theme.palette.secondary.contrastText } })), "# ", process2.id), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText }, align: "left" }), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText }, align: "left" }, `${process2.created}`), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText }, align: "left" }, process2.name), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { variant: "head", style: { backgroundColor: "white" }, align: "right" }, /* @__PURE__ */ import_react51.default.createElement(ProcessStatusIcon, { status: process2.status })))), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableBody, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableRow, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { colSpan: 2 }, /* @__PURE__ */ import_react51.default.createElement(import_material40.Typography, null, /* @__PURE__ */ import_react51.default.createElement(
-    import_material40.Fab,
+  return /* @__PURE__ */ import_react50.default.createElement(import_material39.TableContainer, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.Table, { className: "ProcessTable", size: "small" }, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableHead, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableRow, { style: { backgroundColor: theme.palette.secondary.main } }, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText } }, /* @__PURE__ */ import_react50.default.createElement(import_material39.IconButton, { onClick: () => onBack() }, /* @__PURE__ */ import_react50.default.createElement(import_icons_material7.ArrowBackOutlined, { style: { color: theme.palette.secondary.contrastText } })), "# ", process2.id), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText }, align: "left" }), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText }, align: "left" }, `${process2.created}`), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { variant: "head", style: { color: theme.palette.secondary.contrastText }, align: "left" }, process2.name), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { variant: "head", style: { backgroundColor: "white" }, align: "right" }, /* @__PURE__ */ import_react50.default.createElement(ProcessStatusIcon, { status: process2.status })))), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableBody, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableRow, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { colSpan: 2 }, /* @__PURE__ */ import_react50.default.createElement(import_material39.Typography, null, /* @__PURE__ */ import_react50.default.createElement(
+    import_material39.Fab,
     {
       disabled: !canChangeStep || currentStep === 0,
       color: "secondary",
       "aria-label": "previous",
       onClick: () => onChangeStep(currentStep !== void 0 ? currentStep - 1 : 0)
     },
-    /* @__PURE__ */ import_react51.default.createElement(import_icons_material7.NavigateBefore, null)
-  ), /* @__PURE__ */ import_react51.default.createElement(
-    import_material40.Fab,
+    /* @__PURE__ */ import_react50.default.createElement(import_icons_material7.NavigateBefore, null)
+  ), /* @__PURE__ */ import_react50.default.createElement(
+    import_material39.Fab,
     {
       disabled: true,
       style: { fontSize: "140%", color: "black", fontWeight: "bold" }
     },
-    canChangeStep ? (currentStep || 0) + 1 : /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null, "\u2014")
-  ), /* @__PURE__ */ import_react51.default.createElement(
-    import_material40.Fab,
+    canChangeStep ? (currentStep || 0) + 1 : /* @__PURE__ */ import_react50.default.createElement(import_react50.default.Fragment, null, "\u2014")
+  ), /* @__PURE__ */ import_react50.default.createElement(
+    import_material39.Fab,
     {
       disabled: !canChangeStep || currentStep === process2.steps.length - 1,
       color: "secondary",
       "aria-label": "next",
       onClick: () => onChangeStep(currentStep !== void 0 ? currentStep + 1 : 0)
     },
-    /* @__PURE__ */ import_react51.default.createElement(import_icons_material7.NavigateNext, null)
-  ))), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react51.default.createElement(StepList, { onChangeStep: (step2) => onChangeStep(step2), operations, currentStep: currentStep || 0 }))), /* @__PURE__ */ import_react51.default.createElement(import_material40.TableRow, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { colSpan: 5, align: "left", style: { verticalAlign: "top" } }, lastStep && process2.status === "SUCCEEDED" && step !== null && /* @__PURE__ */ import_react51.default.createElement(SuccessView, { step, process: process2 }), lastStep && process2.error && /* @__PURE__ */ import_react51.default.createElement(ErrorView, { error: process2.error }), wasConfigured && /* @__PURE__ */ import_react51.default.createElement(ConfigChangeView, { step: process2.steps[(currentStep || 0) - 1] }), needAnswers && /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react51.default.createElement(import_react_i18next26.Trans, null, "Additional information needed")), (0, import_tasenor_common23.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react51.default.createElement(
+    /* @__PURE__ */ import_react50.default.createElement(import_icons_material7.NavigateNext, null)
+  ))), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react50.default.createElement(StepList, { onChangeStep: (step2) => onChangeStep(step2), operations, currentStep: currentStep || 0 }))), /* @__PURE__ */ import_react50.default.createElement(import_material39.TableRow, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { colSpan: 5, align: "left", style: { verticalAlign: "top" } }, lastStep && process2.status === "SUCCEEDED" && step !== null && /* @__PURE__ */ import_react50.default.createElement(SuccessView, { step, process: process2 }), lastStep && process2.error && /* @__PURE__ */ import_react50.default.createElement(ErrorView, { error: process2.error }), wasConfigured && /* @__PURE__ */ import_react50.default.createElement(ConfigChangeView, { step: process2.steps[(currentStep || 0) - 1] }), needAnswers && /* @__PURE__ */ import_react50.default.createElement(import_react50.default.Fragment, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react50.default.createElement(import_react_i18next25.Trans, null, "Additional information needed")), (0, import_tasenor_common23.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react50.default.createElement(
     RISP,
     {
       key: "directions",
@@ -5353,7 +5312,7 @@ var ProcessView = (props) => {
       setup: props.setup,
       onActionSuccess
     }
-  ) || /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null, "INVALID RISP ELEMENT")))), hasSteps && /* @__PURE__ */ import_react51.default.createElement(import_material40.TableRow, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { colSpan: 5, align: "left" }, /* @__PURE__ */ import_react51.default.createElement(
+  ) || /* @__PURE__ */ import_react50.default.createElement(import_react50.default.Fragment, null, "INVALID RISP ELEMENT")))), hasSteps && /* @__PURE__ */ import_react50.default.createElement(import_material39.TableRow, null, /* @__PURE__ */ import_react50.default.createElement(import_material39.TableCell, { colSpan: 5, align: "left" }, /* @__PURE__ */ import_react50.default.createElement(
     StepView,
     {
       api: `${props.api}/${props.id}/step`,
@@ -5376,44 +5335,44 @@ var TextFileLineRenderer = (props) => {
   }
   const { line } = element;
   const text = line.text.replace(/\t/g, " \u23B5 ");
-  return /* @__PURE__ */ import_react52.default.createElement(import_material41.Box, null, /* @__PURE__ */ import_react52.default.createElement(import_material41.Typography, { variant: "caption" }, /* @__PURE__ */ import_react52.default.createElement(import_react_i18next27.Trans, null, "Line:"), " ", line.line), /* @__PURE__ */ import_react52.default.createElement(import_material41.Typography, { sx: { fontFamily: "monospace" } }, text), line.columns && Object.keys(line.columns).length > 0 && /* @__PURE__ */ import_react52.default.createElement(import_react52.default.Fragment, null, /* @__PURE__ */ import_react52.default.createElement(import_material41.Typography, { variant: "caption" }, /* @__PURE__ */ import_react52.default.createElement(import_react_i18next27.Trans, null, "Values:")), /* @__PURE__ */ import_react52.default.createElement(ConfigView, { ignore: /^_/, config: line.columns })));
+  return /* @__PURE__ */ import_react51.default.createElement(import_material40.Box, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.Typography, { variant: "caption" }, /* @__PURE__ */ import_react51.default.createElement(import_react_i18next26.Trans, null, "Line:"), " ", line.line), /* @__PURE__ */ import_react51.default.createElement(import_material40.Typography, { sx: { fontFamily: "monospace" } }, text), line.columns && Object.keys(line.columns).length > 0 && /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.Typography, { variant: "caption" }, /* @__PURE__ */ import_react51.default.createElement(import_react_i18next26.Trans, null, "Values:")), /* @__PURE__ */ import_react51.default.createElement(ConfigView, { ignore: /^_/, config: line.columns })));
 };
 
 // src/elements/YesNoElement.tsx
 init_shim();
-var import_react53 = __toESM(require("react"));
-var import_react_i18next28 = require("react-i18next");
-var import_material42 = require("@mui/material");
+var import_react52 = __toESM(require("react"));
+var import_react_i18next27 = require("react-i18next");
+var import_material41 = require("@mui/material");
 var import_tasenor_common25 = require("@dataplug/tasenor-common");
 var YesNoRenderer = (props) => {
   const { element } = props;
-  const { t } = (0, import_react_i18next28.useTranslation)();
+  const { t } = (0, import_react_i18next27.useTranslation)();
   const label = "label" in element ? element.label || "" : (0, import_tasenor_common25.isNamedElement)(element) ? t(`label-${element.name}`) : "";
-  const [value, setValue2] = import_react53.default.useState((0, import_tasenor_common25.isNamedElement)(element) ? props.values[element.name] : null);
+  const [value, setValue2] = import_react52.default.useState((0, import_tasenor_common25.isNamedElement)(element) ? props.values[element.name] : null);
   if (!(0, import_tasenor_common25.isYesNoElement)(element)) {
     throw new Error(`Wrong renderer ${JSON.stringify(element)}.`);
   }
   const yes = t("Yes");
   const no = t("No");
-  return /* @__PURE__ */ import_react53.default.createElement(import_material42.FormControl, { component: "fieldset" }, /* @__PURE__ */ import_react53.default.createElement(import_material42.FormLabel, { component: "legend" }, label), /* @__PURE__ */ import_react53.default.createElement(import_material42.RadioGroup, null, /* @__PURE__ */ import_react53.default.createElement(import_material42.Grid, null, /* @__PURE__ */ import_react53.default.createElement(
-    import_material42.FormControlLabel,
+  return /* @__PURE__ */ import_react52.default.createElement(import_material41.FormControl, { component: "fieldset" }, /* @__PURE__ */ import_react52.default.createElement(import_material41.FormLabel, { component: "legend" }, label), /* @__PURE__ */ import_react52.default.createElement(import_material41.RadioGroup, null, /* @__PURE__ */ import_react52.default.createElement(import_material41.Grid, null, /* @__PURE__ */ import_react52.default.createElement(
+    import_material41.FormControlLabel,
     {
       value: "yes",
       label: yes,
       checked: value === true,
-      control: /* @__PURE__ */ import_react53.default.createElement(import_material42.Radio, null),
+      control: /* @__PURE__ */ import_react52.default.createElement(import_material41.Radio, null),
       onChange: () => {
         setValue2(true);
         element.triggerHandler && element.triggerHandler({ type: "onChange", name: element.name, value: true }, props);
       }
     }
-  ), /* @__PURE__ */ import_react53.default.createElement(
-    import_material42.FormControlLabel,
+  ), /* @__PURE__ */ import_react52.default.createElement(
+    import_material41.FormControlLabel,
     {
       value: "no",
       label: no,
       checked: value === false,
-      control: /* @__PURE__ */ import_react53.default.createElement(import_material42.Radio, null),
+      control: /* @__PURE__ */ import_react52.default.createElement(import_material41.Radio, null),
       onChange: () => {
         setValue2(false);
         element.triggerHandler && element.triggerHandler({ type: "onChange", name: element.name, value: false }, props);
@@ -5427,10 +5386,10 @@ init_shim();
 
 // src/images/QuestionMark.tsx
 init_shim();
-var import_react54 = __toESM(require("react"));
+var import_react53 = __toESM(require("react"));
 var QuestionMarkData = "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";
 var QuestionMarkInline = `data:image/png;base64,${QuestionMarkData}`;
-var QuestionMark = () => /* @__PURE__ */ import_react54.default.createElement("img", { alt: "Question mark", src: QuestionMarkInline });
+var QuestionMark = () => /* @__PURE__ */ import_react53.default.createElement("img", { alt: "Question mark", src: QuestionMarkInline });
 
 // src/plugins/index.ts
 init_shim();
@@ -5440,8 +5399,8 @@ init_shim();
 
 // src/plugins/UiPlugin.tsx
 init_shim();
-var import_react55 = __toESM(require("react"));
-var UiPlugin = class extends import_react55.Component {
+var import_react54 = __toESM(require("react"));
+var UiPlugin = class extends import_react54.Component {
   constructor() {
     super({});
     this.id = null;
@@ -5490,7 +5449,7 @@ var UiPlugin = class extends import_react55.Component {
     return this.settings ? this.settings.get(`${this.code}.${name}`) : void 0;
   }
   render() {
-    return /* @__PURE__ */ import_react55.default.createElement(import_react55.default.Fragment, null);
+    return /* @__PURE__ */ import_react54.default.createElement(import_react54.default.Fragment, null);
   }
 };
 
@@ -5543,7 +5502,7 @@ var SchemePlugin = class extends UiPlugin {
 
 // src/plugins/ToolPlugin.tsx
 init_shim();
-var import_react56 = __toESM(require("react"));
+var import_react55 = __toESM(require("react"));
 var ToolPlugin = class extends UiPlugin {
   toolMenu() {
     return [];
@@ -5552,10 +5511,10 @@ var ToolPlugin = class extends UiPlugin {
     return "";
   }
   toolTopPanel(index) {
-    return /* @__PURE__ */ import_react56.default.createElement(import_react56.default.Fragment, null);
+    return /* @__PURE__ */ import_react55.default.createElement(import_react55.default.Fragment, null);
   }
   toolMainPanel(index) {
-    return /* @__PURE__ */ import_react56.default.createElement(import_react56.default.Fragment, null);
+    return /* @__PURE__ */ import_react55.default.createElement(import_react55.default.Fragment, null);
   }
   async request(method, params = void 0) {
     const { db } = this.store;
@@ -5604,7 +5563,6 @@ var ToolPlugin = class extends UiPlugin {
   ImportFile,
   ImportLine,
   ImportStateView,
-  JsonEditor,
   LanguagePlugin,
   Localize,
   MenuState,
