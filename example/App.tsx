@@ -7,6 +7,7 @@ import PageTagGroup from './PageTagGroup'
 import { useNavigation } from '../src/bookkeeper/Hooks'
 import PageTabs from './PageTabs'
 import PageRuleEditor from './PageRuleEditor'
+import PageJsonEditor from './PageJsonEditor'
 
 /**
  * Playground for stuff.
@@ -20,6 +21,7 @@ const App = observer(() => {
       <Button onClick={() => nav.go({ indirect: 'yes', side: 'tagGroup' })}>Tag Group</Button>&nbsp;|&nbsp;
       <Button onClick={() => nav.go({ indirect: 'yes', side: 'tabs' })}>Tabs</Button>&nbsp;|&nbsp;
       <Button onClick={() => nav.go({ indirect: 'yes', side: 'ruleEditorSingle' })}>Rule Editor</Button>&nbsp;|&nbsp;
+      <Button onClick={() => nav.go({ indirect: 'yes', side: 'jsonEditor' })}>JSON Editor</Button>&nbsp;|&nbsp;
       <hr/>
       {JSON.stringify(nav)}
       <hr/>
@@ -28,6 +30,7 @@ const App = observer(() => {
       { nav.side === 'tagGroup' && <PageTagGroup />}
       { nav.side === 'tabs' && <PageTabs />}
       { nav.side === 'ruleEditorSingle' && <PageRuleEditor />}
+      { nav.side === 'jsonEditor' && <PageJsonEditor />}
     </Paper>
   )
 })

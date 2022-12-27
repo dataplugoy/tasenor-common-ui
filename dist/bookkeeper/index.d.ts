@@ -7,6 +7,7 @@ export * from './Dialog';
 export * from './Hooks';
 export * from './IconButton';
 export * from './IconSpacer';
+export * from './JsonEditor';
 export * from './Localize';
 export * from './Money';
 export * from './Note';
