@@ -3,7 +3,7 @@ import { Tag, TagModel, TagsElement, RenderingProps, isNamedElement } from '@dat
 import { FormGroup, FormLabel } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { TagGroup } from '../bookkeeper/TagGroups'
-import { Renderer } from './RenderingEngine'
+import { Renderer } from '../risp/RenderingEngine'
 
 export const TagsSelectorRenderer: Renderer = (props: RenderingProps<TagsElement>) => {
   const { t } = useTranslation()

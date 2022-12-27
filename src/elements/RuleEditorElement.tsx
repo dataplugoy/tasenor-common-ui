@@ -1,7 +1,7 @@
 import React from 'react'
 import { RuleEditorElement, RenderingProps } from '@dataplug/tasenor-common'
 import { RuleEditor, RuleEditorValues } from '../bookkeeper'
-import { Renderer } from './RenderingEngine'
+import { Renderer } from '../risp/RenderingEngine'
 
 export const RuleEditorRenderer: Renderer = (props: RenderingProps<RuleEditorElement>) => {
 
