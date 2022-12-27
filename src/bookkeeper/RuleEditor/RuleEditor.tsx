@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { SegmentId, TextFileLine, AccountNumber, Expression, filterView2name, ImportRule, RuleResultView, Store, Tag, TagModel, TransactionImportOptions, Value, ProcessConfig, filterView2rule, filterView2results, isValues, isValue, RuleView } from '@dataplug/tasenor-common'
-import { Box, Button, Divider, Grid, Stack, TextField, Typography, styled, Paper } from '@mui/material'
+import { Box, Button, Divider, Grid, Stack, TextField, Typography, styled, Paper, Link } from '@mui/material'
 import { TagGroup } from '../TagGroups'
 import { AccountSelector } from '../AccountSelector'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { RuleLineEdit } from './RuleLineEdit'
 import { VisualRule } from './VisualRule'
@@ -12,6 +12,11 @@ import { VisualRule } from './VisualRule'
  * Major operating mode for the editor: either build once off rule or complete new permanent rule.
  */
 export type RuleEditorMode = null | 'once-off' | 'new-rule'
+
+/**
+ * Alternative continuation options from rule editor.
+ */
+export type RuleEditorContinueOption = 'apply-once' | 'skip-one' | 'ignore-rest-unrecognized' | 'suspense-for-rest-unrecognized'
 
 /**
  * The collection of values produced and used by the rule editor.
@@ -24,6 +29,7 @@ export type RuleEditorValues = {
   segment: SegmentId
   transfers: Value[]
   rule?: Value
+  continueOption?: RuleEditorContinueOption
 }
 
 /**
@@ -37,7 +43,7 @@ export type RuleEditorProps = {
   values: Partial<RuleEditorValues>
   options: TransactionImportOptions
   onChange: (update: RuleEditorValues) => void
-  onContinue: () => void
+  onContinue: (option: RuleEditorContinueOption) => void
   onCreateRule: () => void
 }
 
@@ -239,7 +245,16 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
               }
               selected={tags as Tag[]}
             />
-            <Button variant="outlined" disabled={ !text || !account } onClick={() => onContinue()}>Continue</Button>
+
+            <Button sx={{ mt: 1 }} variant="outlined" disabled={ !text || !account } onClick={() => onContinue('apply-once')}>Continue</Button>
+            <Box>
+            <Typography variant="h5" color="secondary"><Trans>Alternatively</Trans></Typography>
+
+            <Link onClick={() => onContinue('skip-one')} sx={{ cursor: 'pointer' }}><Typography color="secondary"><Trans>Skip this transaction and continue</Trans></Typography></Link>
+            <Link onClick={() => onContinue('ignore-rest-unrecognized')} sx={{ cursor: 'pointer' }}><Typography color="secondary"><Trans>Continue and ignore all further unrecognized lines</Trans></Typography></Link>
+            <Link onClick={() => onContinue('suspense-for-rest-unrecognized')} sx={{ cursor: 'pointer' }}><Typography color="secondary"><Trans>Continue and for all furher unrecognized lines create partial transactions on suspense account</Trans></Typography></Link>
+
+            </Box>
           </Item>
         </Grid>
 

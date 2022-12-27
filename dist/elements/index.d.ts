@@ -3,6 +3,7 @@
  *
  * @module tasenor-common-ui/src/elements
  */
+export * from './AccountElement';
 export * from './BooleanElement';
 export * from './BoxElement';
 export * from './ButtonElement';
@@ -15,3 +16,6 @@ export * from './RadioElement';
 export * from './TextElement';
 export * from './TextFileLineElement';
 export * from './YesNoElement';
+export * from './CurrencySelectorElement';
+export * from './RuleEditorElement';
+export * from './TagSelectorElement';

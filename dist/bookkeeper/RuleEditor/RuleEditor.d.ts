@@ -4,6 +4,10 @@ import { SegmentId, TextFileLine, AccountNumber, Store, TransactionImportOptions
  */
 export type RuleEditorMode = null | 'once-off' | 'new-rule';
 /**
+ * Alternative continuation options from rule editor.
+ */
+export type RuleEditorContinueOption = 'apply-once' | 'skip-one' | 'ignore-rest-unrecognized' | 'suspense-for-rest-unrecognized';
+/**
  * The collection of values produced and used by the rule editor.
  */
 export type RuleEditorValues = {
@@ -14,6 +18,7 @@ export type RuleEditorValues = {
     segment: SegmentId;
     transfers: Value[];
     rule?: Value;
+    continueOption?: RuleEditorContinueOption;
 };
 /**
  * Input attributes needed by the rule editor.
@@ -26,7 +31,7 @@ export type RuleEditorProps = {
     values: Partial<RuleEditorValues>;
     options: TransactionImportOptions;
     onChange: (update: RuleEditorValues) => void;
-    onContinue: () => void;
+    onContinue: (option: RuleEditorContinueOption) => void;
     onCreateRule: () => void;
 };
 /**

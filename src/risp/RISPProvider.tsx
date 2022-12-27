@@ -1,10 +1,6 @@
 import { ActionEngine, debugActionHandler, patchActionHandler, postActionHandler } from './ActionEngine'
 import { RenderingEngine } from './RenderingEngine'
-import { BooleanRenderer, BoxRenderer, ButtonRenderer, CaseRenderer, FlatRenderer, HtmlRenderer, MessageRenderer, NumberRenderer, RadioRenderer, TextFileLineRenderer, TextRenderer, YesNoRenderer } from '../elements'
-import { CurrencySelectorRenderer } from './CurrencySelectorElement'
-import { AccountRenderer } from './AccountElement'
-import { TagsSelectorRenderer } from './TagSelectorElement'
-import { RuleEditorRenderer } from './RuleEditorElement'
+import { BooleanRenderer, BoxRenderer, ButtonRenderer, CaseRenderer, FlatRenderer, HtmlRenderer, MessageRenderer, NumberRenderer, RadioRenderer, TextFileLineRenderer, TextRenderer, YesNoRenderer, AccountRenderer, CurrencySelectorRenderer, RuleEditorRenderer, TagsSelectorRenderer } from '../elements'
 import { saveSettingActionHandler } from './SaveSettings'
 
 let onBlurHook, onFocusHook
