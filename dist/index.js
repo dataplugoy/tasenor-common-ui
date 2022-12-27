@@ -5348,7 +5348,7 @@ var ProcessView = (props) => {
       setup: props.setup,
       onActionSuccess
     }
-  ) || /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null, "INVALID RISP ELEMENT")))), hasSteps && /* @__PURE__ */ import_react51.default.createElement(import_material40.TableRow, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { colSpan: 5, align: "left" }, /* @__PURE__ */ import_react51.default.createElement(
+  ) || /* @__PURE__ */ import_react51.default.createElement(import_react51.default.Fragment, null, "INVALID RISP ELEMENT ", JSON.stringify(directions.element))))), hasSteps && /* @__PURE__ */ import_react51.default.createElement(import_material40.TableRow, null, /* @__PURE__ */ import_react51.default.createElement(import_material40.TableCell, { colSpan: 5, align: "left" }, /* @__PURE__ */ import_react51.default.createElement(
     StepView,
     {
       api: `${props.api}/${props.id}/step`,

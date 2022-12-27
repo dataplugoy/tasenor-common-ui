@@ -219,7 +219,7 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
                     values={values}
                     setup={props.setup}
                     onActionSuccess={onActionSuccess}
-                  />) || <>INVALID RISP ELEMENT</>
+                  />) || <>INVALID RISP ELEMENT {JSON.stringify(directions.element)}</>
                 }
               </>}
             </TableCell>
