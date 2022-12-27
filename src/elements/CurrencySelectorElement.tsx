@@ -2,7 +2,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { MenuItem, TextField } from '@mui/material'
 import React from 'react'
 import { CurrencyElement, RenderingProps } from '@dataplug/tasenor-common'
-import { Renderer } from './RenderingEngine'
+import { Renderer } from '../risp/RenderingEngine'
 
 export const CurrencySelectorRenderer: Renderer = (props: RenderingProps<CurrencyElement>) => {
 
