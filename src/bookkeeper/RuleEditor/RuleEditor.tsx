@@ -250,9 +250,21 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             <Box>
             <Typography variant="h5" color="secondary"><Trans>Alternatively</Trans></Typography>
 
-            <Link onClick={() => onContinue('skip-one')} sx={{ cursor: 'pointer' }}><Typography color="secondary"><Trans>Skip this transaction and continue</Trans></Typography></Link>
-            <Link onClick={() => onContinue('ignore-rest-unrecognized')} sx={{ cursor: 'pointer' }}><Typography color="secondary"><Trans>Continue and ignore all further unrecognized lines</Trans></Typography></Link>
-            <Link onClick={() => onContinue('suspense-for-rest-unrecognized')} sx={{ cursor: 'pointer' }}><Typography color="secondary"><Trans>Continue and for all furher unrecognized lines create partial transactions on suspense account</Trans></Typography></Link>
+            <Link
+              onClick={() => {
+                onChange(editorOuput)
+                onContinue('skip-one')
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
+              <Typography color="secondary"><Trans>Skip this transaction and continue</Trans></Typography>
+            </Link>
+            <Link onClick={() => onContinue('ignore-rest-unrecognized')} sx={{ cursor: 'pointer' }}>
+              <Typography color="secondary"><Trans>Continue and ignore all further unrecognized lines</Trans></Typography>
+            </Link>
+            <Link onClick={() => onContinue('suspense-for-rest-unrecognized')} sx={{ cursor: 'pointer' }}>
+              <Typography color="secondary"><Trans>Continue and for all furher unrecognized lines create partial transactions on suspense account</Trans></Typography>
+            </Link>
 
             </Box>
           </Item>
