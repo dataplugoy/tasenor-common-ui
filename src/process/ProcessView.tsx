@@ -24,6 +24,7 @@ export type ProcessViewProps = {
   step?: number
   onBack?: () => void
   onChangeStep?: (step: number) => void
+  onRetry?: () => void
   stepView?: (props: DefaultStepViewProps) => JSX.Element
   summaryView?: (props: DefaultSummaryViewProps) => JSX.Element
   stateView?: (props: DefaultStateViewProps) => JSX.Element
@@ -134,6 +135,11 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
     }
   }
 
+  // Handle retry.
+  const onRetry = () => {
+    props.onRetry && props.onRetry()
+  }
+
   const StepView = props.stepView || DefaultStepView
   const ErrorView = props.errorView || DefaultErrorView
   const SuccessView = props.successView || DefaultSuccessView
@@ -207,7 +213,7 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
           <TableRow>
             <TableCell colSpan={5} align="left" style={{ verticalAlign: 'top' }}>
               {lastStep && process.status === 'SUCCEEDED' && step !== null && <SuccessView step={step} process={process}/>}
-              {lastStep && process.error && <ErrorView error={process.error}/>}
+              {lastStep && process.error && <ErrorView error={process.error} onRetry={onRetry}/>}
               {wasConfigured && <ConfigChangeView step={process.steps[(currentStep || 0) - 1]} />}
               {needAnswers && <>
                 <Typography variant="subtitle1"><Trans>Additional information needed</Trans></Typography>

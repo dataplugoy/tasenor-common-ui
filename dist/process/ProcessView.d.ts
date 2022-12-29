@@ -14,6 +14,7 @@ export type ProcessViewProps = {
     step?: number;
     onBack?: () => void;
     onChangeStep?: (step: number) => void;
+    onRetry?: () => void;
     stepView?: (props: DefaultStepViewProps) => JSX.Element;
     summaryView?: (props: DefaultSummaryViewProps) => JSX.Element;
     stateView?: (props: DefaultStateViewProps) => JSX.Element;

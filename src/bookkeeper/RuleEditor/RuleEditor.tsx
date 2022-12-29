@@ -16,7 +16,7 @@ export type RuleEditorMode = null | 'once-off' | 'new-rule'
 /**
  * Alternative continuation options from rule editor.
  */
-export type RuleEditorContinueOption = 'apply-once' | 'skip-one' | 'ignore-rest-unrecognized' | 'suspense-for-rest-unrecognized'
+export type RuleEditorContinueOption = 'retry' | 'apply-once' | 'skip-one' | 'ignore-rest-unrecognized' | 'suspense-for-rest-unrecognized'
 
 /**
  * The collection of values produced and used by the rule editor.

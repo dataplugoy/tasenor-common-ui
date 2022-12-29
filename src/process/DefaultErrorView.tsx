@@ -1,9 +1,10 @@
-import { Card, CardContent, CardHeader, Typography, useTheme } from '@mui/material'
+import { Button, Card, CardContent, CardHeader, Typography, useTheme } from '@mui/material'
 import React from 'react'
 import { Trans } from 'react-i18next'
 
 export type DefaultErrorViewProps = {
   error: string
+  onRetry: () => void
 }
 
 /**
@@ -19,6 +20,7 @@ export const DefaultErrorView = (props: DefaultErrorViewProps): JSX.Element => {
       <CardContent sx={{ fontFamily: 'monospace' }}>
         <Typography>
           {props.error.split('\n').map((line, idx) => <React.Fragment key={idx}>{line}<br/></React.Fragment>)}
+          <Button variant="outlined" onClick={() => props.onRetry()}><Trans>Retry</Trans></Button>
         </Typography>
       </CardContent>
     </Card>

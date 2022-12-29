@@ -4801,7 +4801,7 @@ var import_react35 = __toESM(require("react"));
 var import_react_i18next19 = require("react-i18next");
 var DefaultErrorView = (props) => {
   const { palette } = (0, import_material30.useTheme)();
-  return /* @__PURE__ */ import_react35.default.createElement(import_material30.Card, { style: { backgroundColor: "rgba(0,0,0,0.05)" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.CardHeader, { style: { color: palette.error.main }, title: /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Error") }), /* @__PURE__ */ import_react35.default.createElement(import_material30.CardContent, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.Typography, null, props.error.split("\n").map((line, idx) => /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, { key: idx }, line, /* @__PURE__ */ import_react35.default.createElement("br", null))))));
+  return /* @__PURE__ */ import_react35.default.createElement(import_material30.Card, { style: { backgroundColor: "rgba(0,0,0,0.05)" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.CardHeader, { style: { color: palette.error.main }, title: /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Error") }), /* @__PURE__ */ import_react35.default.createElement(import_material30.CardContent, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.Typography, null, props.error.split("\n").map((line, idx) => /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, { key: idx }, line, /* @__PURE__ */ import_react35.default.createElement("br", null))), /* @__PURE__ */ import_react35.default.createElement(import_material30.Button, { variant: "outlined", onClick: () => props.onRetry() }, /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Retry")))));
 };
 
 // src/process/DefaultResultView.tsx
@@ -5203,6 +5203,9 @@ var ProcessView = (props) => {
       props.onActionSuccess(result, trigger, actionProps);
     }
   };
+  const onRetry = () => {
+    props.onRetry && props.onRetry();
+  };
   const StepView = props.stepView || DefaultStepView;
   const ErrorView = props.errorView || DefaultErrorView;
   const SuccessView = props.successView || DefaultSuccessView;
@@ -5238,7 +5241,7 @@ var ProcessView = (props) => {
       onClick: () => onChangeStep(currentStep !== void 0 ? currentStep + 1 : 0)
     },
     /* @__PURE__ */ import_react48.default.createElement(import_icons_material7.NavigateNext, null)
-  ))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react48.default.createElement(StepList, { onChangeStep: (step2) => onChangeStep(step2), operations, currentStep: currentStep || 0 }))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableRow, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 5, align: "left", style: { verticalAlign: "top" } }, lastStep && process2.status === "SUCCEEDED" && step !== null && /* @__PURE__ */ import_react48.default.createElement(SuccessView, { step, process: process2 }), lastStep && process2.error && /* @__PURE__ */ import_react48.default.createElement(ErrorView, { error: process2.error }), wasConfigured && /* @__PURE__ */ import_react48.default.createElement(ConfigChangeView, { step: process2.steps[(currentStep || 0) - 1] }), needAnswers && /* @__PURE__ */ import_react48.default.createElement(import_react48.default.Fragment, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "Additional information needed")), (0, import_tasenor_common22.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react48.default.createElement(
+  ))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react48.default.createElement(StepList, { onChangeStep: (step2) => onChangeStep(step2), operations, currentStep: currentStep || 0 }))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableRow, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 5, align: "left", style: { verticalAlign: "top" } }, lastStep && process2.status === "SUCCEEDED" && step !== null && /* @__PURE__ */ import_react48.default.createElement(SuccessView, { step, process: process2 }), lastStep && process2.error && /* @__PURE__ */ import_react48.default.createElement(ErrorView, { error: process2.error, onRetry }), wasConfigured && /* @__PURE__ */ import_react48.default.createElement(ConfigChangeView, { step: process2.steps[(currentStep || 0) - 1] }), needAnswers && /* @__PURE__ */ import_react48.default.createElement(import_react48.default.Fragment, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "Additional information needed")), (0, import_tasenor_common22.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react48.default.createElement(
     RISP,
     {
       key: "directions",

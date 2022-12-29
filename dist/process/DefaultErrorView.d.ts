@@ -1,5 +1,6 @@
 export type DefaultErrorViewProps = {
     error: string;
+    onRetry: () => void;
 };
 /**
  * Simple pre-formatted error display.
