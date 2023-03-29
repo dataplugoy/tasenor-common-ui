@@ -5116,6 +5116,8 @@ var ProcessStatusIcon = (props) => {
       return /* @__PURE__ */ import_react45.default.createElement(import_material35.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react45.default.createElement(import_icons_material6.Warning, null));
     case "INCOMPLETE":
       return /* @__PURE__ */ import_react45.default.createElement(import_material35.Typography, { title: props.status, style: { color: colors.blue } }, /* @__PURE__ */ import_react45.default.createElement(import_icons_material6.HourglassEmpty, null));
+    case "ROLLEDBACK":
+      return /* @__PURE__ */ import_react45.default.createElement(import_material35.Typography, { title: props.status, style: { color: "black" } }, /* @__PURE__ */ import_react45.default.createElement(import_icons_material6.Restore, null));
   }
   return /* @__PURE__ */ import_react45.default.createElement(import_material35.Typography, { title: props.status, style: { color: colors.red } }, /* @__PURE__ */ import_react45.default.createElement(import_icons_material6.Help, null));
 };

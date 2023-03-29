@@ -1,5 +1,5 @@
 import React from 'react'
-import { Warning, CheckCircleOutline, Timer, ErrorOutline, HourglassEmpty, Help } from '@mui/icons-material'
+import { Warning, CheckCircleOutline, Timer, ErrorOutline, HourglassEmpty, Help, Restore } from '@mui/icons-material'
 import { Typography } from '@mui/material'
 import { red, green, blue } from '@mui/material/colors'
 import { ProcessStatus } from '@dataplug/tasenor-common'
@@ -32,6 +32,8 @@ export const ProcessStatusIcon = (props: ProcessStatusIconProps) => {
       return <Typography title={props.status} style={{ color: colors.red }}><Warning /></Typography>
     case 'INCOMPLETE':
       return <Typography title={props.status} style={{ color: colors.blue }}><HourglassEmpty /></Typography>
+    case 'ROLLEDBACK':
+      return <Typography title={props.status} style={{ color: 'black' }}><Restore /></Typography>
   }
   return <Typography title={props.status} style={{ color: colors.red }}><Help /></Typography>
 }
