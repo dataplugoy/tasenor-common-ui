@@ -2,7 +2,7 @@ import { TableContainer, Table, TableHead, TableCell, TableRow, TableBody, Typog
 import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { ProcessStatusIcon } from './ProcessStatusIcon'
-import { DefaultStepView, DefaultStepViewProps } from './DefaultStepView'
+import { StepView } from './StepView'
 import { DefaultStateViewProps } from './DefaultStateView'
 import { DefaultSummaryViewProps } from './DefaultSummaryView'
 import { DefaultErrorView, DefaultErrorViewProps } from './DefaultErrorView'
@@ -25,7 +25,6 @@ export type ProcessViewProps = {
   onBack?: () => void
   onChangeStep?: (step: number) => void
   onRetry?: () => void
-  stepView?: (props: DefaultStepViewProps) => JSX.Element
   summaryView?: (props: DefaultSummaryViewProps) => JSX.Element
   stateView?: (props: DefaultStateViewProps) => JSX.Element
   resultView?: (props: DefaultResultViewProps) => JSX.Element
@@ -140,7 +139,6 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
     props.onRetry && props.onRetry()
   }
 
-  const StepView = props.stepView || DefaultStepView
   const ErrorView = props.errorView || DefaultErrorView
   const SuccessView = props.successView || DefaultSuccessView
 

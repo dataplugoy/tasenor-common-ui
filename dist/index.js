@@ -3122,7 +3122,6 @@ __export(src_exports, {
   DefaultErrorView: () => DefaultErrorView,
   DefaultResultView: () => DefaultResultView,
   DefaultStateView: () => DefaultStateView,
-  DefaultStepView: () => DefaultStepView,
   DefaultSuccessView: () => DefaultSuccessView,
   DefaultSummaryView: () => DefaultSummaryView,
   Dialog: () => Dialog,
@@ -3159,6 +3158,7 @@ __export(src_exports, {
   RuleLineEdit: () => RuleLineEdit,
   SchemePlugin: () => SchemePlugin,
   StepList: () => StepList,
+  StepView: () => StepView,
   SubPanel: () => SubPanel,
   TabNav: () => TabNav,
   TabPanel: () => TabPanel,
@@ -4825,7 +4825,7 @@ var DefaultStateView = (props) => {
   return /* @__PURE__ */ import_react37.default.createElement(import_react37.default.Fragment, null, /* @__PURE__ */ import_react37.default.createElement("pre", null, JSON.stringify(props.state, null, 2)), props.state.result && /* @__PURE__ */ import_react37.default.createElement(ResultView, { config: props.config, result: props.state.result }));
 };
 
-// src/process/DefaultStepView.tsx
+// src/process/StepView.tsx
 init_shim();
 var import_react39 = __toESM(require("react"));
 
@@ -4855,8 +4855,8 @@ var DefaultSummaryView = (props) => {
   ))), showConfig && /* @__PURE__ */ import_react38.default.createElement(import_material31.Card, { style: { marginBottom: "0.5em" } }, /* @__PURE__ */ import_react38.default.createElement(import_material31.CardContent, null, /* @__PURE__ */ import_react38.default.createElement(UsedConfigView, { title: t("Configuration"), config: props.process.config }))));
 };
 
-// src/process/DefaultStepView.tsx
-var DefaultStepView = (props) => {
+// src/process/StepView.tsx
+var StepView = (props) => {
   const { step } = props;
   if (!step) {
     return /* @__PURE__ */ import_react39.default.createElement(import_react39.default.Fragment, null);
@@ -5208,7 +5208,6 @@ var ProcessView = (props) => {
   const onRetry = () => {
     props.onRetry && props.onRetry();
   };
-  const StepView = props.stepView || DefaultStepView;
   const ErrorView = props.errorView || DefaultErrorView;
   const SuccessView = props.successView || DefaultSuccessView;
   const operations = ["start"].concat(
@@ -5609,7 +5608,6 @@ var ToolPlugin = class extends UiPlugin {
   DefaultErrorView,
   DefaultResultView,
   DefaultStateView,
-  DefaultStepView,
   DefaultSuccessView,
   DefaultSummaryView,
   Dialog,
@@ -5646,6 +5644,7 @@ var ToolPlugin = class extends UiPlugin {
   RuleLineEdit,
   SchemePlugin,
   StepList,
+  StepView,
   SubPanel,
   TabNav,
   TabPanel,

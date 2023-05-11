@@ -1,4 +1,3 @@
-import { DefaultStepViewProps } from './DefaultStepView';
 import { DefaultStateViewProps } from './DefaultStateView';
 import { DefaultSummaryViewProps } from './DefaultSummaryView';
 import { DefaultErrorViewProps } from './DefaultErrorView';
@@ -15,7 +14,6 @@ export type ProcessViewProps = {
     onBack?: () => void;
     onChangeStep?: (step: number) => void;
     onRetry?: () => void;
-    stepView?: (props: DefaultStepViewProps) => JSX.Element;
     summaryView?: (props: DefaultSummaryViewProps) => JSX.Element;
     stateView?: (props: DefaultStateViewProps) => JSX.Element;
     resultView?: (props: DefaultResultViewProps) => JSX.Element;

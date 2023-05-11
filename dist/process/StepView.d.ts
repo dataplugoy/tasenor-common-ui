@@ -3,7 +3,7 @@ import { DefaultStateViewProps } from './DefaultStateView';
 import { DefaultResultViewProps } from './DefaultResultView';
 import { ConfigViewProps } from './ConfigView';
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common';
-export type DefaultStepViewProps = {
+export type StepViewProps = {
     api: string;
     token?: string;
     step: ProcessStepModelData | null;
@@ -18,4 +18,4 @@ export type DefaultStepViewProps = {
  * @param props
  * @returns
  */
-export declare const DefaultStepView: (props: DefaultStepViewProps) => JSX.Element;
+export declare const StepView: (props: StepViewProps) => JSX.Element;

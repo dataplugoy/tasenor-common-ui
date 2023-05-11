@@ -9,7 +9,7 @@ export * from './ConfigView';
 export * from './DefaultErrorView';
 export * from './DefaultResultView';
 export * from './DefaultStateView';
-export * from './DefaultStepView';
+export * from './StepView';
 export * from './DefaultSuccessView';
 export * from './DefaultSummaryView';
 export * from './ImportFile';
