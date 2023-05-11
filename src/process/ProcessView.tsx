@@ -5,7 +5,7 @@ import { ProcessStatusIcon } from './ProcessStatusIcon'
 import { StepView } from './StepView'
 import { DefaultStateViewProps } from './DefaultStateView'
 import { DefaultSummaryViewProps } from './DefaultSummaryView'
-import { DefaultErrorView, DefaultErrorViewProps } from './DefaultErrorView'
+import { ErrorView } from './ErrorView'
 import { DefaultSuccessView, DefaultSuccessViewProps } from './DefaultSuccessView'
 import { DefaultResultViewProps } from './DefaultResultView'
 import { ConfigViewProps } from './ConfigView'
@@ -29,7 +29,6 @@ export type ProcessViewProps = {
   stateView?: (props: DefaultStateViewProps) => JSX.Element
   resultView?: (props: DefaultResultViewProps) => JSX.Element
   configView?: (props: ConfigViewProps) => JSX.Element
-  errorView?: (props: DefaultErrorViewProps) => JSX.Element
   successView?: (props: DefaultSuccessViewProps) => JSX.Element
   // TODO: We should also pass onActionFail and let it handle errors.
   onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps) => void
@@ -139,7 +138,6 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
     props.onRetry && props.onRetry()
   }
 
-  const ErrorView = props.errorView || DefaultErrorView
   const SuccessView = props.successView || DefaultSuccessView
 
   const operations = ['start'].concat(

@@ -3119,12 +3119,12 @@ __export(src_exports, {
   ConfigView: () => ConfigView,
   CurrencyPlugin: () => CurrencyPlugin,
   CurrencySelectorRenderer: () => CurrencySelectorRenderer,
-  DefaultErrorView: () => DefaultErrorView,
   DefaultResultView: () => DefaultResultView,
   DefaultStateView: () => DefaultStateView,
   DefaultSuccessView: () => DefaultSuccessView,
   DefaultSummaryView: () => DefaultSummaryView,
   Dialog: () => Dialog,
+  ErrorView: () => ErrorView,
   FileUploader: () => FileUploader,
   FlatRenderer: () => FlatRenderer,
   HtmlRenderer: () => HtmlRenderer,
@@ -4794,12 +4794,12 @@ var ConfigJSONView = (props) => {
   return /* @__PURE__ */ import_react34.default.createElement(import_react34.default.Fragment, null, props.title && /* @__PURE__ */ import_react34.default.createElement(import_material29.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react34.default.createElement(import_react_i18next18.Trans, null, props.title)), /* @__PURE__ */ import_react34.default.createElement(import_material29.Box, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react34.default.createElement("pre", null, JSON.stringify(config, null, 2))));
 };
 
-// src/process/DefaultErrorView.tsx
+// src/process/ErrorView.tsx
 init_shim();
 var import_material30 = require("@mui/material");
 var import_react35 = __toESM(require("react"));
 var import_react_i18next19 = require("react-i18next");
-var DefaultErrorView = (props) => {
+var ErrorView = (props) => {
   const { palette } = (0, import_material30.useTheme)();
   return /* @__PURE__ */ import_react35.default.createElement(import_material30.Card, { style: { backgroundColor: "rgba(0,0,0,0.05)" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.CardHeader, { style: { color: palette.error.main }, title: /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Error") }), /* @__PURE__ */ import_react35.default.createElement(import_material30.CardContent, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.Typography, null, props.error.split("\n").map((line, idx) => /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, { key: idx }, line, /* @__PURE__ */ import_react35.default.createElement("br", null))), /* @__PURE__ */ import_react35.default.createElement(import_material30.Button, { variant: "outlined", onClick: () => props.onRetry() }, /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Retry")))));
 };
@@ -5208,7 +5208,6 @@ var ProcessView = (props) => {
   const onRetry = () => {
     props.onRetry && props.onRetry();
   };
-  const ErrorView = props.errorView || DefaultErrorView;
   const SuccessView = props.successView || DefaultSuccessView;
   const operations = ["start"].concat(
     process2.steps.filter((step2) => step2.action).map((step2) => actionStepLabel(step2.action))
@@ -5605,12 +5604,12 @@ var ToolPlugin = class extends UiPlugin {
   ConfigView,
   CurrencyPlugin,
   CurrencySelectorRenderer,
-  DefaultErrorView,
   DefaultResultView,
   DefaultStateView,
   DefaultSuccessView,
   DefaultSummaryView,
   Dialog,
+  ErrorView,
   FileUploader,
   FlatRenderer,
   HtmlRenderer,
