@@ -5158,6 +5158,9 @@ var actionStepLabel = (action) => {
   if ((0, import_tasenor_common22.isImportAnswerAction)(action)) {
     return "answer";
   }
+  if ((0, import_tasenor_common22.isImportRollbackAction)(action)) {
+    return "rollback";
+  }
   return "unknown";
 };
 var ProcessView = (props) => {
