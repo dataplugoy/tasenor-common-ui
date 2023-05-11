@@ -48,7 +48,7 @@ const actionStepLabel = (action: unknown): string => {
   if (isImportAnswerAction(action)) {
     return 'answer'
   }
-  return JSON.stringify(action)
+  return 'unknown'
 }
 
 /**

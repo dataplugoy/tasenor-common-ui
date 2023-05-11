@@ -5158,7 +5158,7 @@ var actionStepLabel = (action) => {
   if ((0, import_tasenor_common22.isImportAnswerAction)(action)) {
     return "answer";
   }
-  return JSON.stringify(action);
+  return "unknown";
 };
 var ProcessView = (props) => {
   const { stateView, resultView } = props;
