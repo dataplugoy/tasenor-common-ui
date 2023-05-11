@@ -1,5 +1,4 @@
 import { DefaultStateViewProps } from './DefaultStateView';
-import { DefaultSummaryViewProps } from './DefaultSummaryView';
 import { DefaultSuccessViewProps } from './DefaultSuccessView';
 import { DefaultResultViewProps } from './DefaultResultView';
 import { RenderingProps, TasenorSetup } from '@dataplug/tasenor-common';
@@ -12,7 +11,6 @@ export type ProcessViewProps = {
     onBack?: () => void;
     onChangeStep?: (step: number) => void;
     onRetry?: () => void;
-    summaryView?: (props: DefaultSummaryViewProps) => JSX.Element;
     stateView?: (props: DefaultStateViewProps) => JSX.Element;
     resultView?: (props: DefaultResultViewProps) => JSX.Element;
     successView?: (props: DefaultSuccessViewProps) => JSX.Element;

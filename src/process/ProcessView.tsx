@@ -4,7 +4,6 @@ import { Trans, useTranslation } from 'react-i18next'
 import { ProcessStatusIcon } from './ProcessStatusIcon'
 import { StepView } from './StepView'
 import { DefaultStateViewProps } from './DefaultStateView'
-import { DefaultSummaryViewProps } from './DefaultSummaryView'
 import { ErrorView } from './ErrorView'
 import { DefaultSuccessView, DefaultSuccessViewProps } from './DefaultSuccessView'
 import { DefaultResultViewProps } from './DefaultResultView'
@@ -24,7 +23,6 @@ export type ProcessViewProps = {
   onBack?: () => void
   onChangeStep?: (step: number) => void
   onRetry?: () => void
-  summaryView?: (props: DefaultSummaryViewProps) => JSX.Element
   stateView?: (props: DefaultStateViewProps) => JSX.Element
   resultView?: (props: DefaultResultViewProps) => JSX.Element
   successView?: (props: DefaultSuccessViewProps) => JSX.Element
@@ -60,7 +58,7 @@ const actionStepLabel = (action: unknown): string => {
  */
 export const ProcessView = (props: ProcessViewProps): JSX.Element => {
 
-  const { summaryView, stateView, resultView } = props
+  const { stateView, resultView } = props
 
   const theme = useTheme()
   const { t } = useTranslation()
@@ -233,7 +231,6 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
                   token={props.token}
                   step={step}
                   process={process}
-                  summaryView={summaryView}
                   stateView={stateView}
                   resultView={resultView}
                 />

@@ -3122,7 +3122,6 @@ __export(src_exports, {
   DefaultResultView: () => DefaultResultView,
   DefaultStateView: () => DefaultStateView,
   DefaultSuccessView: () => DefaultSuccessView,
-  DefaultSummaryView: () => DefaultSummaryView,
   Dialog: () => Dialog,
   ErrorView: () => ErrorView,
   FileUploader: () => FileUploader,
@@ -3160,6 +3159,7 @@ __export(src_exports, {
   StepList: () => StepList,
   StepView: () => StepView,
   SubPanel: () => SubPanel,
+  SummaryView: () => SummaryView,
   TabNav: () => TabNav,
   TabPanel: () => TabPanel,
   TagChip: () => TagChip,
@@ -4829,13 +4829,13 @@ var DefaultStateView = (props) => {
 init_shim();
 var import_react39 = __toESM(require("react"));
 
-// src/process/DefaultSummaryView.tsx
+// src/process/SummaryView.tsx
 init_shim();
 var import_material31 = require("@mui/material");
 var import_react38 = __toESM(require("react"));
 var import_react_i18next20 = require("react-i18next");
 var import_icons_material3 = require("@mui/icons-material");
-var DefaultSummaryView = (props) => {
+var SummaryView = (props) => {
   const { step } = props;
   const { t } = (0, import_react_i18next20.useTranslation)();
   const [showConfig, setShowConfig] = (0, import_react38.useState)(false);
@@ -4860,7 +4860,6 @@ var StepView = (props) => {
   if (!step) {
     return /* @__PURE__ */ import_react39.default.createElement(import_react39.default.Fragment, null);
   }
-  const SummaryView = props.summaryView || DefaultSummaryView;
   const StateView = props.stateView || DefaultStateView;
   const ResultView = props.resultView || DefaultResultView;
   return /* @__PURE__ */ import_react39.default.createElement("div", null, /* @__PURE__ */ import_react39.default.createElement(SummaryView, { step, process: props.process }), step.state && /* @__PURE__ */ import_react39.default.createElement(StateView, { config: props.process.config, state: step.state, resultView: ResultView }));
@@ -5162,7 +5161,7 @@ var actionStepLabel = (action) => {
   return JSON.stringify(action);
 };
 var ProcessView = (props) => {
-  const { summaryView, stateView, resultView } = props;
+  const { stateView, resultView } = props;
   const theme = (0, import_material38.useTheme)();
   const { t } = (0, import_react_i18next24.useTranslation)();
   const [process2, setProcess] = (0, import_react48.useState)(null);
@@ -5255,7 +5254,6 @@ var ProcessView = (props) => {
       token: props.token,
       step,
       process: process2,
-      summaryView,
       stateView,
       resultView
     }
@@ -5604,7 +5602,6 @@ var ToolPlugin = class extends UiPlugin {
   DefaultResultView,
   DefaultStateView,
   DefaultSuccessView,
-  DefaultSummaryView,
   Dialog,
   ErrorView,
   FileUploader,
@@ -5642,6 +5639,7 @@ var ToolPlugin = class extends UiPlugin {
   StepList,
   StepView,
   SubPanel,
+  SummaryView,
   TabNav,
   TabPanel,
   TagChip,

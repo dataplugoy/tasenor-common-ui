@@ -1,15 +1,14 @@
 import React from 'react'
-import { DefaultSummaryView, DefaultSummaryViewProps } from './DefaultSummaryView'
 import { DefaultStateView, DefaultStateViewProps } from './DefaultStateView'
 import { DefaultResultView, DefaultResultViewProps } from './DefaultResultView'
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common'
+import { SummaryView } from './SummaryView'
 
 export type StepViewProps = {
   api: string
   token?: string
   step: ProcessStepModelData | null
   process: ProcessModelDetailedData
-  summaryView?: (props: DefaultSummaryViewProps) => JSX.Element
   stateView?: (props: DefaultStateViewProps) => JSX.Element
   resultView?: (props: DefaultResultViewProps) => JSX.Element
 }
@@ -27,7 +26,6 @@ export const StepView = (props: StepViewProps): JSX.Element => {
     return <></>
   }
 
-  const SummaryView = props.summaryView || DefaultSummaryView
   const StateView = props.stateView || DefaultStateView
   const ResultView = props.resultView || DefaultResultView
 

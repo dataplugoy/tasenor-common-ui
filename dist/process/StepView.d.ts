@@ -1,4 +1,3 @@
-import { DefaultSummaryViewProps } from './DefaultSummaryView';
 import { DefaultStateViewProps } from './DefaultStateView';
 import { DefaultResultViewProps } from './DefaultResultView';
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common';
@@ -7,7 +6,6 @@ export type StepViewProps = {
     token?: string;
     step: ProcessStepModelData | null;
     process: ProcessModelDetailedData;
-    summaryView?: (props: DefaultSummaryViewProps) => JSX.Element;
     stateView?: (props: DefaultStateViewProps) => JSX.Element;
     resultView?: (props: DefaultResultViewProps) => JSX.Element;
 };

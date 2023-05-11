@@ -5,7 +5,7 @@ import { Settings } from '@mui/icons-material'
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common'
 import { ConfigJSONView } from './ConfigJSONView'
 
-export type DefaultSummaryViewProps = {
+export type SummaryViewProps = {
   step: ProcessStepModelData
   process: ProcessModelDetailedData
 }
@@ -15,7 +15,7 @@ export type DefaultSummaryViewProps = {
  * @param props
  * @returns
  */
-export const DefaultSummaryView = (props: DefaultSummaryViewProps): JSX.Element => {
+export const SummaryView = (props: SummaryViewProps): JSX.Element => {
 
   const { step } = props
   const { t } = useTranslation()
