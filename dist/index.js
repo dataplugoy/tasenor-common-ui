@@ -3119,12 +3119,11 @@ __export(src_exports, {
   ConfigView: () => ConfigView,
   CurrencyPlugin: () => CurrencyPlugin,
   CurrencySelectorRenderer: () => CurrencySelectorRenderer,
-  DefaultErrorView: () => DefaultErrorView,
   DefaultResultView: () => DefaultResultView,
   DefaultStateView: () => DefaultStateView,
   DefaultSuccessView: () => DefaultSuccessView,
-  DefaultSummaryView: () => DefaultSummaryView,
   Dialog: () => Dialog,
+  ErrorView: () => ErrorView,
   FileUploader: () => FileUploader,
   FlatRenderer: () => FlatRenderer,
   HtmlRenderer: () => HtmlRenderer,
@@ -3160,6 +3159,7 @@ __export(src_exports, {
   StepList: () => StepList,
   StepView: () => StepView,
   SubPanel: () => SubPanel,
+  SummaryView: () => SummaryView,
   TabNav: () => TabNav,
   TabPanel: () => TabPanel,
   TagChip: () => TagChip,
@@ -4794,12 +4794,12 @@ var ConfigJSONView = (props) => {
   return /* @__PURE__ */ import_react34.default.createElement(import_react34.default.Fragment, null, props.title && /* @__PURE__ */ import_react34.default.createElement(import_material29.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react34.default.createElement(import_react_i18next18.Trans, null, props.title)), /* @__PURE__ */ import_react34.default.createElement(import_material29.Box, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react34.default.createElement("pre", null, JSON.stringify(config, null, 2))));
 };
 
-// src/process/DefaultErrorView.tsx
+// src/process/ErrorView.tsx
 init_shim();
 var import_material30 = require("@mui/material");
 var import_react35 = __toESM(require("react"));
 var import_react_i18next19 = require("react-i18next");
-var DefaultErrorView = (props) => {
+var ErrorView = (props) => {
   const { palette } = (0, import_material30.useTheme)();
   return /* @__PURE__ */ import_react35.default.createElement(import_material30.Card, { style: { backgroundColor: "rgba(0,0,0,0.05)" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.CardHeader, { style: { color: palette.error.main }, title: /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Error") }), /* @__PURE__ */ import_react35.default.createElement(import_material30.CardContent, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.Typography, null, props.error.split("\n").map((line, idx) => /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, { key: idx }, line, /* @__PURE__ */ import_react35.default.createElement("br", null))), /* @__PURE__ */ import_react35.default.createElement(import_material30.Button, { variant: "outlined", onClick: () => props.onRetry() }, /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Retry")))));
 };
@@ -4829,19 +4829,18 @@ var DefaultStateView = (props) => {
 init_shim();
 var import_react39 = __toESM(require("react"));
 
-// src/process/DefaultSummaryView.tsx
+// src/process/SummaryView.tsx
 init_shim();
 var import_material31 = require("@mui/material");
 var import_react38 = __toESM(require("react"));
 var import_react_i18next20 = require("react-i18next");
 var import_icons_material3 = require("@mui/icons-material");
-var DefaultSummaryView = (props) => {
+var SummaryView = (props) => {
   const { step } = props;
   const { t } = (0, import_react_i18next20.useTranslation)();
   const [showConfig, setShowConfig] = (0, import_react38.useState)(false);
   const started = new Date(step.started).getTime();
   const finished = new Date(step.finished).getTime();
-  const UsedConfigView = props.configView || ConfigView;
   return /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(import_material31.Typography, { variant: "body2" }, /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Process ID")), ": ", step.processId, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Step")), ": ", step.number + 1, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Handler")), ": ", step.handler, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Started")), ": ", step.started, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Duration")), ": ", finished ? `${finished - started}ms ` : "\u2014 ", /* @__PURE__ */ import_react38.default.createElement(
     import_material31.ToggleButton,
     {
@@ -4852,7 +4851,7 @@ var DefaultSummaryView = (props) => {
       onClick: () => setShowConfig(!showConfig)
     },
     /* @__PURE__ */ import_react38.default.createElement(import_icons_material3.Settings, null)
-  ))), showConfig && /* @__PURE__ */ import_react38.default.createElement(import_material31.Card, { style: { marginBottom: "0.5em" } }, /* @__PURE__ */ import_react38.default.createElement(import_material31.CardContent, null, /* @__PURE__ */ import_react38.default.createElement(UsedConfigView, { title: t("Configuration"), config: props.process.config }))));
+  ))), showConfig && /* @__PURE__ */ import_react38.default.createElement(import_material31.Card, { style: { marginBottom: "0.5em" } }, /* @__PURE__ */ import_react38.default.createElement(import_material31.CardContent, null, /* @__PURE__ */ import_react38.default.createElement(ConfigJSONView, { title: t("Configuration"), config: props.process.config }))));
 };
 
 // src/process/StepView.tsx
@@ -4861,11 +4860,9 @@ var StepView = (props) => {
   if (!step) {
     return /* @__PURE__ */ import_react39.default.createElement(import_react39.default.Fragment, null);
   }
-  const SummaryView = props.summaryView || DefaultSummaryView;
   const StateView = props.stateView || DefaultStateView;
   const ResultView = props.resultView || DefaultResultView;
-  const configView = props.configView || ConfigView;
-  return /* @__PURE__ */ import_react39.default.createElement("div", null, /* @__PURE__ */ import_react39.default.createElement(SummaryView, { step, process: props.process, configView }), step.state && /* @__PURE__ */ import_react39.default.createElement(StateView, { config: props.process.config, state: step.state, resultView: ResultView }));
+  return /* @__PURE__ */ import_react39.default.createElement("div", null, /* @__PURE__ */ import_react39.default.createElement(SummaryView, { step, process: props.process }), step.state && /* @__PURE__ */ import_react39.default.createElement(StateView, { config: props.process.config, state: step.state, resultView: ResultView }));
 };
 
 // src/process/DefaultSuccessView.tsx
@@ -5164,7 +5161,7 @@ var actionStepLabel = (action) => {
   return JSON.stringify(action);
 };
 var ProcessView = (props) => {
-  const { summaryView, stateView, resultView, configView } = props;
+  const { stateView, resultView } = props;
   const theme = (0, import_material38.useTheme)();
   const { t } = (0, import_react_i18next24.useTranslation)();
   const [process2, setProcess] = (0, import_react48.useState)(null);
@@ -5208,7 +5205,6 @@ var ProcessView = (props) => {
   const onRetry = () => {
     props.onRetry && props.onRetry();
   };
-  const ErrorView = props.errorView || DefaultErrorView;
   const SuccessView = props.successView || DefaultSuccessView;
   const operations = ["start"].concat(
     process2.steps.filter((step2) => step2.action).map((step2) => actionStepLabel(step2.action))
@@ -5258,10 +5254,8 @@ var ProcessView = (props) => {
       token: props.token,
       step,
       process: process2,
-      summaryView,
       stateView,
-      resultView,
-      configView
+      resultView
     }
   ))))));
 };
@@ -5605,12 +5599,11 @@ var ToolPlugin = class extends UiPlugin {
   ConfigView,
   CurrencyPlugin,
   CurrencySelectorRenderer,
-  DefaultErrorView,
   DefaultResultView,
   DefaultStateView,
   DefaultSuccessView,
-  DefaultSummaryView,
   Dialog,
+  ErrorView,
   FileUploader,
   FlatRenderer,
   HtmlRenderer,
@@ -5646,6 +5639,7 @@ var ToolPlugin = class extends UiPlugin {
   StepList,
   StepView,
   SubPanel,
+  SummaryView,
   TabNav,
   TabPanel,
   TagChip,

@@ -4,11 +4,9 @@ import { Trans, useTranslation } from 'react-i18next'
 import { ProcessStatusIcon } from './ProcessStatusIcon'
 import { StepView } from './StepView'
 import { DefaultStateViewProps } from './DefaultStateView'
-import { DefaultSummaryViewProps } from './DefaultSummaryView'
-import { DefaultErrorView, DefaultErrorViewProps } from './DefaultErrorView'
+import { ErrorView } from './ErrorView'
 import { DefaultSuccessView, DefaultSuccessViewProps } from './DefaultSuccessView'
 import { DefaultResultViewProps } from './DefaultResultView'
-import { ConfigViewProps } from './ConfigView'
 import { StepList } from './StepList'
 import { ConfigChangeView } from './ConfigChangeView'
 import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value, isTasenorElement } from '@dataplug/tasenor-common'
@@ -25,11 +23,8 @@ export type ProcessViewProps = {
   onBack?: () => void
   onChangeStep?: (step: number) => void
   onRetry?: () => void
-  summaryView?: (props: DefaultSummaryViewProps) => JSX.Element
   stateView?: (props: DefaultStateViewProps) => JSX.Element
   resultView?: (props: DefaultResultViewProps) => JSX.Element
-  configView?: (props: ConfigViewProps) => JSX.Element
-  errorView?: (props: DefaultErrorViewProps) => JSX.Element
   successView?: (props: DefaultSuccessViewProps) => JSX.Element
   // TODO: We should also pass onActionFail and let it handle errors.
   onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps) => void
@@ -63,7 +58,7 @@ const actionStepLabel = (action: unknown): string => {
  */
 export const ProcessView = (props: ProcessViewProps): JSX.Element => {
 
-  const { summaryView, stateView, resultView, configView } = props
+  const { stateView, resultView } = props
 
   const theme = useTheme()
   const { t } = useTranslation()
@@ -139,7 +134,6 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
     props.onRetry && props.onRetry()
   }
 
-  const ErrorView = props.errorView || DefaultErrorView
   const SuccessView = props.successView || DefaultSuccessView
 
   const operations = ['start'].concat(
@@ -237,10 +231,8 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
                   token={props.token}
                   step={step}
                   process={process}
-                  summaryView={summaryView}
                   stateView={stateView}
                   resultView={resultView}
-                  configView={configView}
                 />
               </TableCell>
             </TableRow>

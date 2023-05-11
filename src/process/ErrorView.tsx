@@ -2,7 +2,7 @@ import { Button, Card, CardContent, CardHeader, Typography, useTheme } from '@mu
 import React from 'react'
 import { Trans } from 'react-i18next'
 
-export type DefaultErrorViewProps = {
+export type ErrorViewProps = {
   error: string
   onRetry: () => void
 }
@@ -12,7 +12,7 @@ export type DefaultErrorViewProps = {
  * @param props
  * @returns
  */
-export const DefaultErrorView = (props: DefaultErrorViewProps): JSX.Element => {
+export const ErrorView = (props: ErrorViewProps): JSX.Element => {
   const { palette } = useTheme()
   return (
     <Card style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
