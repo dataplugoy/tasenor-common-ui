@@ -2,13 +2,12 @@ import { Card, CardContent, ToggleButton, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Settings } from '@mui/icons-material'
-import { ConfigView, ConfigViewProps } from './ConfigView'
 import { ProcessStepModelData, ProcessModelDetailedData } from '@dataplug/tasenor-common'
+import { ConfigJSONView } from './ConfigJSONView'
 
 export type DefaultSummaryViewProps = {
   step: ProcessStepModelData
   process: ProcessModelDetailedData
-  configView?: (props: ConfigViewProps) => JSX.Element
 }
 
 /**
@@ -23,7 +22,6 @@ export const DefaultSummaryView = (props: DefaultSummaryViewProps): JSX.Element 
   const [showConfig, setShowConfig] = useState<boolean>(false)
   const started = new Date(step.started).getTime()
   const finished = new Date(step.finished).getTime()
-  const UsedConfigView = props.configView || ConfigView
 
   return (
     <>
@@ -52,7 +50,7 @@ export const DefaultSummaryView = (props: DefaultSummaryViewProps): JSX.Element 
       { showConfig &&
         <Card style={{ marginBottom: '0.5em' }}>
           <CardContent>
-            <UsedConfigView title={t('Configuration')} config={props.process.config}/>
+            <ConfigJSONView title={t('Configuration')} config={props.process.config}/>
           </CardContent>
         </Card>}
     </>

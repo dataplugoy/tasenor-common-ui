@@ -8,7 +8,6 @@ import { DefaultSummaryViewProps } from './DefaultSummaryView'
 import { ErrorView } from './ErrorView'
 import { DefaultSuccessView, DefaultSuccessViewProps } from './DefaultSuccessView'
 import { DefaultResultViewProps } from './DefaultResultView'
-import { ConfigViewProps } from './ConfigView'
 import { StepList } from './StepList'
 import { ConfigChangeView } from './ConfigChangeView'
 import { RenderingProps, isImportOpAction, isImportConfigureAction, isImportAnswerAction, ProcessModelDetailedData, ProcessStepModelData, Values, TasenorSetup, Value, isTasenorElement } from '@dataplug/tasenor-common'
@@ -28,7 +27,6 @@ export type ProcessViewProps = {
   summaryView?: (props: DefaultSummaryViewProps) => JSX.Element
   stateView?: (props: DefaultStateViewProps) => JSX.Element
   resultView?: (props: DefaultResultViewProps) => JSX.Element
-  configView?: (props: ConfigViewProps) => JSX.Element
   successView?: (props: DefaultSuccessViewProps) => JSX.Element
   // TODO: We should also pass onActionFail and let it handle errors.
   onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps) => void
@@ -62,7 +60,7 @@ const actionStepLabel = (action: unknown): string => {
  */
 export const ProcessView = (props: ProcessViewProps): JSX.Element => {
 
-  const { summaryView, stateView, resultView, configView } = props
+  const { summaryView, stateView, resultView } = props
 
   const theme = useTheme()
   const { t } = useTranslation()
@@ -238,7 +236,6 @@ export const ProcessView = (props: ProcessViewProps): JSX.Element => {
                   summaryView={summaryView}
                   stateView={stateView}
                   resultView={resultView}
-                  configView={configView}
                 />
               </TableCell>
             </TableRow>
