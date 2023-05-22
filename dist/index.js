@@ -3885,6 +3885,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
   });
   const [mode, setMode] = (0, import_react15.useState)(null);
   const [autonaming, setAutonaming] = (0, import_react15.useState)(true);
+  const [skipRest, setSkipRest] = (0, import_react15.useState)(false);
   const { t } = (0, import_react_i18next9.useTranslation)();
   if (!lines || lines.length < 1)
     return /* @__PURE__ */ import_react15.default.createElement(import_react15.default.Fragment, null);
@@ -3973,6 +3974,9 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
     transfers: transfers({ text, account, tags }),
     rule
   };
+  if (skipRest) {
+    onContinue("ignore-rest-unrecognized");
+  }
   return /* @__PURE__ */ import_react15.default.createElement(import_material14.Box, { sx: { flexGrow: 1 } }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { container: true, spacing: 2 }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 12 }, "We have found lines in the imported file that does not match anything we know already. Please help to determine what to do with this."), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 12 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, lines.map((line, idx) => /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { title: t("Line number #{number}").replace("{number}", `${line.line}`), key: idx, sx: { fontFamily: "monospace" } }, line.text.replace(/\t/g, " \u23B5 "))))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Quick Once-Off Selection"), /* @__PURE__ */ import_react15.default.createElement(
     AccountSelector,
     {
@@ -4031,7 +4035,28 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
       sx: { cursor: "pointer" }
     },
     /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Skip this transaction and continue"))
-  ), /* @__PURE__ */ import_react15.default.createElement(import_material14.Link, { onClick: () => onContinue("ignore-rest-unrecognized"), sx: { cursor: "pointer" } }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and ignore all further unrecognized lines"))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Link, { onClick: () => onContinue("suspense-for-rest-unrecognized"), sx: { cursor: "pointer" } }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and for all furher unrecognized lines create partial transactions on suspense account")))))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Construct a Permanent Rule"), /* @__PURE__ */ import_react15.default.createElement(
+  ), /* @__PURE__ */ import_react15.default.createElement(
+    import_material14.Link,
+    {
+      onClick: () => {
+        onChange(editorOuput);
+        setSkipRest(true);
+        onContinue("ignore-rest-unrecognized");
+      },
+      sx: { cursor: "pointer" }
+    },
+    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and ignore all further unrecognized lines"))
+  ), /* @__PURE__ */ import_react15.default.createElement(
+    import_material14.Link,
+    {
+      onClick: () => {
+        onChange(editorOuput);
+        onContinue("suspense-for-rest-unrecognized");
+      },
+      sx: { cursor: "pointer" }
+    },
+    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and for all furher unrecognized lines create partial transactions on suspense account"))
+  )))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Construct a Permanent Rule"), /* @__PURE__ */ import_react15.default.createElement(
     import_material14.TextField,
     {
       fullWidth: true,
