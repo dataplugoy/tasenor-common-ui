@@ -4046,11 +4046,11 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
     {
       onClick: () => {
         onChange(editorOuput);
-        onContinue("suspense-for-rest-unrecognized");
+        onContinue("suspense-unrecognized");
       },
       sx: { cursor: "pointer" }
     },
-    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and for all furher unrecognized lines create partial transactions on suspense account"))
+    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and create transactions on suspense account"))
   )))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Construct a Permanent Rule"), /* @__PURE__ */ import_react15.default.createElement(
     import_material14.TextField,
     {

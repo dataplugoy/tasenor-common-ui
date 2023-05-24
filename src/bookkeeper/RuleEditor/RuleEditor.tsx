@@ -16,7 +16,7 @@ export type RuleEditorMode = null | 'once-off' | 'new-rule'
 /**
  * Alternative continuation options from rule editor.
  */
-export type RuleEditorContinueOption = 'retry' | 'apply-once' | 'skip-one' | 'ignore-rest-unrecognized' | 'suspense-for-rest-unrecognized'
+export type RuleEditorContinueOption = 'retry' | 'apply-once' | 'skip-one' | 'ignore-rest-unrecognized' | 'suspense-unrecognized'
 
 /**
  * The collection of values produced and used by the rule editor.
@@ -273,11 +273,11 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
             <Link
               onClick={() => {
                 onChange(editorOuput)
-                onContinue('suspense-for-rest-unrecognized')
+                onContinue('suspense-unrecognized')
               }}
               sx={{ cursor: 'pointer' }}
             >
-              <Typography color="secondary"><Trans>Continue and for all furher unrecognized lines create partial transactions on suspense account</Trans></Typography>
+              <Typography color="secondary"><Trans>Continue and create transactions on suspense account</Trans></Typography>
             </Link>
 
             </Box>
