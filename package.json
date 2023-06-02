@@ -43,7 +43,7 @@
     "eslint-config-react-app": "^7.0.1",
     "eslint-config-semistandard": "17.0.0",
     "eslint-config-standard": "17.0.0",
-    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-n": "^15.5.0",
     "eslint-plugin-node": "^11.1.0",
