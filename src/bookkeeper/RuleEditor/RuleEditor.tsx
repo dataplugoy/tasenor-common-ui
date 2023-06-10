@@ -179,14 +179,12 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
     rule
   }
 
-  // TODO: Translations.
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
 
         <Grid item xs={12}>
-          We have found lines in the imported file that does not match anything we know already.
-          Please help to determine what to do with this.
+          <Trans>We have found lines in the imported file that does not match anything we know already. Please help to determine what to do with this.</Trans>
         </Grid>
 
         <Grid item xs={12}>
@@ -199,7 +197,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
         <Grid item xs={7}>
           <Item>
-            <Typography variant="h5">Quick Once-Off Selection</Typography>
+            <Typography variant="h5"><Trans>Quick Once-Off Selection</Trans></Typography>
             <AccountSelector
               label={'Select Account'}
               value={account as AccountNumber}
@@ -286,7 +284,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
         <Grid item xs={5}>
           <Item>
-            <Typography variant="h5">Construct a Permanent Rule</Typography>
+            <Typography variant="h5"><Trans>Construct a Permanent Rule</Trans></Typography>
             <TextField
               fullWidth
               label={'Name of the rule'}
@@ -327,14 +325,14 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
         <Grid item xs={7}>
           <Item>
-            <Typography variant="h5">Resulting Transfers</Typography>
+            <Typography variant="h5"><Trans>Resulting Transfers</Trans></Typography>
             TODO: DISPLAY TRANSFERS HERE (Substitute values from sample lines)
           </Item>
         </Grid>
 
         <Grid item xs={5}>
           <Item>
-            <Typography variant="h5">Current Rule</Typography>
+            <Typography variant="h5"><Trans>Current Rule</Trans></Typography>
             {rule && rule.view && (
               <VisualRule
                 rule={rule.view}
@@ -354,7 +352,7 @@ export const RuleEditor = observer((props: RuleEditorProps): JSX.Element => {
 
         <Grid item xs={7}>
           <Item>
-            <Typography variant="h5">Resulting Transactions</Typography>
+            <Typography variant="h5"><Trans>Resulting Transactions</Trans></Typography>
             TODO: DISPLAY TRANSACTION HERE
           </Item>
         </Grid>

@@ -8,13 +8,6 @@ import { isNamedElement, ActiveElement, isActiveElement, isContainerElement, isC
 export type RISPProps = RenderingProps & {
   onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps) => void
 }
-/*
-TODO: This was originally:
-
-export type RISPProps = RenderingProps<TasenorSetup, TasenorElement> & {
-  onActionSuccess?: (result: unknown, trigger: string, props: RenderingProps<TasenorSetup, TasenorElement>) => void
-}
-*/
 
 /**
  * This is the main entry point for dynamical rendereding.

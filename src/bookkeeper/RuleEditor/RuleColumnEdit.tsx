@@ -8,6 +8,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import clone from 'clone'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TextFormatIcon from '@mui/icons-material/TextFormat'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Mode definitions for column editor.
@@ -31,6 +32,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
   const [mode, setMode] = useState<RuleColumnEditMode>(null)
   const [text, setText] = useState<string>(value)
   const [toggles, setToggles] = useState<string[]>([])
+  const { t } = useTranslation()
 
   const hasBeenUsed = filters.filter(f => f.field === name).length > 0
   const isNumeric = options.numericFields.filter(f => f === name).length > 0
@@ -44,7 +46,6 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
     onSetFilter(rules)
   }
 
-  // TODO: Translations.
   let IconRow: JSX.Element = (
      <TableRow selected={hasBeenUsed}>
        <TableCell variant="head"><b>{name}</b></TableCell>
@@ -55,7 +56,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
              <IconButton
              color="primary"
              size="medium"
-             title="Match the text in this column"
+             title={t('Match the text in this column')}
              disabled={mode === 'textMatch'}
              onClick={() => setMode('textMatch')}
            >
@@ -67,7 +68,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
            <IconButton
              color="primary"
              size="medium"
-             title="Require that this field is negative"
+             title={t('Require that this field is negative')}
              disabled={isLessThan}
              onClick={() => updateFilter({ op: 'isLessThan', field: name, value: 0 })}
            >
@@ -79,7 +80,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
            <IconButton
              color="primary"
              size="medium"
-             title="Require that this field is positive"
+             title={t('Require that this field is positive')}
              disabled={isGreaterThan}
              onClick={() => updateFilter({ op: 'isGreaterThan', field: name, value: 0 })
            }
@@ -95,17 +96,17 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
 
   if (mode === 'textMatch') {
     const info = (toggles.includes('whole')
-      ? 'Match if the full text in `{field}` column is the text below ({case})'
-      : 'Match if the text is found from `{field}` column ({case})'
-    ).replace('{field}', name).replace('{case}', toggles.includes('case') ? 'case sensitive' : 'ignore case')
+      ? t('Match if the full text in `{field}` column is the text below ({case})')
+      : t('Match if the text is found from `{field}` column ({case})')
+    ).replace('{field}', name).replace('{case}', toggles.includes('case') ? t('case sensitive') : t('ignore case'))
 
     IconRow = (
        <TableRow>
          <TableCell colSpan={2}>{info}</TableCell>
          <TableCell>
            <ToggleButtonGroup value={toggles} onChange={(_, val) => setToggles(val)}>
-             <ToggleButton title="Case sensitive match" value="case"><TextFieldsIcon/></ToggleButton>
-             <ToggleButton title="Match complete field value" value="whole"><TextFormatIcon/></ToggleButton>
+             <ToggleButton title={t('Case sensitive match')} value="case"><TextFieldsIcon/></ToggleButton>
+             <ToggleButton title={t('Match complete field value')} value="whole"><TextFormatIcon/></ToggleButton>
            </ToggleButtonGroup>
          </TableCell>
        </TableRow>
@@ -127,7 +128,7 @@ export const RuleColumnEdit = observer((props: RuleColumnEditProps): JSX.Element
                    setMode(null)
                  }
                }}
-               label={'The text to match'}
+               label={t('The text to match') + ''}
                value={text}
                onChange={(e) => setText(e.target.value)}
              />
