@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Catalog, Store, Settings, PluginCode, Version, ShortDate, PluginUse, PluginType, ID } from '@dataplug/tasenor-common'
+import { Catalog, Store, Settings, PluginCode, Version, ShortDate, PluginUse, PluginType, ID, Language } from '@dataplug/tasenor-common'
 import { History } from 'history'
 
 export class UiPlugin extends Component {
@@ -62,8 +62,11 @@ export class UiPlugin extends Component {
   /**
    * Do the translation for the string in the current language.
    */
-  t(str: string): string {
-    return this.catalog ? this.catalog.t(str) : str
+  t(str: string, lang: Language | undefined = undefined): string {
+    if (!lang) {
+      lang = this.settings.get('language') as Language || 'en'
+    }
+    return this.catalog ? this.catalog.t(str, lang) : str
   }
 
   /**
