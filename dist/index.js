@@ -23,6 +23,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -548,14 +552,18 @@ var require_enhanceError = __commonJS({
       error.isAxiosError = true;
       error.toJSON = function toJSON() {
         return {
+          // Standard
           message: this.message,
           name: this.name,
+          // Microsoft
           description: this.description,
           number: this.number,
+          // Mozilla
           fileName: this.fileName,
           lineNumber: this.lineNumber,
           columnNumber: this.columnNumber,
           stack: this.stack,
+          // Axios
           config: this.config,
           code: this.code,
           status: this.response && this.response.status ? this.response.status : null
@@ -608,44 +616,50 @@ var require_cookies = __commonJS({
     "use strict";
     init_shim();
     var utils = require_utils();
-    module2.exports = utils.isStandardBrowserEnv() ? function standardBrowserEnv() {
-      return {
-        write: function write(name, value, expires, path, domain, secure) {
-          var cookie = [];
-          cookie.push(name + "=" + encodeURIComponent(value));
-          if (utils.isNumber(expires)) {
-            cookie.push("expires=" + new Date(expires).toGMTString());
+    module2.exports = utils.isStandardBrowserEnv() ? (
+      // Standard browser envs support document.cookie
+      function standardBrowserEnv() {
+        return {
+          write: function write(name, value, expires, path, domain, secure) {
+            var cookie = [];
+            cookie.push(name + "=" + encodeURIComponent(value));
+            if (utils.isNumber(expires)) {
+              cookie.push("expires=" + new Date(expires).toGMTString());
+            }
+            if (utils.isString(path)) {
+              cookie.push("path=" + path);
+            }
+            if (utils.isString(domain)) {
+              cookie.push("domain=" + domain);
+            }
+            if (secure === true) {
+              cookie.push("secure");
+            }
+            document.cookie = cookie.join("; ");
+          },
+          read: function read(name) {
+            var match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
+            return match ? decodeURIComponent(match[3]) : null;
+          },
+          remove: function remove(name) {
+            this.write(name, "", Date.now() - 864e5);
           }
-          if (utils.isString(path)) {
-            cookie.push("path=" + path);
+        };
+      }()
+    ) : (
+      // Non standard browser env (web workers, react-native) lack needed support.
+      function nonStandardBrowserEnv() {
+        return {
+          write: function write() {
+          },
+          read: function read() {
+            return null;
+          },
+          remove: function remove() {
           }
-          if (utils.isString(domain)) {
-            cookie.push("domain=" + domain);
-          }
-          if (secure === true) {
-            cookie.push("secure");
-          }
-          document.cookie = cookie.join("; ");
-        },
-        read: function read(name) {
-          var match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
-          return match ? decodeURIComponent(match[3]) : null;
-        },
-        remove: function remove(name) {
-          this.write(name, "", Date.now() - 864e5);
-        }
-      };
-    }() : function nonStandardBrowserEnv() {
-      return {
-        write: function write() {
-        },
-        read: function read() {
-          return null;
-        },
-        remove: function remove() {
-        }
-      };
-    }();
+        };
+      }()
+    );
   }
 });
 
@@ -746,38 +760,45 @@ var require_isURLSameOrigin = __commonJS({
     "use strict";
     init_shim();
     var utils = require_utils();
-    module2.exports = utils.isStandardBrowserEnv() ? function standardBrowserEnv() {
-      var msie = /(msie|trident)/i.test(navigator.userAgent);
-      var urlParsingNode = document.createElement("a");
-      var originURL;
-      function resolveURL(url) {
-        var href = url;
-        if (msie) {
+    module2.exports = utils.isStandardBrowserEnv() ? (
+      // Standard browser envs have full support of the APIs needed to test
+      // whether the request URL is of the same origin as current location.
+      function standardBrowserEnv() {
+        var msie = /(msie|trident)/i.test(navigator.userAgent);
+        var urlParsingNode = document.createElement("a");
+        var originURL;
+        function resolveURL(url) {
+          var href = url;
+          if (msie) {
+            urlParsingNode.setAttribute("href", href);
+            href = urlParsingNode.href;
+          }
           urlParsingNode.setAttribute("href", href);
-          href = urlParsingNode.href;
+          return {
+            href: urlParsingNode.href,
+            protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, "") : "",
+            host: urlParsingNode.host,
+            search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, "") : "",
+            hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, "") : "",
+            hostname: urlParsingNode.hostname,
+            port: urlParsingNode.port,
+            pathname: urlParsingNode.pathname.charAt(0) === "/" ? urlParsingNode.pathname : "/" + urlParsingNode.pathname
+          };
         }
-        urlParsingNode.setAttribute("href", href);
-        return {
-          href: urlParsingNode.href,
-          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, "") : "",
-          host: urlParsingNode.host,
-          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, "") : "",
-          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, "") : "",
-          hostname: urlParsingNode.hostname,
-          port: urlParsingNode.port,
-          pathname: urlParsingNode.pathname.charAt(0) === "/" ? urlParsingNode.pathname : "/" + urlParsingNode.pathname
+        originURL = resolveURL(window.location.href);
+        return function isURLSameOrigin(requestURL) {
+          var parsed = utils.isString(requestURL) ? resolveURL(requestURL) : requestURL;
+          return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
         };
-      }
-      originURL = resolveURL(window.location.href);
-      return function isURLSameOrigin(requestURL) {
-        var parsed = utils.isString(requestURL) ? resolveURL(requestURL) : requestURL;
-        return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
-      };
-    }() : function nonStandardBrowserEnv() {
-      return function isURLSameOrigin() {
-        return true;
-      };
-    }();
+      }()
+    ) : (
+      // Non standard browser envs (web workers, react-native) lack needed support.
+      function nonStandardBrowserEnv() {
+        return function isURLSameOrigin() {
+          return true;
+        };
+      }()
+    );
   }
 });
 
@@ -1104,7 +1125,7 @@ var require_common = __commonJS({
             return;
           }
           const self2 = debug;
-          const curr = Number(new Date());
+          const curr = Number(/* @__PURE__ */ new Date());
           const ms = curr - (prevTime || curr);
           self2.diff = ms;
           self2.prev = prevTime;
@@ -1333,7 +1354,11 @@ var require_browser = __commonJS({
       if (typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
         return false;
       }
-      return typeof document !== "undefined" && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || typeof window !== "undefined" && window.console && (window.console.firebug || window.console.exception && window.console.table) || typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
+      return typeof document !== "undefined" && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // Is firebug? http://stackoverflow.com/a/398120/376773
+      typeof window !== "undefined" && window.console && (window.console.firebug || window.console.exception && window.console.table) || // Is firefox >= v31?
+      // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+      typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
+      typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
     }
     function formatArgs(args) {
       args[0] = (this.useColors ? "%c" : "") + this.namespace + (this.useColors ? " %c" : " ") + args[0] + (this.useColors ? "%c " : " ") + "+" + module2.exports.humanize(this.diff);
@@ -1653,7 +1678,7 @@ var require_node = __commonJS({
       if (exports.inspectOpts.hideDate) {
         return "";
       }
-      return new Date().toISOString() + " ";
+      return (/* @__PURE__ */ new Date()).toISOString() + " ";
     }
     function log(...args) {
       return import_process.default.stderr.write(util.format(...args) + "\n");
@@ -1938,7 +1963,11 @@ var require_follow_redirects = __commonJS({
       for (var event of events) {
         request.on(event, eventHandlers[event]);
       }
-      this._currentUrl = /^\//.test(this._options.path) ? url.format(this._options) : this._options.path;
+      this._currentUrl = /^\//.test(this._options.path) ? url.format(this._options) : (
+        // When making a request to a proxy, […]
+        // a client MUST send the target URI in absolute-form […].
+        this._options.path
+      );
       if (this._isRedirect) {
         var i = 0;
         var self2 = this;
@@ -1986,11 +2015,16 @@ var require_follow_redirects = __commonJS({
       var beforeRedirect = this._options.beforeRedirect;
       if (beforeRedirect) {
         requestHeaders = Object.assign({
+          // The Host header was set by nativeProtocol.request
           Host: response.req.getHeader("host")
         }, this._options.headers);
       }
       var method = this._options.method;
-      if ((statusCode === 301 || statusCode === 302) && this._options.method === "POST" || statusCode === 303 && !/^(?:GET|HEAD)$/.test(this._options.method)) {
+      if ((statusCode === 301 || statusCode === 302) && this._options.method === "POST" || // RFC7231§6.4.4: The 303 (See Other) status code indicates that
+      // the server is redirecting the user agent to a different resource […]
+      // A user agent can perform a retrieval request targeting that URI
+      // (a GET or HEAD request if using HTTP) […]
+      statusCode === 303 && !/^(?:GET|HEAD)$/.test(this._options.method)) {
         this._options.method = "GET";
         this._requestBodyBuffers = [];
         removeMatchingHeaders(/^content-/i, this._options.headers);
@@ -2099,7 +2133,10 @@ var require_follow_redirects = __commonJS({
     function urlToOptions(urlObject) {
       var options = {
         protocol: urlObject.protocol,
-        hostname: urlObject.hostname.startsWith("[") ? urlObject.hostname.slice(1, -1) : urlObject.hostname,
+        hostname: urlObject.hostname.startsWith("[") ? (
+          /* istanbul ignore next */
+          urlObject.hostname.slice(1, -1)
+        ) : urlObject.hostname,
         hash: urlObject.hash,
         search: urlObject.search,
         pathname: urlObject.pathname,
@@ -2577,6 +2614,10 @@ var require_defaults = __commonJS({
         }
         return data;
       }],
+      /**
+       * A timeout in milliseconds to abort a request. If set to 0 (default) a
+       * timeout is not created.
+       */
       timeout: 0,
       xsrfCookieName: "XSRF-TOKEN",
       xsrfHeaderName: "X-XSRF-TOKEN",
@@ -3276,6 +3317,9 @@ var MenuState = class {
       }
     }
   }
+  /**
+   * Collect valid path values from records and ignore the rest.
+   */
   parse(params) {
     const { db, main, periodId, accountId, side } = params;
     Object.keys(params).forEach((key) => {
@@ -3545,11 +3589,13 @@ var import_AddCircleOutline = __toESM(require("@mui/icons-material/AddCircleOutl
 var import_clone = __toESM(require_clone());
 var import_TextFields = __toESM(require("@mui/icons-material/TextFields"));
 var import_TextFormat = __toESM(require("@mui/icons-material/TextFormat"));
+var import_react_i18next5 = require("react-i18next");
 var RuleColumnEdit = (0, import_mobx_react.observer)((props) => {
   const { name, value, filters, onSetFilter, options } = props;
   const [mode, setMode] = (0, import_react7.useState)(null);
   const [text, setText] = (0, import_react7.useState)(value);
   const [toggles, setToggles] = (0, import_react7.useState)([]);
+  const { t } = (0, import_react_i18next5.useTranslation)();
   const hasBeenUsed = filters.filter((f) => f.field === name).length > 0;
   const isNumeric = options.numericFields.filter((f) => f === name).length > 0;
   const isText = !isNumeric;
@@ -3565,7 +3611,7 @@ var RuleColumnEdit = (0, import_mobx_react.observer)((props) => {
     {
       color: "primary",
       size: "medium",
-      title: "Match the text in this column",
+      title: t("Match the text in this column"),
       disabled: mode === "textMatch",
       onClick: () => setMode("textMatch")
     },
@@ -3575,7 +3621,7 @@ var RuleColumnEdit = (0, import_mobx_react.observer)((props) => {
     {
       color: "primary",
       size: "medium",
-      title: "Require that this field is negative",
+      title: t("Require that this field is negative"),
       disabled: isLessThan,
       onClick: () => updateFilter({ op: "isLessThan", field: name, value: 0 })
     },
@@ -3585,7 +3631,7 @@ var RuleColumnEdit = (0, import_mobx_react.observer)((props) => {
     {
       color: "primary",
       size: "medium",
-      title: "Require that this field is positive",
+      title: t("Require that this field is positive"),
       disabled: isGreaterThan,
       onClick: () => updateFilter({ op: "isGreaterThan", field: name, value: 0 })
     },
@@ -3593,8 +3639,8 @@ var RuleColumnEdit = (0, import_mobx_react.observer)((props) => {
   )));
   let EditRow = null;
   if (mode === "textMatch") {
-    const info = (toggles.includes("whole") ? "Match if the full text in `{field}` column is the text below ({case})" : "Match if the text is found from `{field}` column ({case})").replace("{field}", name).replace("{case}", toggles.includes("case") ? "case sensitive" : "ignore case");
-    IconRow = /* @__PURE__ */ import_react7.default.createElement(import_material6.TableRow, null, /* @__PURE__ */ import_react7.default.createElement(import_material6.TableCell, { colSpan: 2 }, info), /* @__PURE__ */ import_react7.default.createElement(import_material6.TableCell, null, /* @__PURE__ */ import_react7.default.createElement(import_material6.ToggleButtonGroup, { value: toggles, onChange: (_, val) => setToggles(val) }, /* @__PURE__ */ import_react7.default.createElement(import_material6.ToggleButton, { title: "Case sensitive match", value: "case" }, /* @__PURE__ */ import_react7.default.createElement(import_TextFields.default, null)), /* @__PURE__ */ import_react7.default.createElement(import_material6.ToggleButton, { title: "Match complete field value", value: "whole" }, /* @__PURE__ */ import_react7.default.createElement(import_TextFormat.default, null)))));
+    const info = (toggles.includes("whole") ? t("Match if the full text in `{field}` column is the text below ({case})") : t("Match if the text is found from `{field}` column ({case})")).replace("{field}", name).replace("{case}", toggles.includes("case") ? t("case sensitive") : t("ignore case"));
+    IconRow = /* @__PURE__ */ import_react7.default.createElement(import_material6.TableRow, null, /* @__PURE__ */ import_react7.default.createElement(import_material6.TableCell, { colSpan: 2 }, info), /* @__PURE__ */ import_react7.default.createElement(import_material6.TableCell, null, /* @__PURE__ */ import_react7.default.createElement(import_material6.ToggleButtonGroup, { value: toggles, onChange: (_, val) => setToggles(val) }, /* @__PURE__ */ import_react7.default.createElement(import_material6.ToggleButton, { title: t("Case sensitive match"), value: "case" }, /* @__PURE__ */ import_react7.default.createElement(import_TextFields.default, null)), /* @__PURE__ */ import_react7.default.createElement(import_material6.ToggleButton, { title: t("Match complete field value"), value: "whole" }, /* @__PURE__ */ import_react7.default.createElement(import_TextFormat.default, null)))));
     EditRow = /* @__PURE__ */ import_react7.default.createElement(import_material6.TableRow, null, /* @__PURE__ */ import_react7.default.createElement(import_material6.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react7.default.createElement(
       import_material6.TextField,
       {
@@ -3610,7 +3656,7 @@ var RuleColumnEdit = (0, import_mobx_react.observer)((props) => {
             setMode(null);
           }
         },
-        label: "The text to match",
+        label: t("The text to match") + "",
         value: text,
         onChange: (e) => setText(e.target.value)
       }
@@ -3654,7 +3700,7 @@ var TagChip = (props) => {
 };
 
 // src/bookkeeper/TagGroups.tsx
-var import_react_i18next5 = require("react-i18next");
+var import_react_i18next6 = require("react-i18next");
 var TagGroup = (0, import_mobx_react2.observer)((props) => {
   const { tags, types, selected, options } = props;
   const tagGroups = {};
@@ -3692,7 +3738,7 @@ var TagGroup = (0, import_mobx_react2.observer)((props) => {
     setSelectedTags(newTags);
   };
   if (!found) {
-    return /* @__PURE__ */ import_react9.default.createElement(import_material8.Box, null, /* @__PURE__ */ import_react9.default.createElement(import_react_i18next5.Trans, null, "No suitable tags available."), options && options.length > 0 && /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement(import_react_i18next5.Trans, null, "Tried to look for the following tags:"), " ", options.join(", ")), types && types.length > 0 && /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement(import_react_i18next5.Trans, null, "Tried to look for the following tag types:"), " ", types.join(", ")));
+    return /* @__PURE__ */ import_react9.default.createElement(import_material8.Box, null, /* @__PURE__ */ import_react9.default.createElement(import_react_i18next6.Trans, null, "No suitable tags available."), options && options.length > 0 && /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement(import_react_i18next6.Trans, null, "Tried to look for the following tags:"), " ", options.join(", ")), types && types.length > 0 && /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement(import_react_i18next6.Trans, null, "Tried to look for the following tag types:"), " ", types.join(", ")));
   }
   return /* @__PURE__ */ import_react9.default.createElement(import_react9.default.Fragment, null, [...typeSet].map((type) => type && tagGroups[type] && /* @__PURE__ */ import_react9.default.createElement(import_material8.Box, { key: type }, /* @__PURE__ */ import_react9.default.createElement(import_material8.Typography, { variant: "caption" }, type), /* @__PURE__ */ import_react9.default.createElement(import_material8.Grid, { container: true, spacing: 1 }, tagGroups[type].map((tag) => tag.tag !== null && /* @__PURE__ */ import_react9.default.createElement(import_material8.Grid, { item: true, key: tag.tag }, /* @__PURE__ */ import_react9.default.createElement(TagChip, { disabled: !selectedTags.includes(tag.tag), tag, onClick: () => onClick(tag) })))))));
 });
@@ -3737,19 +3783,19 @@ var AccountSelector = (0, import_mobx_react3.observer)((props) => {
 });
 
 // src/bookkeeper/RuleEditor/RuleEditor.tsx
-var import_react_i18next9 = require("react-i18next");
+var import_react_i18next10 = require("react-i18next");
 var import_mobx_react5 = require("mobx-react");
 
 // src/bookkeeper/RuleEditor/RuleLineEdit.tsx
 init_shim();
 var import_react11 = __toESM(require("react"));
 var import_material10 = require("@mui/material");
-var import_react_i18next6 = require("react-i18next");
+var import_react_i18next7 = require("react-i18next");
 var import_mobx_react4 = require("mobx-react");
 var RuleLineEdit = (0, import_mobx_react4.observer)((props) => {
   const { line, options } = props;
   const { columns } = line;
-  const { t } = (0, import_react_i18next6.useTranslation)();
+  const { t } = (0, import_react_i18next7.useTranslation)();
   const [more, setMore] = (0, import_react11.useState)(false);
   const insignificantFields = new Set(options.insignificantFields || []);
   return /* @__PURE__ */ import_react11.default.createElement(import_material10.TableContainer, null, /* @__PURE__ */ import_react11.default.createElement(import_material10.Table, { size: "small" }, /* @__PURE__ */ import_react11.default.createElement(import_material10.TableBody, null, Object.keys(columns).filter((key) => !key.startsWith("_")).map((key) => insignificantFields.has(key) && !more ? /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, { key }) : /* @__PURE__ */ import_react11.default.createElement(
@@ -3762,23 +3808,23 @@ var RuleLineEdit = (0, import_mobx_react4.observer)((props) => {
       filters: props.filters,
       onSetFilter: props.onSetFilter
     }
-  )), insignificantFields.size > 0 && /* @__PURE__ */ import_react11.default.createElement(import_material10.TableRow, null, /* @__PURE__ */ import_react11.default.createElement(import_material10.TableCell, { colSpan: 3 }, more && /* @__PURE__ */ import_react11.default.createElement(import_react_i18next6.Trans, null, "Show Less"), more && /* @__PURE__ */ import_react11.default.createElement(IconButton, { id: "less", icon: "less", title: t("Show Less"), onClick: () => setMore(false) }), !more && /* @__PURE__ */ import_react11.default.createElement(import_react_i18next6.Trans, null, "Show More"), !more && /* @__PURE__ */ import_react11.default.createElement(IconButton, { id: "more", icon: "more", title: t("Show More"), onClick: () => setMore(true) }))))));
+  )), insignificantFields.size > 0 && /* @__PURE__ */ import_react11.default.createElement(import_material10.TableRow, null, /* @__PURE__ */ import_react11.default.createElement(import_material10.TableCell, { colSpan: 3 }, more && /* @__PURE__ */ import_react11.default.createElement(import_react_i18next7.Trans, null, "Show Less"), more && /* @__PURE__ */ import_react11.default.createElement(IconButton, { id: "less", icon: "less", title: t("Show Less"), onClick: () => setMore(false) }), !more && /* @__PURE__ */ import_react11.default.createElement(import_react_i18next7.Trans, null, "Show More"), !more && /* @__PURE__ */ import_react11.default.createElement(IconButton, { id: "more", icon: "more", title: t("Show More"), onClick: () => setMore(true) }))))));
 });
 
 // src/bookkeeper/RuleEditor/VisualRule.tsx
 init_shim();
 var import_react14 = __toESM(require("react"));
 var import_material13 = require("@mui/material");
-var import_react_i18next8 = require("react-i18next");
+var import_react_i18next9 = require("react-i18next");
 
 // src/bookkeeper/RuleEditor/VisualRuleLine.tsx
 init_shim();
 var import_react12 = __toESM(require("react"));
 var import_material11 = require("@mui/material");
 var import_DeleteForever = __toESM(require("@mui/icons-material/DeleteForever"));
-var import_react_i18next7 = require("react-i18next");
+var import_react_i18next8 = require("react-i18next");
 var VisualRuleLine = (props) => {
-  const { t } = (0, import_react_i18next7.useTranslation)();
+  const { t } = (0, import_react_i18next8.useTranslation)();
   const { op, field, text, value, onDelete } = props;
   let leftLabel = "undefined";
   let opChar = "?";
@@ -3856,7 +3902,7 @@ var VisualRule = (props) => {
     const remaining = rule.filter.filter((f, i) => i !== idx);
     onSetFilter(remaining);
   };
-  return /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, rule.filter.length > 0 && /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, /* @__PURE__ */ import_react14.default.createElement(import_material13.Typography, { variant: "h5" }, "Filter"), rule.filter.map((filter, idx) => /* @__PURE__ */ import_react14.default.createElement(VisualRuleLine, { key: idx, onDelete: () => onDelete(idx), op: filter.op, field: filter.field, text: filter.text, value: filter.value }))), rule.result.length > 0 && /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, /* @__PURE__ */ import_react14.default.createElement(import_material13.Typography, { variant: "h5" }, /* @__PURE__ */ import_react14.default.createElement(import_react_i18next8.Trans, null, "Result")), /* @__PURE__ */ import_react14.default.createElement(import_material13.Stack, { spacing: 2 }, rule.result.map((result, idx) => /* @__PURE__ */ import_react14.default.createElement(VisualResultRule, { key: idx, view: result })))));
+  return /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, rule.filter.length > 0 && /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, /* @__PURE__ */ import_react14.default.createElement(import_material13.Typography, { variant: "h5" }, "Filter"), rule.filter.map((filter, idx) => /* @__PURE__ */ import_react14.default.createElement(VisualRuleLine, { key: idx, onDelete: () => onDelete(idx), op: filter.op, field: filter.field, text: filter.text, value: filter.value }))), rule.result.length > 0 && /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, /* @__PURE__ */ import_react14.default.createElement(import_material13.Typography, { variant: "h5" }, /* @__PURE__ */ import_react14.default.createElement(import_react_i18next9.Trans, null, "Result")), /* @__PURE__ */ import_react14.default.createElement(import_material13.Stack, { spacing: 2 }, rule.result.map((result, idx) => /* @__PURE__ */ import_react14.default.createElement(VisualResultRule, { key: idx, view: result })))));
 };
 
 // src/bookkeeper/RuleEditor/RuleEditor.tsx
@@ -3885,7 +3931,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
   });
   const [mode, setMode] = (0, import_react15.useState)(null);
   const [autonaming, setAutonaming] = (0, import_react15.useState)(true);
-  const { t } = (0, import_react_i18next9.useTranslation)();
+  const { t } = (0, import_react_i18next10.useTranslation)();
   if (!lines || lines.length < 1)
     return /* @__PURE__ */ import_react15.default.createElement(import_react15.default.Fragment, null);
   const transfers = ({ text: text2, account: account2, tags: tags2 }) => {
@@ -3973,7 +4019,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
     transfers: transfers({ text, account, tags }),
     rule
   };
-  return /* @__PURE__ */ import_react15.default.createElement(import_material14.Box, { sx: { flexGrow: 1 } }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { container: true, spacing: 2 }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 12 }, "We have found lines in the imported file that does not match anything we know already. Please help to determine what to do with this."), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 12 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, lines.map((line, idx) => /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { title: t("Line number #{number}").replace("{number}", `${line.line}`), key: idx, sx: { fontFamily: "monospace" } }, line.text.replace(/\t/g, " \u23B5 "))))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Quick Once-Off Selection"), /* @__PURE__ */ import_react15.default.createElement(
+  return /* @__PURE__ */ import_react15.default.createElement(import_material14.Box, { sx: { flexGrow: 1 } }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { container: true, spacing: 2 }, /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 12 }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "We have found lines in the imported file that does not match anything we know already. Please help to determine what to do with this.")), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 12 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, lines.map((line, idx) => /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { title: t("Line number #{number}").replace("{number}", `${line.line}`), key: idx, sx: { fontFamily: "monospace" } }, line.text.replace(/\t/g, " \u23B5 "))))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Quick Once-Off Selection")), /* @__PURE__ */ import_react15.default.createElement(
     AccountSelector,
     {
       label: "Select Account",
@@ -4021,7 +4067,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
       },
       selected: tags
     }
-  ), /* @__PURE__ */ import_react15.default.createElement(import_material14.Button, { sx: { mt: 1 }, variant: "outlined", disabled: !text || !account, onClick: () => onContinue("apply-once") }, "Continue"), /* @__PURE__ */ import_react15.default.createElement(import_material14.Box, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5", color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Alternatively")), /* @__PURE__ */ import_react15.default.createElement(
+  ), /* @__PURE__ */ import_react15.default.createElement(import_material14.Button, { sx: { mt: 1 }, variant: "outlined", disabled: !text || !account, onClick: () => onContinue("apply-once") }, "Continue"), /* @__PURE__ */ import_react15.default.createElement(import_material14.Box, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5", color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Alternatively")), /* @__PURE__ */ import_react15.default.createElement(
     import_material14.Link,
     {
       onClick: () => {
@@ -4030,7 +4076,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
       },
       sx: { cursor: "pointer" }
     },
-    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Skip this transaction and continue"))
+    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Skip this transaction and continue"))
   ), /* @__PURE__ */ import_react15.default.createElement(
     import_material14.Link,
     {
@@ -4040,7 +4086,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
       },
       sx: { cursor: "pointer" }
     },
-    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and ignore all further unrecognized lines"))
+    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Continue and ignore all further unrecognized lines"))
   ), /* @__PURE__ */ import_react15.default.createElement(
     import_material14.Link,
     {
@@ -4050,8 +4096,8 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
       },
       sx: { cursor: "pointer" }
     },
-    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next9.Trans, null, "Continue and create transactions on suspense account"))
-  )))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Construct a Permanent Rule"), /* @__PURE__ */ import_react15.default.createElement(
+    /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { color: "secondary" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Continue and create transactions on suspense account"))
+  )))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Construct a Permanent Rule")), /* @__PURE__ */ import_react15.default.createElement(
     import_material14.TextField,
     {
       fullWidth: true,
@@ -4083,7 +4129,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
         onChange({ ...editorOuput, rule: newRule });
       }
     }
-  ), idx < lines.length - 1 && /* @__PURE__ */ import_react15.default.createElement(import_material14.Divider, { variant: "middle" }))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Button, { variant: "outlined", disabled: !(rule.view && rule.view.filter.length), onClick: () => onCreateRule() }, "Create Rule"))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Resulting Transfers"), "TODO: DISPLAY TRANSFERS HERE (Substitute values from sample lines)")), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Current Rule"), rule && rule.view && /* @__PURE__ */ import_react15.default.createElement(
+  ), idx < lines.length - 1 && /* @__PURE__ */ import_react15.default.createElement(import_material14.Divider, { variant: "middle" }))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Button, { variant: "outlined", disabled: !(rule.view && rule.view.filter.length), onClick: () => onCreateRule() }, "Create Rule"))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Resulting Transfers")), "TODO: DISPLAY TRANSFERS HERE (Substitute values from sample lines)")), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 5 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Current Rule")), rule && rule.view && /* @__PURE__ */ import_react15.default.createElement(
     VisualRule,
     {
       rule: rule.view,
@@ -4096,7 +4142,7 @@ var RuleEditor = (0, import_mobx_react5.observer)((props) => {
         onChange({ ...editorOuput, rule: newRule });
       }
     }
-  ))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, "Resulting Transactions"), "TODO: DISPLAY TRANSACTION HERE"))));
+  ))), /* @__PURE__ */ import_react15.default.createElement(import_material14.Grid, { item: true, xs: 7 }, /* @__PURE__ */ import_react15.default.createElement(Item, null, /* @__PURE__ */ import_react15.default.createElement(import_material14.Typography, { variant: "h5" }, /* @__PURE__ */ import_react15.default.createElement(import_react_i18next10.Trans, null, "Resulting Transactions")), "TODO: DISPLAY TRANSACTION HERE"))));
 });
 
 // src/bookkeeper/SubPanel.tsx
@@ -4164,10 +4210,10 @@ init_shim();
 
 // src/elements/AccountElement.tsx
 init_shim();
-var import_react_i18next10 = require("react-i18next");
+var import_react_i18next11 = require("react-i18next");
 var import_react19 = __toESM(require("react"));
 var AccountRenderer = (props) => {
-  const { t } = (0, import_react_i18next10.useTranslation)();
+  const { t } = (0, import_react_i18next11.useTranslation)();
   const { element, setup, values } = props;
   const label = element.label ? element.label : t(`label-${element.name}`);
   const value = values[element.name];
@@ -4192,12 +4238,12 @@ var AccountRenderer = (props) => {
 // src/elements/BooleanElement.tsx
 init_shim();
 var import_react20 = __toESM(require("react"));
-var import_react_i18next11 = require("react-i18next");
+var import_react_i18next12 = require("react-i18next");
 var import_material18 = require("@mui/material");
 var import_tasenor_common8 = require("@dataplug/tasenor-common");
 var BooleanRenderer = (props) => {
   const { element } = props;
-  const { t } = (0, import_react_i18next11.useTranslation)();
+  const { t } = (0, import_react_i18next12.useTranslation)();
   const label = "label" in element ? element.label || "" : (0, import_tasenor_common8.isNamedElement)(element) ? t(`label-${element.name}`) : "";
   const [value, setValue2] = import_react20.default.useState((0, import_tasenor_common8.isNamedElement)(element) ? props.values[element.name] : null);
   if (!(0, import_tasenor_common8.isBooleanElement)(element)) {
@@ -4241,23 +4287,48 @@ var import_get_value = __toESM(require("get-value"));
 var import_tasenor_common9 = require("@dataplug/tasenor-common");
 _global.ActionEngineHandlers = {};
 var ActionEngine = class {
+  /**
+   * Add a handler for the given action.
+   * @param name
+   * @param handler
+   * @returns The old registered handler if there was any.
+   */
   static register(name, handler) {
     const old = ActionEngineHandlers[name] || null;
     ActionEngineHandlers[name] = handler;
     return old;
   }
+  /**
+   * Construct a result indicating a failure in action execution.
+   * @param message Reason for the failure.
+   * @returns A result object.
+   */
   static async fail(message) {
     return {
       success: false,
       message
     };
   }
+  /**
+   * Return success result from action.
+   * @returns
+   */
   static async success(result) {
     return {
       success: true,
       result
     };
   }
+  /**
+   * Processor for a triggered action on the given element.
+   * @param trigger
+   * @param props
+   * @returns The element in the `props` is checked for action definitions.
+   * If there is no actions defined, the result is success. If there is a single
+   * action, it is executed and the resulting value is returned. If there is
+   * an array of actions, all of them are executed. If any of them fails, the
+   * result is failure. Otherwise success.
+   */
   static async handle(action, props) {
     if (!action) {
       throw new Error("Action engine called without action.");
@@ -4375,11 +4446,22 @@ var import_react21 = __toESM(require("react"));
 var import_material19 = require("@mui/material");
 _global.RenderingEngineRenderers = {};
 var RenderingEngine = class {
+  /**
+   * Register a handler for an element type.
+   * @param name
+   * @param renderer
+   * @returns Old handler if there was any.
+   */
   static register(name, renderer) {
     const old = RenderingEngineRenderers[name] || null;
     RenderingEngineRenderers[name] = renderer;
     return old;
   }
+  /**
+   * Find the registered renderer for the given properties and call the renderer if found.
+   * @param props
+   * @returns Elements.
+   */
   static render(props) {
     const { element } = props;
     if (!RenderingEngineRenderers[element.type]) {
@@ -4507,11 +4589,11 @@ var BoxRenderer = (props) => {
 // src/elements/ButtonElement.tsx
 init_shim();
 var import_react24 = __toESM(require("react"));
-var import_react_i18next12 = require("react-i18next");
+var import_react_i18next13 = require("react-i18next");
 var import_material21 = require("@mui/material");
 var import_tasenor_common12 = require("@dataplug/tasenor-common");
 var ButtonRenderer = (props) => {
-  const { t } = (0, import_react_i18next12.useTranslation)();
+  const { t } = (0, import_react_i18next13.useTranslation)();
   const { element, values } = props;
   if (!(0, import_tasenor_common12.isButtonElement)(element)) {
     throw new Error(`Wrong renderer ${JSON.stringify(element)}.`);
@@ -4600,12 +4682,12 @@ var MessageRenderer = (props) => {
 // src/elements/NumberElement.tsx
 init_shim();
 var import_react29 = __toESM(require("react"));
-var import_react_i18next13 = require("react-i18next");
+var import_react_i18next14 = require("react-i18next");
 var import_material25 = require("@mui/material");
 var import_tasenor_common17 = require("@dataplug/tasenor-common");
 var NumberRenderer = (props) => {
   const { element } = props;
-  const { t } = (0, import_react_i18next13.useTranslation)();
+  const { t } = (0, import_react_i18next14.useTranslation)();
   const label = (0, import_tasenor_common17.isNumberElement)(element) && element.label ? element.label : (0, import_tasenor_common17.isNamedElement)(element) && element.name ? t(`label-${element.name}`) : "";
   const [value, setValue2] = import_react29.default.useState((0, import_tasenor_common17.isNamedElement)(element) ? props.values[element.name] || null : null);
   if (!(0, import_tasenor_common17.isNumberElement)(element)) {
@@ -4642,12 +4724,12 @@ var NumberRenderer = (props) => {
 // src/elements/RadioElement.tsx
 init_shim();
 var import_react30 = __toESM(require("react"));
-var import_react_i18next14 = require("react-i18next");
+var import_react_i18next15 = require("react-i18next");
 var import_material26 = require("@mui/material");
 var import_tasenor_common18 = require("@dataplug/tasenor-common");
 var RadioRenderer = (props) => {
   const { element } = props;
-  const { t } = (0, import_react_i18next14.useTranslation)();
+  const { t } = (0, import_react_i18next15.useTranslation)();
   const label = (0, import_tasenor_common18.isRadioElement)(element) && element.label ? element.label : (0, import_tasenor_common18.isNamedElement)(element) && element.name ? t(`label-${element.name}`) : "";
   const [value, setValue2] = import_react30.default.useState((0, import_tasenor_common18.isNamedElement)(element) ? props.values[element.name] || "" : "");
   if (!(0, import_tasenor_common18.isRadioElement)(element)) {
@@ -4674,12 +4756,12 @@ var RadioRenderer = (props) => {
 // src/elements/TextElement.tsx
 init_shim();
 var import_react31 = __toESM(require("react"));
-var import_react_i18next15 = require("react-i18next");
+var import_react_i18next16 = require("react-i18next");
 var import_material27 = require("@mui/material");
 var import_tasenor_common19 = require("@dataplug/tasenor-common");
 var TextRenderer = (props) => {
   const { element } = props;
-  const { t } = (0, import_react_i18next15.useTranslation)();
+  const { t } = (0, import_react_i18next16.useTranslation)();
   const label = (0, import_tasenor_common19.isTextElement)(element) && element.label ? element.label : (0, import_tasenor_common19.isNamedElement)(element) && element.name ? t(`label-${element.name}`) : "";
   const [value, setValue2] = import_react31.default.useState((0, import_tasenor_common19.isNamedElement)(element) ? props.values[element.name] || "" : "");
   if (!(0, import_tasenor_common19.isTextElement)(element)) {
@@ -4714,7 +4796,7 @@ var TextRenderer = (props) => {
 init_shim();
 var import_react49 = __toESM(require("react"));
 var import_material39 = require("@mui/material");
-var import_react_i18next25 = require("react-i18next");
+var import_react_i18next26 = require("react-i18next");
 var import_tasenor_common23 = require("@dataplug/tasenor-common");
 
 // src/process/index.ts
@@ -4724,13 +4806,13 @@ init_shim();
 init_shim();
 var import_tasenor_common20 = require("@dataplug/tasenor-common");
 var import_react33 = __toESM(require("react"));
-var import_react_i18next17 = require("react-i18next");
+var import_react_i18next18 = require("react-i18next");
 
 // src/process/ConfigView.tsx
 init_shim();
 var import_react32 = __toESM(require("react"));
 var import_material28 = require("@mui/material");
-var import_react_i18next16 = require("react-i18next");
+var import_react_i18next17 = require("react-i18next");
 var IGNORE_FIELDS = /^(answers|rules)$/;
 var ConfigView = (props) => {
   const COLUMNS = props.columns || 4;
@@ -4771,17 +4853,17 @@ var ConfigView = (props) => {
       case "string":
         return /* @__PURE__ */ import_react32.default.createElement(import_react32.default.Fragment, null, obj === "" ? /* @__PURE__ */ import_react32.default.createElement("br", null) : obj);
       case "boolean":
-        return obj ? /* @__PURE__ */ import_react32.default.createElement(import_react_i18next16.Trans, null, "Yes") : /* @__PURE__ */ import_react32.default.createElement(import_react_i18next16.Trans, null, "No");
+        return obj ? /* @__PURE__ */ import_react32.default.createElement(import_react_i18next17.Trans, null, "Yes") : /* @__PURE__ */ import_react32.default.createElement(import_react_i18next17.Trans, null, "No");
       default:
         return /* @__PURE__ */ import_react32.default.createElement(import_react32.default.Fragment, null, JSON.stringify(obj));
     }
   };
-  return /* @__PURE__ */ import_react32.default.createElement(import_react32.default.Fragment, null, props.title && /* @__PURE__ */ import_react32.default.createElement(import_material28.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react32.default.createElement(import_react_i18next16.Trans, null, props.title)), render(props.config));
+  return /* @__PURE__ */ import_react32.default.createElement(import_react32.default.Fragment, null, props.title && /* @__PURE__ */ import_react32.default.createElement(import_material28.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react32.default.createElement(import_react_i18next17.Trans, null, props.title)), render(props.config));
 };
 
 // src/process/ConfigChangeView.tsx
 var ConfigChangeView = (props) => {
-  const { t } = (0, import_react_i18next17.useTranslation)();
+  const { t } = (0, import_react_i18next18.useTranslation)();
   if (!props.step.directions || props.step.directions.type !== "ui") {
     return /* @__PURE__ */ import_react33.default.createElement(import_react33.default.Fragment, null);
   }
@@ -4803,7 +4885,7 @@ var ConfigChangeView = (props) => {
 init_shim();
 var import_react34 = __toESM(require("react"));
 var import_material29 = require("@mui/material");
-var import_react_i18next18 = require("react-i18next");
+var import_react_i18next19 = require("react-i18next");
 var ConfigJSONView = (props) => {
   const config = {};
   Object.keys(props.config).forEach((key) => {
@@ -4811,17 +4893,17 @@ var ConfigJSONView = (props) => {
       config[key] = props.config[key];
     }
   });
-  return /* @__PURE__ */ import_react34.default.createElement(import_react34.default.Fragment, null, props.title && /* @__PURE__ */ import_react34.default.createElement(import_material29.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react34.default.createElement(import_react_i18next18.Trans, null, props.title)), /* @__PURE__ */ import_react34.default.createElement(import_material29.Box, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react34.default.createElement("pre", null, JSON.stringify(config, null, 2))));
+  return /* @__PURE__ */ import_react34.default.createElement(import_react34.default.Fragment, null, props.title && /* @__PURE__ */ import_react34.default.createElement(import_material29.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react34.default.createElement(import_react_i18next19.Trans, null, props.title)), /* @__PURE__ */ import_react34.default.createElement(import_material29.Box, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react34.default.createElement("pre", null, JSON.stringify(config, null, 2))));
 };
 
 // src/process/ErrorView.tsx
 init_shim();
 var import_material30 = require("@mui/material");
 var import_react35 = __toESM(require("react"));
-var import_react_i18next19 = require("react-i18next");
+var import_react_i18next20 = require("react-i18next");
 var ErrorView = (props) => {
   const { palette } = (0, import_material30.useTheme)();
-  return /* @__PURE__ */ import_react35.default.createElement(import_material30.Card, { style: { backgroundColor: "rgba(0,0,0,0.05)" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.CardHeader, { style: { color: palette.error.main }, title: /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Error") }), /* @__PURE__ */ import_react35.default.createElement(import_material30.CardContent, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.Typography, null, props.error.split("\n").map((line, idx) => /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, { key: idx }, line, /* @__PURE__ */ import_react35.default.createElement("br", null))), /* @__PURE__ */ import_react35.default.createElement(import_material30.Button, { variant: "outlined", onClick: () => props.onRetry() }, /* @__PURE__ */ import_react35.default.createElement(import_react_i18next19.Trans, null, "Retry")))));
+  return /* @__PURE__ */ import_react35.default.createElement(import_material30.Card, { style: { backgroundColor: "rgba(0,0,0,0.05)" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.CardHeader, { style: { color: palette.error.main }, title: /* @__PURE__ */ import_react35.default.createElement(import_react_i18next20.Trans, null, "Error") }), /* @__PURE__ */ import_react35.default.createElement(import_material30.CardContent, { sx: { fontFamily: "monospace" } }, /* @__PURE__ */ import_react35.default.createElement(import_material30.Typography, null, props.error.split("\n").map((line, idx) => /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, { key: idx }, line, /* @__PURE__ */ import_react35.default.createElement("br", null))), /* @__PURE__ */ import_react35.default.createElement(import_material30.Button, { variant: "outlined", onClick: () => props.onRetry() }, /* @__PURE__ */ import_react35.default.createElement(import_react_i18next20.Trans, null, "Retry")))));
 };
 
 // src/process/DefaultResultView.tsx
@@ -4853,15 +4935,15 @@ var import_react39 = __toESM(require("react"));
 init_shim();
 var import_material31 = require("@mui/material");
 var import_react38 = __toESM(require("react"));
-var import_react_i18next20 = require("react-i18next");
+var import_react_i18next21 = require("react-i18next");
 var import_icons_material3 = require("@mui/icons-material");
 var SummaryView = (props) => {
   const { step } = props;
-  const { t } = (0, import_react_i18next20.useTranslation)();
+  const { t } = (0, import_react_i18next21.useTranslation)();
   const [showConfig, setShowConfig] = (0, import_react38.useState)(false);
   const started = new Date(step.started).getTime();
   const finished = new Date(step.finished).getTime();
-  return /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(import_material31.Typography, { variant: "body2" }, /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Process ID")), ": ", step.processId, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Step")), ": ", step.number + 1, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Handler")), ": ", step.handler, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Started")), ": ", step.started, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next20.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Duration")), ": ", finished ? `${finished - started}ms ` : "\u2014 ", /* @__PURE__ */ import_react38.default.createElement(
+  return /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(import_material31.Typography, { variant: "body2" }, /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(import_react_i18next21.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Process ID")), ": ", step.processId, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next21.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Step")), ": ", step.number + 1, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next21.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Handler")), ": ", step.handler, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next21.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Started")), ": ", step.started, "\xA0", /* @__PURE__ */ import_react38.default.createElement(import_react_i18next21.Trans, null, /* @__PURE__ */ import_react38.default.createElement("strong", null, "Duration")), ": ", finished ? `${finished - started}ms ` : "\u2014 ", /* @__PURE__ */ import_react38.default.createElement(
     import_material31.ToggleButton,
     {
       size: "small",
@@ -4890,9 +4972,9 @@ init_shim();
 var import_material32 = require("@mui/material");
 var import_colors = require("@mui/material/colors");
 var import_react40 = __toESM(require("react"));
-var import_react_i18next21 = require("react-i18next");
+var import_react_i18next22 = require("react-i18next");
 var DefaultSuccessView = (props) => {
-  return /* @__PURE__ */ import_react40.default.createElement(import_material32.Card, null, /* @__PURE__ */ import_react40.default.createElement(import_material32.CardContent, null, /* @__PURE__ */ import_react40.default.createElement(ProcessStatusIcon, { status: "SUCCEEDED" }), /* @__PURE__ */ import_react40.default.createElement(import_material32.Typography, { sx: { color: import_colors.green[900] } }, /* @__PURE__ */ import_react40.default.createElement(import_react_i18next21.Trans, null, "Process Was Successfully Completed!"))));
+  return /* @__PURE__ */ import_react40.default.createElement(import_material32.Card, null, /* @__PURE__ */ import_react40.default.createElement(import_material32.CardContent, null, /* @__PURE__ */ import_react40.default.createElement(ProcessStatusIcon, { status: "SUCCEEDED" }), /* @__PURE__ */ import_react40.default.createElement(import_material32.Typography, { sx: { color: import_colors.green[900] } }, /* @__PURE__ */ import_react40.default.createElement(import_react_i18next22.Trans, null, "Process Was Successfully Completed!"))));
 };
 
 // src/process/ImportFile.tsx
@@ -4980,7 +5062,7 @@ var ImportStateView = (props) => {
 init_shim();
 var import_material36 = require("@mui/material");
 var import_react46 = __toESM(require("react"));
-var import_react_i18next23 = require("react-i18next");
+var import_react_i18next24 = require("react-i18next");
 
 // src/misc/index.ts
 init_shim();
@@ -5019,7 +5101,7 @@ var import_react43 = __toESM(require("react"));
 var import_axios2 = __toESM(require_axios2());
 var import_base64_arraybuffer = require("base64-arraybuffer");
 var import_material34 = require("@mui/material");
-var import_react_i18next22 = require("react-i18next");
+var import_react_i18next23 = require("react-i18next");
 var import_icons_material5 = require("@mui/icons-material");
 var FileUploader = (props) => {
   const [uploading, setUploading] = (0, import_react43.useState)(false);
@@ -5081,7 +5163,7 @@ var FileUploader = (props) => {
   };
   const noIcon = props.icon !== void 0 && !props.icon;
   const noText = props.text !== void 0 && !props.text;
-  const text = props.text || /* @__PURE__ */ import_react43.default.createElement(import_react_i18next22.Trans, null, "Upload");
+  const text = props.text || /* @__PURE__ */ import_react43.default.createElement(import_react_i18next23.Trans, null, "Upload");
   const iconSx = props.iconSize ? { width: props.iconSize, height: props.iconSize } : {};
   const icon = noIcon ? void 0 : props.icon || /* @__PURE__ */ import_react43.default.createElement(import_icons_material5.UploadFile, { sx: iconSx });
   return /* @__PURE__ */ import_react43.default.createElement(import_react43.default.Fragment, null, /* @__PURE__ */ import_react43.default.createElement("input", { id: "file-uploader-input", disabled: !!props.disabled, type: "file", multiple: !!props.multiple, hidden: true, onChange: (e) => onFileChange(e) }), /* @__PURE__ */ import_react43.default.createElement("label", { htmlFor: "file-uploader-input" }, noText && /* @__PURE__ */ import_react43.default.createElement(import_material34.Button, { component: "span", disabled: uploading || !!props.disabled, color: props.color }, icon), !noText && /* @__PURE__ */ import_react43.default.createElement(import_material34.Button, { component: "span", disabled: uploading || !!props.disabled, startIcon: icon, color: props.color, variant: props.variant }, text)));
@@ -5143,7 +5225,7 @@ var ProcessStatusIcon = (props) => {
 var ProcessList = (props) => {
   const [processes, setProcesses] = (0, import_react46.useState)([]);
   useAxios({ url: `${props.api}`, token: props.token, receiver: setProcesses });
-  return /* @__PURE__ */ import_react46.default.createElement(import_material36.TableContainer, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Table, { className: "ProcessTable", size: "small" }, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableHead, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableRow, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next23.Trans, null, "#")), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next23.Trans, null, "Date")), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next23.Trans, null, "Process Name")), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next23.Trans, null, "Status")))), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableBody, null, processes.map((process2) => /* @__PURE__ */ import_react46.default.createElement(import_material36.TableRow, { key: process2.id, onClick: () => {
+  return /* @__PURE__ */ import_react46.default.createElement(import_material36.TableContainer, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.Table, { className: "ProcessTable", size: "small" }, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableHead, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableRow, null, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "#")), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Date")), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Process Name")), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, { variant: "head", align: "left" }, /* @__PURE__ */ import_react46.default.createElement(import_react_i18next24.Trans, null, "Status")))), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableBody, null, processes.map((process2) => /* @__PURE__ */ import_react46.default.createElement(import_material36.TableRow, { key: process2.id, onClick: () => {
     props.onClick && props.onClick(process2.id);
   } }, /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, null, process2.id), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, null, `${process2.created}`), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, null, process2.name), /* @__PURE__ */ import_react46.default.createElement(import_material36.TableCell, null, /* @__PURE__ */ import_react46.default.createElement(ProcessStatusIcon, { status: process2.status })))))));
 };
@@ -5152,7 +5234,7 @@ var ProcessList = (props) => {
 init_shim();
 var import_material38 = require("@mui/material");
 var import_react48 = __toESM(require("react"));
-var import_react_i18next24 = require("react-i18next");
+var import_react_i18next25 = require("react-i18next");
 
 // src/process/StepList.tsx
 init_shim();
@@ -5186,7 +5268,7 @@ var actionStepLabel = (action) => {
 var ProcessView = (props) => {
   const { stateView, resultView } = props;
   const theme = (0, import_material38.useTheme)();
-  const { t } = (0, import_react_i18next24.useTranslation)();
+  const { t } = (0, import_react_i18next25.useTranslation)();
   const [process2, setProcess] = (0, import_react48.useState)(null);
   const [step, setStep] = (0, import_react48.useState)(null);
   let currentStep;
@@ -5197,11 +5279,13 @@ var ProcessView = (props) => {
     currentStep = process2.currentStep !== void 0 ? process2.currentStep : 0;
   }
   useAxios({
+    // Note, step argument does not do anything except triggers URL refetch.
     url: `${props.api}/${props.id}${currentStep !== void 0 ? `?step=${currentStep}` : ""}`,
     token: props.token,
     receiver: setProcess
   });
   useAxios({
+    // Note, step argument does not do anything except triggers URL refetch.
     url: currentStep === void 0 ? null : `${props.api}/${props.id}/step/${currentStep}`,
     token: props.token,
     receiver: setStep
@@ -5261,7 +5345,7 @@ var ProcessView = (props) => {
       onClick: () => onChangeStep(currentStep !== void 0 ? currentStep + 1 : 0)
     },
     /* @__PURE__ */ import_react48.default.createElement(import_icons_material7.NavigateNext, null)
-  ))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react48.default.createElement(StepList, { onChangeStep: (step2) => onChangeStep(step2), operations, currentStep: currentStep || 0 }))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableRow, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 5, align: "left", style: { verticalAlign: "top" } }, lastStep && process2.status === "SUCCEEDED" && step !== null && /* @__PURE__ */ import_react48.default.createElement(SuccessView, { step, process: process2 }), lastStep && process2.error && /* @__PURE__ */ import_react48.default.createElement(ErrorView, { error: process2.error, onRetry }), wasConfigured && /* @__PURE__ */ import_react48.default.createElement(ConfigChangeView, { step: process2.steps[(currentStep || 0) - 1] }), needAnswers && /* @__PURE__ */ import_react48.default.createElement(import_react48.default.Fragment, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next24.Trans, null, "Additional information needed")), (0, import_tasenor_common22.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react48.default.createElement(
+  ))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 3 }, /* @__PURE__ */ import_react48.default.createElement(StepList, { onChangeStep: (step2) => onChangeStep(step2), operations, currentStep: currentStep || 0 }))), /* @__PURE__ */ import_react48.default.createElement(import_material38.TableRow, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.TableCell, { colSpan: 5, align: "left", style: { verticalAlign: "top" } }, lastStep && process2.status === "SUCCEEDED" && step !== null && /* @__PURE__ */ import_react48.default.createElement(SuccessView, { step, process: process2 }), lastStep && process2.error && /* @__PURE__ */ import_react48.default.createElement(ErrorView, { error: process2.error, onRetry }), wasConfigured && /* @__PURE__ */ import_react48.default.createElement(ConfigChangeView, { step: process2.steps[(currentStep || 0) - 1] }), needAnswers && /* @__PURE__ */ import_react48.default.createElement(import_react48.default.Fragment, null, /* @__PURE__ */ import_react48.default.createElement(import_material38.Typography, { variant: "subtitle1" }, /* @__PURE__ */ import_react48.default.createElement(import_react_i18next25.Trans, null, "Additional information needed")), (0, import_tasenor_common22.isTasenorElement)(directions.element) && /* @__PURE__ */ import_react48.default.createElement(
     RISP,
     {
       key: "directions",
@@ -5291,18 +5375,18 @@ var TextFileLineRenderer = (props) => {
   }
   const { line } = element;
   const text = line.text.replace(/\t/g, " \u23B5 ");
-  return /* @__PURE__ */ import_react49.default.createElement(import_material39.Box, null, /* @__PURE__ */ import_react49.default.createElement(import_material39.Typography, { variant: "caption" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next25.Trans, null, "Line:"), " ", line.line), /* @__PURE__ */ import_react49.default.createElement(import_material39.Typography, { sx: { fontFamily: "monospace" } }, text), line.columns && Object.keys(line.columns).length > 0 && /* @__PURE__ */ import_react49.default.createElement(import_react49.default.Fragment, null, /* @__PURE__ */ import_react49.default.createElement(import_material39.Typography, { variant: "caption" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next25.Trans, null, "Values:")), /* @__PURE__ */ import_react49.default.createElement(ConfigView, { ignore: /^_/, config: line.columns })));
+  return /* @__PURE__ */ import_react49.default.createElement(import_material39.Box, null, /* @__PURE__ */ import_react49.default.createElement(import_material39.Typography, { variant: "caption" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next26.Trans, null, "Line:"), " ", line.line), /* @__PURE__ */ import_react49.default.createElement(import_material39.Typography, { sx: { fontFamily: "monospace" } }, text), line.columns && Object.keys(line.columns).length > 0 && /* @__PURE__ */ import_react49.default.createElement(import_react49.default.Fragment, null, /* @__PURE__ */ import_react49.default.createElement(import_material39.Typography, { variant: "caption" }, /* @__PURE__ */ import_react49.default.createElement(import_react_i18next26.Trans, null, "Values:")), /* @__PURE__ */ import_react49.default.createElement(ConfigView, { ignore: /^_/, config: line.columns })));
 };
 
 // src/elements/YesNoElement.tsx
 init_shim();
 var import_react50 = __toESM(require("react"));
-var import_react_i18next26 = require("react-i18next");
+var import_react_i18next27 = require("react-i18next");
 var import_material40 = require("@mui/material");
 var import_tasenor_common24 = require("@dataplug/tasenor-common");
 var YesNoRenderer = (props) => {
   const { element } = props;
-  const { t } = (0, import_react_i18next26.useTranslation)();
+  const { t } = (0, import_react_i18next27.useTranslation)();
   const label = "label" in element ? element.label || "" : (0, import_tasenor_common24.isNamedElement)(element) ? t(`label-${element.name}`) : "";
   const [value, setValue2] = import_react50.default.useState((0, import_tasenor_common24.isNamedElement)(element) ? props.values[element.name] : null);
   if (!(0, import_tasenor_common24.isYesNoElement)(element)) {
@@ -5339,11 +5423,11 @@ var YesNoRenderer = (props) => {
 
 // src/elements/CurrencySelectorElement.tsx
 init_shim();
-var import_react_i18next27 = require("react-i18next");
+var import_react_i18next28 = require("react-i18next");
 var import_material41 = require("@mui/material");
 var import_react51 = __toESM(require("react"));
 var CurrencySelectorRenderer = (props) => {
-  const { t } = (0, import_react_i18next27.useTranslation)();
+  const { t } = (0, import_react_i18next28.useTranslation)();
   const { element, setup, values } = props;
   const label = element.label ? element.label : t(`label-${element.name}`);
   const value = values[element.name] || "Not Selected";
@@ -5362,7 +5446,7 @@ var CurrencySelectorRenderer = (props) => {
         setValue2(e.target.value);
       }
     },
-    /* @__PURE__ */ import_react51.default.createElement(import_material41.MenuItem, { value: "Not Selected", key: "Not Selected" }, /* @__PURE__ */ import_react51.default.createElement(import_react_i18next27.Trans, null, "Select")),
+    /* @__PURE__ */ import_react51.default.createElement(import_material41.MenuItem, { value: "Not Selected", key: "Not Selected" }, /* @__PURE__ */ import_react51.default.createElement(import_react_i18next28.Trans, null, "Select")),
     options.map((currency) => /* @__PURE__ */ import_react51.default.createElement(import_material41.MenuItem, { value: currency, key: currency }, currency))
   );
 };
@@ -5402,9 +5486,9 @@ init_shim();
 var import_react53 = __toESM(require("react"));
 var import_tasenor_common25 = require("@dataplug/tasenor-common");
 var import_material42 = require("@mui/material");
-var import_react_i18next28 = require("react-i18next");
+var import_react_i18next29 = require("react-i18next");
 var TagsSelectorRenderer = (props) => {
-  const { t } = (0, import_react_i18next28.useTranslation)();
+  const { t } = (0, import_react_i18next29.useTranslation)();
   const { element, setup, values } = props;
   const [selected, setSelected] = import_react53.default.useState((0, import_tasenor_common25.isNamedElement)(element) ? values[element.name] || [] : []);
   const label = "label" in element ? element.label : (0, import_tasenor_common25.isNamedElement)(element) && element.name ? t(`label-${element.name}`) : "";
@@ -5476,6 +5560,7 @@ var import_react55 = __toESM(require("react"));
 var UiPlugin = class extends import_react55.Component {
   constructor() {
     super({});
+    // This is meta data for this plugin instance.
     this.id = null;
     this.code = null;
     this.title = null;
@@ -5484,11 +5569,21 @@ var UiPlugin = class extends import_react55.Component {
     this.use = null;
     this.type = null;
     this.description = null;
+    // Plugin translations from language code to the translation dictionary.
     this.languages = {};
     this.languages = {};
   }
+  /**
+   * Initialization function to set up hooks if any.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   init(catalog) {
   }
+  /**
+   * Create an instance of a plugin class and copy static fields into the instance.
+   * @param {Function} Class
+   * @returns
+   */
   static create(Class, catalog, store) {
     const plugin = new Class();
     plugin.code = Class.code;
@@ -5503,21 +5598,41 @@ var UiPlugin = class extends import_react55.Component {
     plugin.catalog = catalog;
     return plugin;
   }
-  t(str) {
-    return this.catalog ? this.catalog.t(str) : str;
+  /**
+   * Do the translation for the string in the current language.
+   */
+  t(str, lang = void 0) {
+    if (!lang) {
+      lang = this.settings.get("language") || "en";
+    }
+    return this.catalog ? this.catalog.t(str, lang) : str;
   }
+  /**
+   * Go to the given URL.
+   * @param {String} url
+   */
   goto(url) {
     if (!this.catalog) {
       throw new Error("Cannot use goto() when there is no catalog connected in plugin.");
     }
     this.catalog.history.push(url);
   }
+  /**
+   * Get the UI setting description or null if the plugin has no settings.
+   */
   getSettings() {
     return null;
   }
+  /**
+   * Get all known default values for settings.
+   */
   getDefaults() {
     return null;
   }
+  /**
+   * Get the value of the plugin setting.
+   * @param name
+   */
   getSetting(name) {
     return this.settings ? this.settings.get(`${this.code}.${name}`) : void 0;
   }
@@ -5528,6 +5643,17 @@ var UiPlugin = class extends import_react55.Component {
 
 // src/plugins/CurrencyPlugin.tsx
 var CurrencyPlugin = class extends UiPlugin {
+  /**
+   * An utility function to convert numeric money value to localized string.
+   * @param cents Amount given as integer of the smallest unit.
+   * @param divider The value used to dived main unit to its smaller unit (i.e. usually 100)
+   * @param decimals Number of decimals to show.
+   * @param prefix Text before number.
+   * @param thousands Thousand separator string.
+   * @param comma A comma string.
+   * @param postfix Text after number.
+   * @returns
+   */
   makeMoney(cents, divider, decimals, prefix, thousands, comma, postfix) {
     const [full, part] = Number(cents / divider).toFixed(decimals).split(".");
     let text = full.replace(/(\d+)(\d{9})$/, `$1${thousands}$2`);
@@ -5535,12 +5661,23 @@ var CurrencyPlugin = class extends UiPlugin {
     text = text.replace(/(\d+)(\d{3})$/, `$1${thousands}$2`);
     return prefix + text + comma + part + postfix;
   }
+  /**
+   * Get the display UTF-8 symbol or string for the currency.
+   */
   getCurrencySymbol() {
     throw new Error(`Currency plugin ${this.code} does not implement getCurrencySymbol().`);
   }
+  /**
+   * Get the 3 letter code for the currency.
+   */
   getCurrencyCode() {
     throw new Error(`Currency plugin ${this.code} does not implement getCurrencyCode().`);
   }
+  /**
+   * Convert a money amount to localized string.
+   * @param cents Amount given as integer of the smallest unit.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   money2str(cents) {
     throw new Error(`Currency plugin ${this.code} does not implement money2str().`);
   }
@@ -5549,15 +5686,35 @@ var CurrencyPlugin = class extends UiPlugin {
 // src/plugins/LanguagePlugin.tsx
 init_shim();
 var LanguagePlugin = class extends UiPlugin {
+  /**
+   * Get a set of languages provided this plugin.
+   */
   getLanguages() {
     throw new Error(`Plugin ${this.code} does not implement getLanguages().`);
   }
+  /**
+   * Get the flag code for the given language supported by the plugin.
+   * @param language
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   flag(language) {
     return "gb";
   }
+  /**
+   * Convert a date or datetime to the localized string based on the currently selected language.
+   * @param date A date as a string YYYY-MM-DD or with time.
+   * @return Year, month and day localized.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   date2str(date) {
     throw new Error(`A plugin ${this.code} does not implement date2str().`);
   }
+  /**
+   * Convert (possibly partial) localized date to 'YYYY-MM-DD'
+   * @param date A local format of date - possibly without year and/or month.
+   * @param sample A sample to use for filling in missing parts (default: today)
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   str2date(date, sample = null) {
     throw new Error(`A plugin ${this.code} does not implement str2date().`);
   }
@@ -5566,8 +5723,16 @@ var LanguagePlugin = class extends UiPlugin {
 // src/plugins/SchemePlugin.tsx
 init_shim();
 var SchemePlugin = class extends UiPlugin {
+  /**
+   * Gather accounting schemes provided by this plugin.
+   * @returns A map from accounting scheme code names to their visual titles.
+   */
   getAccountingSchemes() {
   }
+  /**
+   * Get the data from the .tsv file.
+   * @returns
+   */
   getAccountData() {
     return [];
   }
@@ -5577,34 +5742,77 @@ var SchemePlugin = class extends UiPlugin {
 init_shim();
 var import_react56 = __toESM(require("react"));
 var ToolPlugin = class extends UiPlugin {
+  /**
+   * Return menu entries for Tools page.
+   * @returns
+   */
   toolMenu() {
     return [];
   }
+  /**
+   * A text used to present this tool in the side menu.
+   * Number is index of the menu entry if tool has more than one.
+   * @param index
+   * @returns
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toolTitle(index) {
     return "";
   }
+  /**
+   * Construct a content for the top panel when this tool is selected.
+   * Number is index of the menu entry if tool has more than one.
+   * @param index
+   * @returns
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toolTopPanel(index) {
     return /* @__PURE__ */ import_react56.default.createElement(import_react56.default.Fragment, null);
   }
+  /**
+   * Construct actual content for the main area when this tool is selected.
+   * Number is index of the menu entry if tool has more than one.
+   * @param index
+   * @returns
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toolMainPanel(index) {
     return /* @__PURE__ */ import_react56.default.createElement(import_react56.default.Fragment, null);
   }
+  /**
+   * Executor for HTTP requests.
+   */
   async request(method, params = void 0) {
     const { db } = this.store;
     return this.store.request(`/db/${db}/tools/${this.code}`, method, params || null);
   }
+  /**
+   * Make a GET request to the backend component of the plugin.
+   */
   async GET(query = void 0) {
     return this.request("GET", query);
   }
+  /**
+   * Make a DELETE request to the backend component of the plugin.
+   */
   async DELETE(query = void 0) {
     return this.request("DELETE", query);
   }
+  /**
+   * Make a POST request to the backend component of the plugin.
+   */
   async POST(params) {
     return this.request("POST", params);
   }
+  /**
+   * Make a POST request to the backend component of the plugin.
+   */
   async PUT(params) {
     return this.request("PUT", params);
   }
+  /**
+   * Make a POST request to the backend component of the plugin.
+   */
   async PATCH(params) {
     return this.request("PATCH", params);
   }
