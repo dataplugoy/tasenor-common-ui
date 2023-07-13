@@ -21,17 +21,11 @@
     "demo": "cd example && NODE_ENV=development esbuild --bundle index.tsx --define:global=window --outfile=public/index.js --servedir=./public/",
     "test:unit:ci": "jest --clearCache && yarn test:unit",
     "test:unit": "jest",
-    "test:watch": "jest --watch --detectOpenHandles",
-    "lint": "eslint src/**/*.{ts,tsx} example/**/*.{ts,tsx} tests/**/*.{ts,tsx}",
-    "lint:fix": "eslint --fix src/**/*.{ts,tsx} example/**/*.{ts,tsx} tests/**/*.{ts,tsx}"
+    "test:watch": "jest --watch --detectOpenHandles"
   },
   "dependencies": {
-    "@dataplug/tasenor-common": "git+ssh://git@github.com:dataplugoy/tasenor-common.git",
     "base64-arraybuffer": "1.0.2",
-    "crypto-browserify": "^3.12.0",
-    "get-value": "^3.0.1",
-    "history": "^5.2.0",
-    "set-value": "^4.1.0"
+    "crypto-browserify": "^3.12.0"
   },
   "devDependencies": {
     "@types/jest": "29.5.2",
@@ -54,16 +48,5 @@
     "sass": "1.49.7",
     "ts-jest": "^29.1.0",
     "typescript": "5.0"
-  },
-  "peerDependencies": {
-    "@mui/icons-material": "5.11.0",
-    "@mui/material": "5.11.0",
-    "i18next": "^21.4.0",
-    "mobx": "6.4.2",
-    "mobx-react": "^7.3.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-i18next": "^11.15.5",
-    "react-router-dom": "^5.2.0"
   }
 }
